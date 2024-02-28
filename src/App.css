@@ -1,38 +1,188 @@
-.App {
-  text-align: center;
+
+.login-container{
+  /* height: 1000px;
+  width: 1000px; */ 
+  /* background-color: aliceblue; */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  margin: 0;
+  padding: 0;
+   height: 100vh;
+  width: 100vw; 
+  /* background-color: #21D4FD;
+background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%); */
+
+  /* background-color: aliceblue; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.login-heading{
+  /* display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column;
+  justify-self: center; */
 }
 
-.App-link {
-  color: #61dafb;
+.link-tag{
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-container .heading-avatar{
+  display: flex;
+  justify-content: center;
+}
+
+.login-container .heading-txt{
+  display: flex;
+  justify-content: center;
+  /* border-bottom: 1px solid black; */
+  margin-left: 50px;
+  margin-right:50px;  
+
+}
+
+.login-container .login-submit-btn{
+display: flex;
+justify-content: center;
+margin-top: 50px;
+
+}
+
+.register-container .register-submit-btn{
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.login-container-paper{
+  max-height: 52vh;
+  min-height: 50vh;
+}
+
+.register-container-paper{
+  max-height: 70vh;
+}
+
+.register-container .heading-txt{
+  display: flex;
+  justify-content: center;
+}
+
+.login-container .login-submit-btn button{
+  width: 200px;
+}
+
+.register-gender-select{
+  width: 40%;
+  margin-top: 50px;
+}
+
+.register-age{
+  width: 40%;
+  margin-left: 10px !important;
+}
+
+.age-gender-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+
+.admin-cardcontent{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height:80%;
+}
+
+.admin-cardcontent .admin-cardcontent-items{
+  flex: 1;
+  height: 100%;
+}
+
+.list-page{
+  margin-left:0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 7% 93%;
+}
+.list-page-item{
+  margin-left: 0;
+}
+.sidebar{
+  margin-left: 0;
+  width:100%;
+  height: 100vh;
+}
+.sidebar-list{
+  width: 100%;
+  background-color: #11B3CF;
+  height: 100%;
+  margin-left: 0;
+}
+.sidebar-icon{
+  color: white !important;
+}
+
+.list-toolbar{
+  background-color: white;
+  display:flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  color: #11B3CF
+}
+.list-toolbar-item{
+  flex: 1fr 1fr 1fr;
+}
+
+.list-toolbar-item-middle{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.list-table-grid{
+  height: 400;
+  width: 100%;
+}
+
+.list-page{
+  margin-left:0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 7% 93%;
+}
+.list-page-item{
+  margin-left: 0;
+}
+.sidebar{
+  margin-left: 0;
+  width:100%;
+  height: 100vh;
+}
+.sidebar-list{
+  width: 100%;
+  background-color:white;
+  height: 100%;
+  margin-left: 0;
+}
+.sidebar-icon{
+  color: white !important;
+}
+
+.sidebar-img{
+  width: 100%;
+}
+
+.nav-bar-items-text{
+  width: 100%;
+  text-align: center;
 }
