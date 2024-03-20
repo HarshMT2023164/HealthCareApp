@@ -1,43 +1,73 @@
-
-
-import React from 'react';
-import { List,ListItemButton, ListItemIcon, Paper } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import WorkIcon from '@mui/icons-material/Work';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Logoimage from '../utils/images/logo_bg-removebg-preview.png'
+import { List, ListItemButton, Paper } from "@mui/material";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import Logoimage from "../utils/images/logo_bg-removebg-preview.png";
 
 const NavBar = () => {
   return (
     <Paper component={"nav"} elevation={3} className="sidebar">
-        <List className='sidebar-list'>
+      <List className="sidebar-list">
+        <ListItemButton>
+          <img src={Logoimage} alt="logo" className="sidebar-img" />
+        </ListItemButton>
+        <NavLink
+          to={"/roles"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
           <ListItemButton>
-            <img src={Logoimage} alt='logo' className='sidebar-img'/>
+            <h4 className="nav-bar-items-text">Home</h4>
           </ListItemButton>
+        </NavLink>
+
+        <NavLink
+          to={"/viewList/Supervisor"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
           <ListItemButton>
-              <h4 className="nav-bar-items-text">Home</h4>
-          </ListItemButton> 
-          <ListItemButton>
-              <h4 className="nav-bar-items-text"> Supervisors</h4>
-          </ListItemButton> 
+            <h4 className="nav-bar-items-text"> Supervisors</h4>
+          </ListItemButton>
+        </NavLink>
+
+        <NavLink
+          to={"/viewList/FieldHealthWorker"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
           <ListItemButton>
             <h4 className="nav-bar-items-text">Field Health Workers</h4>
           </ListItemButton>
+        </NavLink>
+
+        <NavLink
+          to={"/viewList/Doctor"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
           <ListItemButton>
             <h4 className="nav-bar-items-text">Doctors</h4>
           </ListItemButton>
+        </NavLink>
+
+        <NavLink
+          to={"/viewList/Patient"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
           <ListItemButton>
             <h4 className="nav-bar-items-text">Patients</h4>
           </ListItemButton>
-
+        </NavLink>
+        
+        <NavLink to={"/"} className="link-tag" activeClassName="active-link">
           <ListItemButton>
             <h4 className="nav-bar-items-text">Logout</h4>
           </ListItemButton>
-        </List>
+        </NavLink>
+      </List>
     </Paper>
   );
-}
-
-
+};
 
 export default NavBar;
