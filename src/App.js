@@ -1,7 +1,7 @@
+//imports
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "./Components/NavBar";
-import { useEffect } from "react";
 
 function App() {
   const location = useLocation();
