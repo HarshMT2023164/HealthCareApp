@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 //imports
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+=======
+//import check!!
+>>>>>>> f0d6bba7e997292f7af80265e3f0adc4a27ae1a2
 import "./App.css";
 import NavBar from "./Components/NavBar";
 
