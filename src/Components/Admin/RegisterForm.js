@@ -320,8 +320,8 @@ const RegisterForm = () => {
               value={formData.gender}
               error= {Boolean(errors.gender)}
             >
-              <MenuItem value={"Men"}>Male</MenuItem>
-              <MenuItem value={"Women"}>Female</MenuItem>
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
               <MenuItem value={"Others"}>Others</MenuItem>
             </Select>
           </FormControl>
