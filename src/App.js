@@ -2,6 +2,7 @@ import "./App.css";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import { useEffect } from "react";
+import { UserDetailsProvider } from "./utils/Context/UserContext";
 
 function App() {
   const location = useLocation();
@@ -18,12 +19,14 @@ function App() {
   // }, [isLoginUrl, navigate]);
 
   return (
+    <UserDetailsProvider>
     <div className="list-page">
       <div className="list-page-item">{!isLoginUrl && <NavBar />}</div>
       <div className="list-page-item">
         <Outlet />
       </div>
     </div>
+    </UserDetailsProvider>
   );
 }
 

@@ -1,20 +1,49 @@
-import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import SearchContext from '../../utils/Context/SearchContext';
+import { Button } from '@mui/material';
+import UserDetailsContext from '../../utils/Context/UserContext';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
-const columns = [
-    { field: 'id', headerName: 'ID', flex: 1 ,headerClassName:'list-table-header'},
-    { field: 'name', headerName: 'Name', flex: 1 },
+
+
+const  ViewList = (props) => {
+
+  const {role} = useParams();
+  const navigate = useNavigate();
+
+  const {setUserDetails} = useContext(UserDetailsContext);
+
+  const handleEdit = (data) => {
+    console.log(data);
+    setUserDetails(data);
+    navigate("/register/" + role);
+  }
+
+  
+
+  const columns = [
+    { field: 'index', headerName: '#', flex : 1 },
+    { field: 'name', headerName: 'Name', flex: 2 },
     { field: 'age', headerName: 'Age', flex: 1 },
     { field: 'gender', headerName: 'Gender', flex: 1 },
     // { field: 'district', headerName: 'District', flex: 1 },
-    { field: 'licenseId', headerName: 'LicenseID', flex: 1 },
-    { field: 'specialty', headerName: 'Speciality', flex: 1 },
-    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'licenseId', headerName: 'LicenseID', flex: 2 },
+    { field: 'specialty', headerName: 'Speciality', flex: 2 },
+    { field: 'email', headerName: 'Email', flex: 2 },
+    {
+      field: 'edit',
+      headerName: 'Action',
+      width: 110,
+      renderCell: (params) => (
+        <Button variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
+      ),
+    },
 ];
+
+
   
   const data = [
     {
@@ -26,6 +55,7 @@ const columns = [
       "specialty": "physiatrist",
       "email": "aj@gmail.com",
       "username": "DR80784",
+      "district" : "AMreli",
       "password": "FCzYBTuTW1"
     },
     {
@@ -85,11 +115,12 @@ const columns = [
     }
   ];
 
-export default function ViewList(){
-
   const { searchText } = useContext(SearchContext);
 
   const [dataList , setDataList] = useState(data);
+
+  const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
+  
 
   const filterData = () => {
     const filteredRows = data.filter(row =>
@@ -130,11 +161,13 @@ const fetchListData = async () => {
       // console.error(error);
     }
 
+   
+
 } 
     return (
         <div className='list-table-grid'>
           <DataGrid
-            rows={dataList}
+            rows={dataListWithIndex}
             columns={columns}
             // initialState={{
             //   pagination: false,
@@ -146,3 +179,5 @@ const fetchListData = async () => {
         </div>
       );
 }
+
+export default ViewList;

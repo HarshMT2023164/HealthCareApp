@@ -11,8 +11,9 @@ export const ViewListMain = () => {
       <SearchProvider>
           <div>
               <ListAppBar role={role} />
-              <ViewList />
+              <ViewList role={role}/>
           </div>
       </SearchProvider>
   );
 }
+

@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import UserDetailsContext from "../../utils/Context/UserContext";
 
-const RegisterForm = () => {
+let RegisterForm = () => {
   const initialFormState = {
     name: "",
     email: "",
@@ -22,19 +23,25 @@ const RegisterForm = () => {
     district: null, // Change this based on your district options structure
     gender: "",
     age: "",
-    specialty : "psychiatrist"
+    specialty: "psychiatrist",
   };
 
   const [formData, setFormData] = useState(initialFormState);
 
   const navigate = useNavigate();
 
-  const {role} = useParams();
+  const { role } = useParams();
 
-   
+  const { userDetails } = useContext(UserDetailsContext);
+
+  useEffect(() => {
+    if (userDetails) {
+      setFormData(userDetails);
+    }
+  }, []);
 
   const handleSubmitValidated = async () => {
-    // let res = await axios.post(        
+    // let res = await axios.post(
     //   "http://192.168.0.104:8080/doctor/addDoctor",formData
     //   ).then((res) => {
     //       console.log(res);
@@ -46,13 +53,12 @@ const RegisterForm = () => {
     //     else{
     //       console.log('Username or password incorrect');
     //     }
-        
+
     //   }).catch((err) => {
     //     console.log('Username or password incorrect');
     //   })
-      navigate("/viewList/" + role);
+    navigate("/viewList/" + role);
   };
-
 
   const paperStyle = {
     padding: 20,
@@ -97,7 +103,7 @@ const RegisterForm = () => {
     "Surendranagar",
     "Tapi",
     "Vadodara",
-    "Valsad"
+    "Valsad",
     // Add more districts as needed
   ];
 
@@ -122,7 +128,6 @@ const RegisterForm = () => {
     gender: "",
     age: "",
   });
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -224,10 +229,13 @@ const RegisterForm = () => {
     return emailRegex.test(input);
   };
 
-
   return (
     <div className="register-container" style={{ minHeight: "100vh" }}>
-      <Paper elevation={10} style={paperStyle} className="register-container-paper">
+      <Paper
+        elevation={10}
+        style={paperStyle}
+        className="register-container-paper"
+      >
         <div className="login-heading">
           {/* <div className="heading-avatar">
             <Avatar style={avatarStyle} src={avatar}></Avatar>
@@ -245,10 +253,9 @@ const RegisterForm = () => {
           variant="standard"
           onChange={handleInputChange}
           value={formData.name}
-          error = {Boolean(errors.name)}
-          helperText = {errors.name}
+          error={Boolean(errors.name)}
+          helperText={errors.name}
           fullWidth
-
         />
         <TextField
           id="standard-basic"
@@ -275,7 +282,7 @@ const RegisterForm = () => {
           fullWidth
           onChange={handleInputChange}
           error={Boolean(errors.licenseId)}
-          helperText = {errors.licenseId}
+          helperText={errors.licenseId}
         />
         <TextField
           id="standard-basic"
@@ -288,7 +295,7 @@ const RegisterForm = () => {
           fullWidth
           onChange={handleInputChange}
           error={Boolean(errors.phonenumber)}
-          helperText = {errors.phonenumber}
+          helperText={errors.phonenumber}
         />
 
         <Autocomplete
@@ -300,7 +307,6 @@ const RegisterForm = () => {
               label="Select District"
               variant="standard"
               fullWidth
-              
             />
           )}
           onChange={(event, newValue) => handleDistrictChange(event, newValue)}
@@ -318,10 +324,10 @@ const RegisterForm = () => {
               variant="standard"
               onChange={handleGenderChange}
               value={formData.gender}
-              error= {Boolean(errors.gender)}
+              error={Boolean(errors.gender)}
             >
-              <MenuItem value={"Men"}>Male</MenuItem>
-              <MenuItem value={"Women"}>Female</MenuItem>
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
               <MenuItem value={"Others"}>Others</MenuItem>
             </Select>
           </FormControl>
@@ -330,18 +336,19 @@ const RegisterForm = () => {
             id="standard-basic"
             name="age"
             value={formData.age}
-           
             label="Age "
             variant="standard"
             type="number"
             className="register-age"
             onChange={handleInputChange}
             error={Boolean(errors.age)}
-            helperText = {errors.age}
+            helperText={errors.age}
           />
         </div>
         <div className="register-submit-btn">
-          <Button variant="contained" onClick={() => handleSubmit()}>Submit</Button>
+          <Button variant="contained" onClick={() => handleSubmit()}>
+            Submit
+          </Button>
         </div>
       </Paper>
     </div>
