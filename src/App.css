@@ -192,3 +192,57 @@ margin-top: 50px;
 
 }
 
+/* <---------------- Doctor-css-------------------------------------- */
+
+.doctor-bar-container{
+  background-color: white;
+  /* display:flex;
+  flex-direction: row;
+  justify-content:space-between; */
+  align-items: center;
+  height: 60px;
+  padding-top: 30px;
+}
+
+.doctor-bar-btn-container{
+
+  display: inline-block;
+  /* justify-content: space-between; */
+  width: 40%;
+}
+
+.doctor-bar-search-container{
+  display: inline-block;
+  /* align-items: center; */
+  width: 60%;
+}
+.doctor-bar-search-icon{
+  color: #1976d2;
+}
+
+.doctor-bar-btn-inner{
+  display: flex;
+  justify-content: center;
+  /* justify-content: space-between; */
+  /* justify-content: space-between; */
+
+}
+.doctor-bar-search-inner{
+  display: flex;
+  justify-content: center;
+  /* justify-content: space-between; */
+}
+
+.doctor-bar-search-text{
+  width: 60%;
+}
+
+.doctor-main-left-cont{
+  display: inline-block;
+  width: 50%;
+}
+.doctor-main-left-cont{
+  display: inline-block;
+  width: 50%;
+}
+

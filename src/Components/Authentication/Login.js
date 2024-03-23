@@ -1,8 +1,8 @@
 import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from "@mui/material";
-import { useState } from "react";
-import avatar from "../../utils/images/avatar.jpeg";
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import avatar from "../../utils/images/avatar.jpeg";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const Login = () => {
     //   });
 
     //   console.log(response);
-    navigate("/roles");
+    navigate("/doctor");
   };
 
   const handleInputChange = (e) => {

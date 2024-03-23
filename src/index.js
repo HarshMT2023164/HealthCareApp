@@ -8,6 +8,7 @@ import Login from './Components/Authentication/Login';
 import RegisterForm from './Components/Admin/RegisterForm';
 import { ViewListMain } from './Components/Admin/ViewListMain';
 import RoleCards from './Components/Admin/RoleCards';
+import DoctorMain from './Components/Doctor/DoctorMain';
 
 const appRouter = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const appRouter = createBrowserRouter([
         path : "/register/:role",
         element : <RegisterForm />
       },
+      {
+        path : "doctor",
+        element : <DoctorMain />,
+      }
     ]
   }
 ])
