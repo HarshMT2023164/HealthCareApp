@@ -9,6 +9,8 @@ import Login from './Components/Authentication/Login';
 import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Supervisor from './Components/Supervisor/Supervisor';
+import SupervisorHome from './Components/Supervisor/SupervisorHome';
 
 const appRouter = createBrowserRouter([
   {
@@ -34,10 +36,20 @@ const appRouter = createBrowserRouter([
       {
         path :"/Supervisor/AreaPatientlist",
         element : <AreawisePatientsMain />
-      }
+      },
+      {
+        path:"/supervisor",
+        element : <Supervisor/>,
+        children :[
+          {
+            path: "/supervisor",
+            element: <SupervisorHome/>
+          },
+        ]
+      },
     ]
   }
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
