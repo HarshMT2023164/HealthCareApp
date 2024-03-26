@@ -11,6 +11,7 @@ import Supervisor from './Components/Supervisor/Supervisor';
 import SupervisorHome from './Components/Supervisor/SupervisorHome';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import FHWListMain from './Components/Supervisor/FHWListMain'
 
 const appRouter = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const appRouter = createBrowserRouter([
           {
             path :"/supervisor/AreaPatientlist",
             element : <AreawisePatientsMain />
+          },
+          {
+            path:"/supervisor/FHWList",
+            element:<FHWListMain/>
           }
         ]
       },

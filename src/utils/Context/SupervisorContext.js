@@ -5,14 +5,16 @@ const SupervisorContext = createContext();
 export const SupervisorProvider = ({ children }) => {
     const [searchArea, setSearchArea] = useState('');
     const [searchPatient, setSearchPatient] = useState('');
-
+    const [searchFHW, setSearchFHW] = useState('');
     return (
     <SupervisorContext.Provider value=
     {
         {   searchArea, 
             setSearchArea,
             searchPatient,
-            setSearchPatient 
+            setSearchPatient,
+            searchFHW,
+            setSearchFHW,
         }
     }>
         {children}
