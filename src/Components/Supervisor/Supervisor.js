@@ -1,7 +1,6 @@
-import { Outlet } from "react-router-dom"
-import NavBar from "../NavBar";
+import { Outlet } from "react-router-dom";
 import { SupervisorProvider } from "../../utils/Context/SupervisorContext";
-import SupervisorHome from "./SupervisorHome";
+import NavBar from "../NavBar";
 
 const Supervisor = () => {
     return (

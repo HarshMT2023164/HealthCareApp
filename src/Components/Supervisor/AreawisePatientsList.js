@@ -1,10 +1,11 @@
+import Chip from '@mui/material/Chip';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import SearchContext from '../../utils/Context/SearchContext';
+import SupervisorContext from "../../utils/Context/SupervisorContext";
 import UserDetailsContext from '../../utils/Context/UserContext';
-
+import './Supervisor.css';
 
 
 
@@ -14,46 +15,66 @@ const  ViewList = (props) => {
   const navigate = useNavigate();
 
   const {setUserDetails} = useContext(UserDetailsContext);
-
-  const handleEdit = (data) => {
-    console.log(data);
-    setUserDetails(data);
-    navigate("/register/" + role);
-  }
-
-  
+ 
 
   const columns = [
-    { field: 'id', headerName: 'ID', flex : 1 },
-    { field: 'name', headerName: 'Patient Name', flex: 2 },
-    { field: 'age', headerName: 'Pateint Age', flex: 1 },
-    { field: 'gender', headerName: 'Doctor Assigned', flex: 1 },
-    { field: 'date', headerName: 'Date', flex: 1 },
-    { field: 'follow up', headerName: 'Follow Up', flex: 1 },
-];
+    { field: 'id', headerName: 'ID', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'name', headerName: 'Patient Name', flex: 2, headerClassName: 'header-highlight' },
+    { field: 'age', headerName: 'Patient Age', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'doctorAssigned', headerName: 'Doctor Assigned', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'date', headerName: 'Date', flex: 1, headerClassName: 'header-highlight' },
+    { 
+      field: 'followUp', 
+      headerName: 'Follow Up', 
+      flex: 1,
+      headerClassName: 'header-highlight',
+      renderCell: (params) => (
+        <Chip
+          label={params.value}
+          color={getColor(params.value)}
+          variant="filled"
+          style={{ borderRadius: '0px', backgroundColor: getColor(params.value), width: '150px' }}
+        />
+      ),
+    },
+  ];
+  
 const data = [
-  { id: 'A12345', name: 'Aarav Sharma', age: 35, gender: 'Male', doctorAssigned: 'Dr. Singh', date: '2024-03-01' },
-  { id: 'A12346', name: 'Aditi Patel', age: 28, gender: 'Female', doctorAssigned: 'Dr. Gupta', date: '2024-03-02' },
-  { id: 'A12347', name: 'Aryan Kumar', age: 42, gender: 'Male', doctorAssigned: 'Dr. Mishra', date: '2024-03-03' },
-  { id: 'A12348', name: 'Diya Shah', age: 39, gender: 'Female', doctorAssigned: 'Dr. Joshi', date: '2024-03-04' },
-  { id: 'A12349', name: 'Ishaan Gupta', age: 31, gender: 'Male', doctorAssigned: 'Dr. Reddy', date: '2024-03-05' },
-  { id: 'A12350', name: 'Krishna Patel', age: 45, gender: 'Female', doctorAssigned: 'Dr. Choudhary', date: '2024-03-06' },
-  { id: 'A12351', name: 'Rohan Singh', age: 37, gender: 'Male', doctorAssigned: 'Dr. Sharma', date: '2024-03-07' },
-  { id: 'A12352', name: 'Sanaya Jain', age: 29, gender: 'Female', doctorAssigned: 'Dr. Verma', date: '2024-03-08' },
-  { id: 'A12353', name: 'Vivaan Kumar', age: 40, gender: 'Male', doctorAssigned: 'Dr. Yadav', date: '2024-03-09' },
-  { id: 'A12354', name: 'Zara Sharma', age: 33, gender: 'Female', doctorAssigned: 'Dr. Singhania', date: '2024-03-10' },
-  { id: 'A12355', name: 'Arjun Gupta', age: 47, gender: 'Male', doctorAssigned: 'Dr. Tiwari', date: '2024-03-11' },
-  { id: 'A12356', name: 'Dia Patel', age: 30, gender: 'Female', doctorAssigned: 'Dr. Shukla', date: '2024-03-12' },
-  { id: 'A12357', name: 'Kabir Singh', age: 38, gender: 'Male', doctorAssigned: 'Dr. Chaturvedi', date: '2024-03-13' },
-  { id: 'A12358', name: 'Meera Mishra', age: 32, gender: 'Female', doctorAssigned: 'Dr. Trivedi', date: '2024-03-14' },
-  { id: 'A12359', name: 'Riya Joshi', age: 41, gender: 'Male', doctorAssigned: 'Dr. Gupta', date: '2024-03-15' }
+  { id: 'A12345', name: 'Aarav Sharma', age: 35, doctorAssigned: 'Dr. Singh', date: '2024-03-01', followUp: 'Pending' },
+  { id: 'A12346', name: 'Aditi Patel', age: 28, doctorAssigned: 'Dr. Gupta', date: '2024-03-02', followUp: 'Done' },
+  { id: 'A12347', name: 'Aryan Kumar', age: 42, doctorAssigned: 'Dr. Mishra', date: '2024-03-03', followUp: 'Not Required' },
+  { id: 'A12348', name: 'Diya Shah', age: 39, doctorAssigned: 'Dr. Joshi', date: '2024-03-04', followUp: 'Pending' },
+  { id: 'A12349', name: 'Ishaan Gupta', age: 31, doctorAssigned: 'Dr. Reddy', date: '2024-03-05', followUp: 'Done' },
+  { id: 'A12350', name: 'Krishna Patel', age: 45, doctorAssigned: 'Dr. Choudhary', date: '2024-03-06', followUp: 'Pending' },
+  { id: 'A12351', name: 'Rohan Singh', age: 37, doctorAssigned: 'Dr. Sharma', date: '2024-03-07', followUp: 'Done' },
+  { id: 'A12352', name: 'Sanaya Jain', age: 29, doctorAssigned: 'Dr. Verma', date: '2024-03-08', followUp: 'Not Required' },
+  { id: 'A12353', name: 'Vivaan Kumar', age: 40, doctorAssigned: 'Dr. Yadav', date: '2024-03-09', followUp: 'Pending' },
+  { id: 'A12354', name: 'Zara Sharma', age: 33, doctorAssigned: 'Dr. Singhania', date: '2024-03-10', followUp: 'Done' },
+  { id: 'A12355', name: 'Arjun Gupta', age: 47, doctorAssigned: 'Dr. Tiwari', date: '2024-03-11', followUp: 'Pending' },
+  { id: 'A12356', name: 'Dia Patel', age: 30, doctorAssigned: 'Dr. Shukla', date: '2024-03-12', followUp: 'Done' },
+  { id: 'A12357', name: 'Kabir Singh', age: 38, doctorAssigned: 'Dr. Chaturvedi', date: '2024-03-13', followUp: 'Pending' },
+  { id: 'A12358', name: 'Meera Mishra', age: 32, doctorAssigned: 'Dr. Trivedi', date: '2024-03-14', followUp: 'Not Required' },
+  { id: 'A12359', name: 'Riya Joshi', age: 41, doctorAssigned: 'Dr. Gupta', date: '2024-03-15', followUp: 'Pending' }
 ];
 
+const getColor = (status) => {
+  switch (status.toLowerCase()) {
+    case 'pending':
+      return 'default';
+    case 'done':
+      return 'success'; // Green color
+    case 'not required':
+      return 'info'; // Blue color
+    default:
+      return 'default';
+  }
+};
+
 
   
   
 
-  const { searchText } = useContext(SearchContext);
+  const { searchPatient } = useContext(SupervisorContext);
 
   const [dataList , setDataList] = useState(data);
 
@@ -62,13 +83,13 @@ const data = [
 
   const filterData = () => {
     const filteredRows = data.filter(row =>
-      row.name.toLowerCase().includes(searchText.toLowerCase())
+      row.name.toLowerCase().includes(searchPatient.toLowerCase())
     );
     setDataList(filteredRows);
   };
   useEffect(() => {
     filterData()
-  }, [searchText]);
+  }, [searchPatient]);
 
 
   useEffect(() => {

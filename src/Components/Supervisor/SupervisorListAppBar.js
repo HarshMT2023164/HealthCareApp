@@ -1,17 +1,16 @@
 import { Search } from "@mui/icons-material";
 import { AppBar, TextField, Toolbar, Typography } from "@mui/material";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import SearchContext from "../../utils/Context/SearchContext";
+import SupervisorContext from "../../utils/Context/SupervisorContext";
 
 export default function SupervisorListAppBar(props)
 {
-    const {role} = props;
-    const navigate = useNavigate();
-    const { setSearchText } = useContext(SearchContext);
+    // const {role} = props;
+    // const navigate = useNavigate();
+    const { setSearchPatient } = useContext(SupervisorContext);
 
     const handleSearch = (e) => {
-        setSearchText(e.target.value);
+        setSearchPatient(e.target.value);
     };
 
 

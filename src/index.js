@@ -7,10 +7,10 @@ import RoleCards from './Components/Admin/RoleCards';
 import { ViewListMain } from './Components/Admin/ViewListMain';
 import Login from './Components/Authentication/Login';
 import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
 import Supervisor from './Components/Supervisor/Supervisor';
 import SupervisorHome from './Components/Supervisor/SupervisorHome';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 const appRouter = createBrowserRouter([
   {
@@ -34,10 +34,6 @@ const appRouter = createBrowserRouter([
         element : <RegisterForm />
       },
       {
-        path :"/Supervisor/AreaPatientlist",
-        element : <AreawisePatientsMain />
-      },
-      {
         path:"/supervisor",
         element : <Supervisor/>,
         children :[
@@ -45,6 +41,10 @@ const appRouter = createBrowserRouter([
             path: "/supervisor",
             element: <SupervisorHome/>
           },
+          {
+            path :"/supervisor/AreaPatientlist",
+            element : <AreawisePatientsMain />
+          }
         ]
       },
     ]

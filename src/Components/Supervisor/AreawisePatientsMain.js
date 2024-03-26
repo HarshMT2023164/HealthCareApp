@@ -1,16 +1,16 @@
-import React from 'react'
-import { SearchProvider } from '../../utils/Context/SearchContext'
-import AreawisePatientsList from './AreawisePatientsList'
-import SupervisorListAppBar from './SupervisorListAppBar'
+import React from 'react';
+import { SupervisorProvider } from "../../utils/Context/SupervisorContext";
+import AreawisePatientsList from './AreawisePatientsList';
+import SupervisorListAppBar from './SupervisorListAppBar';
 
 const AreawisePatientsMain = () => {
     return (
-      <SearchProvider>
+      <SupervisorProvider>
           <div>
               <SupervisorListAppBar  />
               <AreawisePatientsList />
           </div>
-      </SearchProvider>
+      </SupervisorProvider>
   );
 }
 export default AreawisePatientsMain;
