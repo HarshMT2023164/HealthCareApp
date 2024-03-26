@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Login from './Components/Authentication/Login';
+import App from './App';
 import RegisterForm from './Components/Admin/RegisterForm';
-import { ViewListMain } from './Components/Admin/ViewListMain';
 import RoleCards from './Components/Admin/RoleCards';
+import { ViewListMain } from './Components/Admin/ViewListMain';
+import Login from './Components/Authentication/Login';
+import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 const appRouter = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const appRouter = createBrowserRouter([
         path : "/register/:role",
         element : <RegisterForm />
       },
+      {
+        path :"/Supervisor/AreaPatientlist",
+        element : <AreawisePatientsMain />
+      }
     ]
   }
 ])

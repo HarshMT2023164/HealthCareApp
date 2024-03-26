@@ -1,10 +1,10 @@
 import { Search } from "@mui/icons-material";
-import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material";
+import { AppBar, TextField, Toolbar, Typography } from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchContext from "../../utils/Context/SearchContext";
 
-export default function ListAppBar(props)
+export default function SupervisorListAppBar(props)
 {
     const {role} = props;
     const navigate = useNavigate();
@@ -19,17 +19,19 @@ export default function ListAppBar(props)
         <AppBar position="static">
             <Toolbar className="list-toolbar" >
                 <div className="list-toolbar-item">
-                <Typography variant="h4" className="list-toolbar-item">
-                    {role}
+                <Typography variant="h5" className="list-toolbar-item">
+                    {"AreaName:"}
+                </Typography>
+                </div>
+                <div className="list-toolbar-item">
+                <Typography variant="h5" className="list-toolbar-item">
+                    {"HealthWorkerName:"}
                 </Typography>
                 </div>
                 <div className="list-toolbar-item list-toolbar-item-middle">
                     <div><Search/></div>
                     <TextField variant="standard" placeholder="Search here" onChange={handleSearch}/>
-                </div>
-                    <div className="list-toolbar-item">
-                    {role != "Patient" && (<Button variant='contained' className="list-toolbar-button" onClick={() => { navigate("/register/" + role) }}>Add {role}</Button>)}
-                    </div>
+                </div>               
             </Toolbar>
         </AppBar>
     );
