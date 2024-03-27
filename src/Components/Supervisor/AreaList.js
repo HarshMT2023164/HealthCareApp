@@ -17,18 +17,21 @@ const  ViewList = (props) => {
   const {searchArea} = useContext(SupervisorContext);
 
   const handleView = (data) => {
-    console.log("Working");
-    // console.log(data);
-    // setUserDetails(data);
-    // navigate("/register/" + role);
+    if(data.fhw==="Not Assigned")
+    {
+      navigate("/supervisor/FHWList");
+    }
+    else{
+      navigate("/supervisor/AreaPatientlist")
+    }
   }
 
   
 
   const columns = [
     { field: 'index', headerName: '#', flex : 1 },
-    {field: 'area' , headerName: 'Area', flex : 1},
-    {field: 'fhw', headerName: 'FHW',flex: 1},
+    {field: 'area' , headerName: 'Area', flex : 2},
+    {field: 'fhw', headerName: 'FHW',flex: 2},
     {field: 'pincode', headerName: 'Pincode', flex:1},
     // { field: 'name', headerName: 'Name', flex: 2 },
     // { field: 'age', headerName: 'Age', flex: 1 },
@@ -40,7 +43,7 @@ const  ViewList = (props) => {
     {
       field: 'view',
       headerName: 'Action',
-      width: 110,
+      width: 150,
       renderCell: (params) => (
         <Button variant="contained" color="primary" onClick={() => handleView(params.row)}>View</Button>
       ),
