@@ -200,8 +200,11 @@ margin-top: 50px;
   flex-direction: row;
   justify-content:space-between; */
   align-items: center;
-  height: 60px;
+  /* height: 60px; */
   padding-top: 30px;
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
 }
 
 .doctor-bar-btn-container{
@@ -238,11 +241,71 @@ margin-top: 50px;
 }
 
 .doctor-main-left-cont{
-  display: inline-block;
+  /* display: inline-block; */
   width: 50%;
+  max-height: 85vh;
+  overflow: auto;
 }
-.doctor-main-left-cont{
-  display: inline-block;
-  width: 50%;
+.doctor-main-right-cont{
+  /* display: inline-block; */
+  width: 45%;
 }
 
+.doctor-main-container{
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.patient-card-cont{
+  margin: 5px;
+}
+
+.doctor-bar-chip{
+  min-width: 100px;
+}
+
+.demographic-header{
+  display: flex;
+  justify-content: center;
+}
+
+.demographic-element{
+  margin: 3px;  
+  margin-bottom: 10px;
+}
+
+.demographic-key{
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.demographic-value{
+  font-size: x-large;
+}
+
+.demographic-data-cont{
+
+ /* margin-left: 50px; */
+
+ 
+}
+.demographic-detail1-cont{
+  border: 1px solid #1976d2;
+  border-radius: 8px;
+  padding: 10px;
+  margin-left: 0px;
+}
+
+.demogrphic-btn-cont{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.doctor-bar-main-cont{
+  display: flex;
+}
+
+.doctor-bar-demographic{
+  width: 50%;
+}

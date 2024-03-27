@@ -1,22 +1,21 @@
+import { DoctorMainProvider } from "../../utils/Context/DoctorMainContext";
 import { Demographics } from "./Demographics";
-import DoctorNavBar from "./DoctorNavBar";
+import DoctorSearchBar from "./DoctorSearchBar";
 import PatientList from "./PatientList";
-
+import "./Doctor.css";
+import NavBar from "../NavBar";
+import { Outlet } from "react-router-dom";
+import DoctorNavBar from "./DoctorNavBar";
 const DoctorMain = () => {
   return (
-    <div className="doctor-main">
-      <div>
-        <DoctorNavBar />
-      </div>
-      <div className="doctor-mainp-container">
-        <div className="doctor-main-left-cont">
-            <PatientList />
-        </div>
-        <div className="doctor-main-right-cont">
-            <Demographics />
-        </div>
+    <DoctorMainProvider>
+      <div className="list-page">
+      <div className="list-page-item"> <DoctorNavBar /></div>
+      <div className="list-page-item">
+        <Outlet />
       </div>
     </div>
+    </DoctorMainProvider>
   );
 };
 

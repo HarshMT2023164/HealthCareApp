@@ -9,6 +9,10 @@ import RegisterForm from './Components/Admin/RegisterForm';
 import { ViewListMain } from './Components/Admin/ViewListMain';
 import RoleCards from './Components/Admin/RoleCards';
 import DoctorMain from './Components/Doctor/DoctorMain';
+import PrescriptionForm from './Components/Doctor/PrescriptionForm';
+import DoctorLandingScreen from './Components/Doctor/DoctorLandingScreen';
+import FollowUpForm from './Components/Doctor/FollowUpForm';
+import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
 
 const appRouter = createBrowserRouter([
   {
@@ -32,8 +36,27 @@ const appRouter = createBrowserRouter([
         element : <RegisterForm />
       },
       {
-        path : "doctor",
+        path : "/doctor",
         element : <DoctorMain />,
+        children : [
+          {
+            path : "/doctor",
+            element : <DoctorLandingScreen />
+          },
+          {
+            path : "/doctor/viewQuestionnaire",
+            element : <PatientQuestionnaire />
+          }
+          // {
+          //   path : "/doctor/add-presctiprion",
+          //   element : <PrescriptionForm />
+          // },
+          // {
+          //   path : "/doctor/add-followup",
+          //   element : <FollowUpForm />
+          // },
+
+        ]
       }
     ]
   }
