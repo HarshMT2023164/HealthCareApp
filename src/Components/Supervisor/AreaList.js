@@ -8,9 +8,11 @@ import SupervisorContext from '../../utils/Context/SupervisorContext';
 
 
 
-const  ViewList = (props) => {
+
+const  AreaList = (props) => {
 
   const navigate = useNavigate();
+  const data = [];
 
   const {searchArea} = useContext(SupervisorContext);
 
@@ -23,6 +25,10 @@ const  ViewList = (props) => {
       navigate("/supervisor/AreaPatientlist")
     }
   }
+
+  let requestObj = {
+    username : "",
+  };
 
   
 
@@ -51,20 +57,20 @@ const  ViewList = (props) => {
 
 
   
-  const data = [
-    { id: 1, area: 'Adajan', fhw: 'John Doe', pincode: '395009' },
-    { id: 2, area: 'Athwa', fhw: 'Jane Smith', pincode: '395007' },
-    { id: 3, area: 'Piplod', fhw: 'Not Assigned', pincode: '395007' },
-    { id: 4, area: 'Varachha', fhw: 'Emily Brown', pincode: '395006' },
-    { id: 5, area: 'Katargam', fhw: 'David Wilson', pincode: '395004' },
-    { id: 6, area: 'Rander', fhw: 'Not Assigned', pincode: '395005' },
-    { id: 7, area: 'Udhna', fhw: 'Christopher Lee', pincode: '394210' },
-    { id: 8, area: 'Pal', fhw: 'Not Assigned', pincode: '394210' },
-    { id: 9, area: 'Sarthana', fhw: 'Matthew Garcia', pincode: '395006' },
-    { id: 10, area: 'Katargam', fhw: 'Not Assigned', pincode: '395004' },
-  ];
+  // const data = [
+  //   { id: 1, area: 'Adajan', fhw: 'John Doe', pincode: '395009' },
+  //   { id: 2, area: 'Athwa', fhw: 'Jane Smith', pincode: '395007' },
+  //   { id: 3, area: 'Piplod', fhw: 'Not Assigned', pincode: '395007' },
+  //   { id: 4, area: 'Varachha', fhw: 'Emily Brown', pincode: '395006' },
+  //   { id: 5, area: 'Katargam', fhw: 'David Wilson', pincode: '395004' },
+  //   { id: 6, area: 'Rander', fhw: 'Not Assigned', pincode: '395005' },
+  //   { id: 7, area: 'Udhna', fhw: 'Christopher Lee', pincode: '394210' },
+  //   { id: 8, area: 'Pal', fhw: 'Not Assigned', pincode: '394210' },
+  //   { id: 9, area: 'Sarthana', fhw: 'Matthew Garcia', pincode: '395006' },
+  //   { id: 10, area: 'Katargam', fhw: 'Not Assigned', pincode: '395004' },
+  // ];
 
-  const [dataList , setDataList] = useState(data);
+  const [dataList , setDataList] = useState([]);
 
   const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
   
@@ -81,7 +87,7 @@ const  ViewList = (props) => {
 
 
   useEffect(() => {
-    // fetchListData();
+    fetchListData();
 },[])
 
 
@@ -91,8 +97,8 @@ const token  = localStorage.getItem("JwtToken");
 const fetchListData = async () => {
 
     try {
-      console.log(token);
-      const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors');
+      // console.log(token);
+      const areaResponse = await axios.get('http://192.168.0.104:8080/getAreas',requestObj);
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
       //   headers : {
       //     Authorization : `Bearer ${token}`,
@@ -100,8 +106,34 @@ const fetchListData = async () => {
       // });
 
       // Handle the API response
-      setDataList(response.data);
-      console.log(response);
+      console.log(areaResponse);
+      const data = areaResponse.data;
+      data.array.forEach(obj => {
+        obj["fhw"] = "";
+      });
+      requestObj = {
+        districtId:""
+      }
+      const fhwResponse = await axios.get('http://192.168.0.104:8080/getFHW',requestObj);
+      const objMap = new Map();
+      fhwResponse.data.array.forEach(obj => {
+      if(obj.localArea.id != null)
+      {
+        objMap.set(obj.localArea.id,obj.name);
+      }
+      });
+      data.array.forEach(obj => {
+        if(objMap.has(obj.id))
+        {
+          data["fhw"] = objMap.get(obj.id);
+        }
+        else
+        {
+          data["fhw"] = "Not Assigned";
+        }
+      });
+      setDataList(data);
+      console.log(data);
     } catch (error) {
       // Handle errors
       console.log(error)
@@ -134,4 +166,4 @@ const fetchListData = async () => {
       );
 }
 
-export default ViewList;
+export default AreaList;
