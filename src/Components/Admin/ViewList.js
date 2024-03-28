@@ -1,10 +1,10 @@
+import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import SearchContext from '../../utils/Context/SearchContext';
-import { Button } from '@mui/material';
-import UserDetailsContext from '../../utils/Context/UserContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import SearchContext from '../../utils/Context/SearchContext';
+import UserDetailsContext from '../../utils/Context/UserContext';
 
 
 
@@ -38,7 +38,7 @@ const  ViewList = (props) => {
       headerName: 'Action',
       width: 110,
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
+        <Button  variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
       ),
     },
 ];

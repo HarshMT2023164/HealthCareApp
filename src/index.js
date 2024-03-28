@@ -7,11 +7,12 @@ import RoleCards from './Components/Admin/RoleCards';
 import { ViewListMain } from './Components/Admin/ViewListMain';
 import Login from './Components/Authentication/Login';
 import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
+import FHWListMain from './Components/Supervisor/FHWListMain';
+import ProfilePage from './Components/Supervisor/ProfilePage';
 import Supervisor from './Components/Supervisor/Supervisor';
 import SupervisorHome from './Components/Supervisor/SupervisorHome';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import FHWListMain from './Components/Supervisor/FHWListMain'
 
 const appRouter = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const appRouter = createBrowserRouter([
           {
             path:"/supervisor/FHWList",
             element:<FHWListMain/>
+          },
+          {
+            path:"/supervisor/Profile",
+            element:<ProfilePage/>
           }
         ]
       },
