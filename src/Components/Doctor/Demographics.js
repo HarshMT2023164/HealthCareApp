@@ -14,6 +14,10 @@ export const Demographics = () => {
     navigate("/doctor/viewQuestionnaire")
   }
 
+  const onClickViewHistory = () => {
+    navigate("/doctor/history")
+  }
+
   const [openPrescriptionDialog, setOpenPrescriptionDialog] = useState(false);
   const [openFollowUpDialog, setOpenFollowUpDialog] = useState(false);
 
@@ -43,6 +47,12 @@ export const Demographics = () => {
     console.log('Prescription Form Submitted:', formData);
   };
 
+  const paperStyle = {
+    padding: '24px',
+    marginBottom: '24px',
+    backgroundColor: '#f0f0f0',
+  };
+
  return (
     <Container>
       {/* <div className="demographic-header">
@@ -54,6 +64,9 @@ export const Demographics = () => {
       <div className="demogrphic-btn-cont">
         <Button variant="outlined" size="medium" onClick={() => onViewQuestionnaire()}>
           View Questionerry
+        </Button>
+        <Button variant="outlined" size="medium" onClick={() => onClickViewHistory()}>
+          View History
         </Button>
         <Button variant="outlined" size="medium" onClick={handleOpenPrescriptionDialog}>
           Add/ Edit Prescription
@@ -73,6 +86,7 @@ export const Demographics = () => {
         onSubmit={handleSubmitFollowUpForm}
       />
       </div>
+      
       <div className="demographic-detail1-cont">
         <Grid container spacing={2}>
           {
@@ -92,17 +106,35 @@ export const Demographics = () => {
       <div className="demographic-detail1-cont">
       <Typography variant="body1">
                 <div>
-                  <span className="demographic-key">Assigned by FieldHealthWorker</span>:
+                  <span className="demographic-key">Assigned by FieldHealthWorker : </span>
                   <span className="demographic-value">
                     Harsh
                   </span>
                   </div>
                   <div>
-                  <span className="demographic-key">Assigned On</span>:
+                  <span className="demographic-key">Assigned On : </span>
                   <span className="demographic-value">
-                    23/07/2024
+                    23/03/2024
                   </span>
                   </div>
+                </Typography>
+      </div>
+      <div className="demographic-detail1-cont">
+      <Typography variant="body1">
+                <div>
+                  <span className="demographic-key">Last checked on : </span>
+                  <span className="demographic-value">
+                  31/03/2024
+                  </span>
+                  </div>
+
+                  <div>
+                  <span className="demographic-key">Diagnosis Code : </span>
+                  <span className="demographic-value">
+                  ICD-10-CM J45.909 (Asthma, unspecified, uncomplicated)
+                  </span>
+                  </div>
+
                 </Typography>
       </div>
       </div>}
