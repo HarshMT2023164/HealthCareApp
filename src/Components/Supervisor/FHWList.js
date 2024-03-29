@@ -12,18 +12,18 @@ const  FHWList = () => {
 
   const navigate = useNavigate();
 
-  const {searchFHW} = useContext(SupervisorContext);
+  const {searchFHW,setSearchFHW} = useContext(SupervisorContext);
+  // const {supervisor,setSupervisor} = useContext(SupervisorContext);
  
   const handleAssign = (row) => {
-    console.log(row);
-    const requestObj = {
-      username: row.id,
-      localAreaId: row.localarea.id
+    localStorage.setItem("FHWUsername" , row.usernname);
+    const localAreaId = localStorage.getItem("localAreaId");
+    const reqObj = {
+      localAreaId:localAreaId,
+      username:row.username,
     }
-    const response= axios.post('http://192.168.0.104:8080/getUnassignedFHW',requestObj);
-
-
-    navigate("/supervisor/AreaPatientlist");
+    assignFHW(reqObj);
+    // navigate("/supervisor/AreaPatientlist");
   }
 
   
@@ -34,7 +34,8 @@ const  FHWList = () => {
     { field: 'age', headerName: 'Age', flex: 1 },
     { field: 'gender', headerName: 'Gender', flex: 1 },
     { field: 'email', headerName: 'Email',flex:2},
-    { field: 'contact', headerName: 'Contact', flex:1},
+    { field: 'phoneNum', headerName: 'Contact', flex:1},
+    {field:'username', headerName:'UserName',flex:1,hide:true},
 
     // { field: 'name', headerName: 'Name', flex: 2 },
     // // { field: 'district', headerName: 'District', flex: 1 },
@@ -90,39 +91,75 @@ const data=[];
 
 
 const token  = localStorage.getItem("JwtToken");
+const username = localStorage.getItem("username");
+const requestObj = {
+  username:username
+}
 
-const requestObj={districtId: ""};
-
-
-const fetchListData = async () => {
+const assignFHW = async (reqObj) => {
 
     try {
       console.log(token);
       //to be continued
-      const response = await axios.get('http://192.168.0.104:8080/getUnassignedFHW',requestObj);
+      const response = await axios.post('http://192.168.127.137:8080/supervisor/assignWorkerToLocalArea',reqObj,{
+      headers : {
+            Authorization : `Bearer ${token}`,
+          }}
+      );
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
       //   headers : {
       //     Authorization : `Bearer ${token}`,
       //   }
       // });
       // Handle the API response
-      data={
-        id: response.data.id,
-        name: response.data.name,
-        age: response.data.age,
-        gender: response.data.gender,
-        email: response.data.email,
-        contact: response.data.contact,
-      };
-      setDataList(data);
-      console.log(response);
+      // data={
+      //   id: response.data.id,
+      //   name: response.data.name,
+      //   age: response.data.age,
+      //   gender: response.data.gender,
+      //   email: response.data.email,
+      //   contact
+      // };
+      // setDataList(response.data);
+      console.log(response.data);
     } catch (error) {
       // Handle errors
       console.log(error)
       // console.error(error);
     }
+  }
 
-   
+   const fetchListData = async () => {
+
+    try {
+      console.log(token);
+      //to be continued
+      const response = await axios.post('http://192.168.127.137:8080/FieldHealthCareWorker/getUnassignedFHW',requestObj,{
+      headers : {
+            Authorization : `Bearer ${token}`,
+          }}
+      );
+      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+      //   headers : {
+      //     Authorization : `Bearer ${token}`,
+      //   }
+      // });
+      // Handle the API response
+      // data={
+      //   id: response.data.id,
+      //   name: response.data.name,
+      //   age: response.data.age,
+      //   gender: response.data.gender,
+      //   email: response.data.email,
+      //   contact
+      // };
+      setDataList(response.data);
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors
+      console.log(error)
+      // console.error(error);
+    }
 
 }
 

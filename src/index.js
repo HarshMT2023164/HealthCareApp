@@ -13,6 +13,8 @@ import Supervisor from './Components/Supervisor/Supervisor';
 import SupervisorHome from './Components/Supervisor/SupervisorHome';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Admin from './Components/Admin/Admin';
+
 
 const appRouter = createBrowserRouter([
   {
@@ -24,23 +26,29 @@ const appRouter = createBrowserRouter([
         element : <Login/>
       },
       {
-        path : "/roles",
-        element : <RoleCards />
-      },
-      {
-        path : "/viewList/:role",
-        element : <ViewListMain />
-      },
-      {
-        path : "/register/:role",
-        element : <RegisterForm />
+        path:"/admin",
+        element:<Admin/>,
+        children:[
+          {
+            path : "/admin/roles",
+            element : <RoleCards />
+          },
+          {
+            path : "/admin/viewList/:role",
+            element : <ViewListMain />
+          },
+          {
+            path : "/admin/register/:role",
+            element : <RegisterForm />
+          },
+        ]
       },
       {
         path:"/supervisor",
         element : <Supervisor/>,
         children :[
           {
-            path: "/supervisor",
+            path: "/supervisor/home",
             element: <SupervisorHome/>
           },
           {

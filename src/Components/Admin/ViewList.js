@@ -19,7 +19,7 @@ const  ViewList = (props) => {
   const handleEdit = (data) => {
     console.log(data);
     setUserDetails(data);
-    navigate("/register/" + role);
+    navigate("/admin/register/" + role);
   }
 
   

@@ -12,31 +12,31 @@ import SupervisorContext from '../../utils/Context/SupervisorContext';
 const  AreaList = (props) => {
 
   const navigate = useNavigate();
+
   const data = [];
+ 
+  const {searchArea,setsearchArea} = useContext(SupervisorContext);
+  // const {supervisor,setSupervisor} = useContext(SupervisorContext);
 
-  const {searchArea} = useContext(SupervisorContext);
 
-  const handleView = (data) => {
-    if(data.fhw==="Not Assigned")
+  const handleView = (rowData) => {
+    if(rowData.fhw==="Not Assigned")
     {
+      localStorage.setItem("localAreaId",rowData.id);
       navigate("/supervisor/FHWList");
     }
     else{
+      localStorage.setItem("FHW_assign_Username",rowData.fhwUsername);
       navigate("/supervisor/AreaPatientlist")
     }
   }
-
-  let requestObj = {
-    username : "",
-  };
-
-  
 
   const columns = [
     { field: 'index', headerName: '#', flex : 1 },
     {field: 'area' , headerName: 'Area', flex : 2},
     {field: 'fhw', headerName: 'FHW',flex: 2},
     {field: 'pincode', headerName: 'Pincode', flex:1},
+    {field:'fhwUsername',headerName:'FHWUserName',flex:1,hide:true},
     // { field: 'name', headerName: 'Name', flex: 2 },
     // { field: 'age', headerName: 'Age', flex: 1 },
     // { field: 'gender', headerName: 'Gender', flex: 1 },
@@ -92,13 +92,20 @@ const  AreaList = (props) => {
 
 
 const token  = localStorage.getItem("JwtToken");
+const username = localStorage.getItem("username");
 
-
+const reqObj = {
+  username:username
+}
 const fetchListData = async () => {
 
     try {
       // console.log(token);
-      const areaResponse = await axios.get('http://192.168.0.104:8080/getAreas',requestObj);
+      const response = await axios.post("http://192.168.127.137:8080/district/getlocalareaswithindistrict",reqObj,{
+        headers : {
+              Authorization : `Bearer ${token}`,
+            }
+      });
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
       //   headers : {
       //     Authorization : `Bearer ${token}`,
@@ -106,34 +113,18 @@ const fetchListData = async () => {
       // });
 
       // Handle the API response
-      console.log(areaResponse);
-      const data = areaResponse.data;
-      data.array.forEach(obj => {
-        obj["fhw"] = "";
-      });
-      requestObj = {
-        districtId:""
-      }
-      const fhwResponse = await axios.get('http://192.168.0.104:8080/getFHW',requestObj);
-      const objMap = new Map();
-      fhwResponse.data.array.forEach(obj => {
-      if(obj.localArea.id != null)
+      console.log(response.data)
+      let count=1;
+      let data = response.data.map((obj)=>(
       {
-        objMap.set(obj.localArea.id,obj.name);
-      }
-      });
-      data.array.forEach(obj => {
-        if(objMap.has(obj.id))
-        {
-          data["fhw"] = objMap.get(obj.id);
-        }
-        else
-        {
-          data["fhw"] = "Not Assigned";
-        }
-      });
+        id:count++,
+        area:obj.name,
+        fhw:obj.fieldHealthcareWorkerDTO==null?"Not Assigned":obj.fieldHealthcareWorkerDTO.name,
+        fhwUsername:obj.fieldHealthcareWorkerDTO==null?"":obj.fieldHealthcareWorkerDTO.username,
+        pincode:obj.pincode,
+      }));
       setDataList(data);
-      console.log(data);
+
     } catch (error) {
       // Handle errors
       console.log(error)

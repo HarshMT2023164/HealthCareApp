@@ -1,9 +1,9 @@
 import { List, ListItemButton, Paper } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Logoimage from "../utils/images/logo_bg-removebg-preview.png";
+import Logoimage from "../../utils/images/logo_bg-removebg-preview.png";
 
-const NavBar = () => {
+const AdminNavbar = () => {
   return (
     <Paper component={"nav"} elevation={3} className="sidebar">
       <List className="sidebar-list">
@@ -11,7 +11,7 @@ const NavBar = () => {
           <img src={Logoimage} alt="logo" className="sidebar-img" />
         </ListItemButton>
         <NavLink
-          to={"/roles"}
+          to={"/admin/roles"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -21,7 +21,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Supervisor"}
+          to={"/admin/viewList/Supervisor"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -31,7 +31,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/FieldHealthWorker"}
+          to={"/admin/viewList/FieldHealthWorker"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -41,7 +41,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Doctor"}
+          to={"/admin/viewList/Doctor"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -51,7 +51,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Patient"}
+          to={"/admin/viewList/Patient"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -70,4 +70,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default AdminNavbar;

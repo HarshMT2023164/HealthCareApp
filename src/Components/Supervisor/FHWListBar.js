@@ -1,14 +1,15 @@
 import { Search } from "@mui/icons-material";
 import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SupervisorContext from "../../utils/Context/SupervisorContext";
+// import SupervisorContext from "../../utils/Context/SupervisorContext";
 
 export default function FHWListBar(props)
 {
     const {role} = props;
     const navigate = useNavigate();
-    const {setSearchFHW} = useContext(SupervisorContext);
+    const {searchFHW,setSearchFHW} = useContext(SupervisorContext);
 
     const handleSearch = (e) => {
         setSearchFHW(e.target.value);

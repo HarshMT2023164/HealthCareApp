@@ -11,7 +11,7 @@ const SupervisorNavBar = () => {
           <img src={Logoimage} alt="logo" className="sidebar-img" />
         </ListItemButton>
         <NavLink
-          to={"/roles"}
+          to={"/supervisor/home"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -19,7 +19,15 @@ const SupervisorNavBar = () => {
             <h4 className="nav-bar-items-text">Home</h4>
           </ListItemButton>
         </NavLink>
-
+        <NavLink
+          to={"/supervisor/Profile"}
+          className="link-tag"
+          activeClassName="active-link"
+        >
+          <ListItemButton>
+            <h4 className="nav-bar-items-text">Profile</h4>
+          </ListItemButton>
+        </NavLink>
         {/* <NavLink
           to={"/viewList/Supervisor"}
           className="link-tag"

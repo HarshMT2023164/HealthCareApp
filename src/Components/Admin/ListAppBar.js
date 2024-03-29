@@ -28,7 +28,7 @@ export default function ListAppBar(props)
                     <TextField variant="standard" placeholder="Search here" onChange={handleSearch}/>
                 </div>
                     <div className="list-toolbar-item">
-                    {role != "Patient" && (<Button variant='contained'  onClick={() => { navigate("/register/" + role) }}>Add {role}</Button>)}
+                    {role != "Patient" && (<Button variant='contained'  onClick={() => { navigate("admin/register/" + role) }}>Add {role}</Button>)}
                     </div>
             </Toolbar>
         </AppBar>

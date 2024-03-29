@@ -1,8 +1,8 @@
 import "./App.css";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import NavBar from "./Components/NavBar";
 import { useEffect } from "react";
 import { UserDetailsProvider } from "./utils/Context/UserContext";
+import { SupervisorProvider } from "./utils/Context/SupervisorContext";
 
 function App() {
   const location = useLocation();
@@ -19,11 +19,13 @@ function App() {
   // }, [isLoginUrl, navigate]);
 
   return (
+    <SupervisorProvider>
     <UserDetailsProvider>
       <div className="list-page-item">
         <Outlet />
       </div>
     </UserDetailsProvider>
+    </SupervisorProvider>
   );
 }
 

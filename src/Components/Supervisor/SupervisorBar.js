@@ -1,14 +1,14 @@
 import { Search } from "@mui/icons-material";
 import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect ,useState} from "react";
 import { useNavigate } from "react-router-dom";
-import SupervisorContext from "../../utils/Context/SupervisorContext";
+import SupervisorContext from '../../utils/Context/SupervisorContext';
 
 export default function SupervisorBar(props)
 {
     const {role} = props;
     const navigate = useNavigate();
-    const {setSearchArea} = useContext(SupervisorContext);
+    const {searchArea,setSearchArea} = useContext(SupervisorContext);
 
     const handleSearch = (e) => {
         setSearchArea(e.target.value);

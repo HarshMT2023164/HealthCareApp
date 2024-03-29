@@ -1,8 +1,9 @@
 import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import avatar from "../../utils/images/avatar.jpeg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SupervisorContext from "../../utils/Context/SupervisorContext";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const Login = () => {
   });
 
   const [errorMessage , setErrorMessage] = useState(null);
+  const {supervisor,setSupervisor} = useContext(SupervisorContext);
+
 
   const authenticate = async () => {
     // navigate(`/roles`);
@@ -43,13 +46,17 @@ const Login = () => {
     // }
 
 
-    let res = await axios.post(        
-        "auth/signin",user
+    const res = await axios.post(        
+        "http://192.168.127.137:8080/auth/signin",user
         ).then((res) => {
           console.log(res.data.jwtResponse.accessToken);
           localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
+          localStorage.setItem("username" , res.data.jwtResponse.username);
             console.log(res);
           if(res){
+            console.log(localStorage.getItem("username"));
+            console.log("Hello12345");
+            navigate("/supervisor");
             // navigate(`/bills/${res?.data?.student_id}`);
             // window.localStorage.setItem('student', JSON.stringify(res.data));
             // window.localStorage.setItem('IsAuthenticated', true);
@@ -73,7 +80,7 @@ const Login = () => {
     //   });
 
     //   console.log(response);
-    navigate("/roles");
+  
   };
 
   const handleInputChange = (e) => {
