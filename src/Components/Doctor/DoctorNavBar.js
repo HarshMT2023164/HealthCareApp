@@ -19,13 +19,12 @@ const DoctorNavBar = () => {
               <h4 className="nav-bar-items-text">Home</h4>
             </ListItemButton>
           </NavLink>
+          <NavLink to={"/doctor/dashboard"} className="link-tag" activeClassName="active-link">
+            <ListItemButton>
+              <h4 className="nav-bar-items-text">Dashboard</h4>
+            </ListItemButton>
+          </NavLink>
 
-          <NavLink
-            to={"/viewList/Supervisor"}
-            className="link-tag"
-            activeClassName="active-link"
-          >
-            </NavLink>
           <NavLink to={"/"} className="link-tag" activeClassName="active-link">
             <ListItemButton>
               <h4 className="nav-bar-items-text">Logout</h4>
