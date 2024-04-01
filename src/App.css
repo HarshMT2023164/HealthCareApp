@@ -162,6 +162,8 @@ margin-top: 50px;
 }
 .list-page-item{
   margin-left: 0;
+  max-height: 100vh;
+  /* overflow: auto; */
 }
 .sidebar{
   margin-left: 0;
@@ -248,7 +250,7 @@ margin-top: 50px;
 }
 .doctor-main-right-cont{
   /* display: inline-block; */
-  width: 45%;
+  width: 49%;
 }
 
 .doctor-main-container{
@@ -259,6 +261,7 @@ margin-top: 50px;
 
 .patient-card-cont{
   margin: 5px;
+  cursor: pointer;
 }
 
 .doctor-bar-chip{
@@ -312,10 +315,34 @@ margin-top: 50px;
 }
 
 .patient-question-data{
-  max-height: 90vh;
+  max-height: 80vh;
   overflow: auto;
 }
 
 .patient-card-avatar{
   background-color: rgba(25, 118, 210, 0.5);
+}
+
+.patient-history-title{
+  border-bottom: 1px solid black;
+}
+
+.history-heading-1{
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
+.history-heading-1-key{
+  font-weight: 400;
+}
+
+.history-data-1{
+  padding: 20px;
+}
+
+.question-paper-cont{
+  width: 100%;
+  padding: 20px 50px 30px 50px;
+  margin-top: 30px;
 }

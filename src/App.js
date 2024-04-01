@@ -20,12 +20,11 @@ function App() {
 
   return (
     <UserDetailsProvider>
-    <div className="list-page">
-      <div className="list-page-item">{!isLoginUrl && <NavBar />}</div>
-      <div className="list-page-item">
-        <Outlet />
+      <div>
+        <div className="list-page-item">
+          <Outlet />
+        </div>
       </div>
-    </div>
     </UserDetailsProvider>
   );
 }

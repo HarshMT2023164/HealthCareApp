@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Login from './Components/Authentication/Login';
+import App from './App';
 import RegisterForm from './Components/Admin/RegisterForm';
-import { ViewListMain } from './Components/Admin/ViewListMain';
 import RoleCards from './Components/Admin/RoleCards';
-import DoctorMain from './Components/Doctor/DoctorMain';
-import PrescriptionForm from './Components/Doctor/PrescriptionForm';
+import { ViewListMain } from './Components/Admin/ViewListMain';
+import Login from './Components/Authentication/Login';
+import DoctorDashboard from './Components/Doctor/DoctorDashboard';
 import DoctorLandingScreen from './Components/Doctor/DoctorLandingScreen';
-import FollowUpForm from './Components/Doctor/FollowUpForm';
+import DoctorMain from './Components/Doctor/DoctorMain';
 import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import PatientHistory from './Components/Doctor/PatientHistory';
 
 const appRouter = createBrowserRouter([
   {
@@ -46,6 +46,14 @@ const appRouter = createBrowserRouter([
           {
             path : "/doctor/viewQuestionnaire",
             element : <PatientQuestionnaire />
+          },
+          {
+            path : "/doctor/dashboard",
+            element : <DoctorDashboard />
+          },
+          {
+            path : "/doctor/history",
+            element : <PatientHistory />
           }
           // {
           //   path : "/doctor/add-presctiprion",
