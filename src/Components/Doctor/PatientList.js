@@ -8,6 +8,7 @@ const PatientList = () => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
   const {
+    patientDemographics,
     setPatientDemographics,
     selectedStatus,
     setPatientCount,
@@ -17,6 +18,7 @@ const PatientList = () => {
   const onSelectPatient = (patient, index) => {
     setSelectedCardIndex(index);
     setPatientDemographics(patient);
+    console.log(patientDemographics);
   };
 
   useEffect(() => {
@@ -60,20 +62,29 @@ const PatientList = () => {
           <Card
             style={{
               backgroundColor:
-                selectedCardIndex === index ? "rgba(25, 118, 210, 0.2)" : "white",
+                selectedCardIndex === index ? "#1976d2" : "white",
               transition: "background-color 0.3s ease",
+              color:
+                selectedCardIndex === index ? "white" : "black",
+              transition: "color 0.3s ease"
             }}
           >
             <CardContent>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Avatar style={{ width: 50, height: 50 }} className="patient-card-avatar">
+                <Avatar style={{ width: 50, height: 50 ,
+              backgroundColor:
+                selectedCardIndex === index ? "#FFFFFF" : "#1976d2",
+              transition: "background-color 0.3s ease",
+              color:
+                selectedCardIndex === index ? "#1976d2" : "#FFFFFF",
+              transition: "color 0.3s ease"}} className="patient-card-avatar">
                   {patient.name.charAt(0)}
                 </Avatar>
                 <div style={{ marginLeft: 10 }}>
                   <Typography variant="h6" component="div">
                     {patient.name}
                   </Typography>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography gutterBottom>
                     Age: {patient.age}, Gender: {patient.gender}
                   </Typography>
                   <Typography variant="body2" component="p">
