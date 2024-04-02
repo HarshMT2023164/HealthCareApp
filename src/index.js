@@ -9,10 +9,10 @@ import Login from './Components/Authentication/Login';
 import DoctorDashboard from './Components/Doctor/DoctorDashboard';
 import DoctorLandingScreen from './Components/Doctor/DoctorLandingScreen';
 import DoctorMain from './Components/Doctor/DoctorMain';
+import PatientHistory from './Components/Doctor/PatientHistory';
 import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import PatientHistory from './Components/Doctor/PatientHistory';
 
 const appRouter = createBrowserRouter([
   {
@@ -54,7 +54,7 @@ const appRouter = createBrowserRouter([
           {
             path : "/doctor/history",
             element : <PatientHistory />
-          }
+          },
           // {
           //   path : "/doctor/add-presctiprion",
           //   element : <PrescriptionForm />

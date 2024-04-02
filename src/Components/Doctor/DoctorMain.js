@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { DoctorMainProvider } from "../../utils/Context/DoctorMainContext";
-import "./Doctor.css";
+//import "./Doctor.css";
 import DoctorNavBar from "./DoctorNavBar";
 const DoctorMain = () => {
   return (
