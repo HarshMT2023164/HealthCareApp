@@ -2,8 +2,12 @@ import { List, ListItemButton, Paper } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Logoimage from "../utils/images/logo_bg-removebg-preview.png";
+import { ROLES } from "../utils/constants/Roles";
 
 const NavBar = () => {
+  const onClickLogout = () => {
+    localStorage.clear();
+  } 
   return (
     <Paper component={"nav"} elevation={3} className="sidebar">
       <List className="sidebar-list">
@@ -21,7 +25,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Supervisor"}
+          to={"/viewList/" + ROLES.SUPERVISOR}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -31,7 +35,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/FieldHealthWorker"}
+          to={"/viewList/" + ROLES.FHW}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -41,7 +45,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Doctor"}
+          to={"/viewList/" + ROLES.DOCTOR}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -51,7 +55,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/Patient"}
+          to={"/viewList/" + ROLES.CITIZEN}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -61,7 +65,7 @@ const NavBar = () => {
         </NavLink>
         
         <NavLink to={"/"} className="link-tag" activeClassName="active-link">
-          <ListItemButton>
+          <ListItemButton onClick={() => onClickLogout()}>
             <h4 className="nav-bar-items-text">Logout</h4>
           </ListItemButton>
         </NavLink>
