@@ -1,183 +1,132 @@
+import React, { useState, useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SearchContext from '../../utils/Context/SearchContext';
-import { Button } from '@mui/material';
 import UserDetailsContext from '../../utils/Context/UserContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors } from '../../utils/constants/Urls';
+import { ROLES, Roles } from '../../utils/constants/Roles';
 
-
-
-
-const  ViewList = (props) => {
-
-  const {role} = useParams();
+const ViewList = (props) => {
+  const { role } = useParams();
   const navigate = useNavigate();
+  const { setUserDetails } = useContext(UserDetailsContext);
+  const { searchText } = useContext(SearchContext);
+  const [dataList, setDataList] = useState([]);
+  const [filteredDataList, setFilteredDataList] = useState([]);
+  const [loading, setLoading] = useState(true); // State for managing loading status
 
-  const {setUserDetails} = useContext(UserDetailsContext);
+  useEffect(() => {
+    fetchListData();
+  }, [role, searchText]); // Include searchText in dependency array
+
+  const fetchListData = async () => {
+    try {
+      setLoading(true); // Set loading to true before fetching data
+      let apiUrl;
+      switch (role) {
+        case ROLES.DOCTOR:
+          apiUrl = getDoctor;
+          break;
+        case ROLES.SUPERVISOR:
+          apiUrl = getSupervisors;
+          break;
+        case ROLES.FHW:
+          apiUrl = getFHW;
+          break;
+        case ROLES.CITIZEN:
+          apiUrl = getCitizenList;
+          break;
+        default:
+          apiUrl = getDoctor;
+          break;
+      }
+
+      const token = localStorage.getItem("JwtToken");
+      const response = await axios.get(BASE_URL + apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataList(response.data);
+      setFilteredDataList(response.data);
+      setLoading(false); // Set loading to false after data is fetched
+    } catch (error) {
+      console.log(error);
+      setLoading(true); // Set loading to false if there's an error
+    }
+  };
 
   const handleEdit = (data) => {
-    console.log(data);
     setUserDetails(data);
     navigate("/register/" + role);
-  }
+  };
 
-  
-
-  const columns = [
-    { field: 'index', headerName: '#', flex : 1 },
+  // Define columns array based on role
+  let columns = [
+    { field: 'index', headerName: '#', flex: 1 },
     { field: 'name', headerName: 'Name', flex: 2 },
     { field: 'age', headerName: 'Age', flex: 1 },
     { field: 'gender', headerName: 'Gender', flex: 1 },
-    // { field: 'district', headerName: 'District', flex: 1 },
-    { field: 'licenseId', headerName: 'LicenseID', flex: 2 },
-    { field: 'specialty', headerName: 'Speciality', flex: 2 },
-    { field: 'email', headerName: 'Email', flex: 2 },
-    {
-      field: 'edit',
-      headerName: 'Action',
-      width: 110,
-      renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
-      ),
-    },
-];
-
-
-  
-  const data = [
-    {
-      "id": 1,
-      "name": "Arjun Gangani",
-      "licenseId": "123456789",
-      "age": 24,
-      "gender": "Male",
-      "specialty": "physiatrist",
-      "email": "aj@gmail.com",
-      "username": "DR80784",
-      "district" : "AMreli",
-      "password": "FCzYBTuTW1"
-    },
-    {
-      "id": 2,
-      "name": "abhishek sharma",
-      "licenseId": "12434567890",
-      "age": 22,
-      "gender": "Men",
-      "specialty": "psychiatrist",
-      "email": "abhi@gmail.com",
-      "username": "DR89871",
-      "password": "LGv0ey8kPs"
-    },
-    {
-      "id": 3,
-      "name": "Harsh Sureshbhai Ranpariya",
-      "licenseId": "123456",
-      "age": 23,
-      "gender": "Men",
-      "specialty": "psychiatrist",
-      "email": "harsh.ranpariya@iiitb.ac.in",
-      "username": "DR22998",
-      "password": "tflsbfuWbk"
-    },
-    {
-      "id": 4,
-      "name": "Harsh Ranpariya",
-      "licenseId": "1234ghrth",
-      "age": 23,
-      "gender": "Men",
-      "specialty": "psychiatrist",
-      "email": "shupatel03@gmail.com",
-      "username": "DR89038",
-      "password": "POMPs9hn4n"
-    },
-    {
-      "id": 5,
-      "name": "Smit Mehta",
-      "licenseId": "dfvugbgiw",
-      "age": 24,
-      "gender": "Men",
-      "specialty": "psychiatrist",
-      "email": "smit@gmail.com",
-      "username": "DR35430",
-      "password": "ks0s4gOmRL"
-    },
-    {
-      "id": 6,
-      "name": "Tanvi Motwani",
-      "licenseId": "tan456",
-      "age": 23,
-      "gender": "Women",
-      "specialty": "psychiatrist",
-      "email": "tanvi@gmail.com",
-      "username": "DR98922",
-      "password": "c5RMmAy31l"
-    }
+    { field: 'district', headerName: 'District', flex: 2, valueGetter: (params) => params.row.district.name },
   ];
 
-  const { searchText } = useContext(SearchContext);
-
-  const [dataList , setDataList] = useState(data);
-
-  const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
-  
-
-  const filterData = () => {
-    const filteredRows = data.filter(row =>
-      row.name.toLowerCase().includes(searchText.toLowerCase())
+  // Add LicenseID and Speciality fields if the role is Doctor
+  if (role !== ROLES.CITIZEN) {
+    columns.splice(4, 0,
+      { field: 'email', headerName: 'Email', flex: 2 },
+      { field: 'phoneNum', headerName: 'Phone Number', flex: 2 }
     );
-    setDataList(filteredRows);
+  }
+
+  if (role === ROLES.DOCTOR) {
+    columns = [
+      ...columns,
+      { field: 'licenseId', headerName: 'LicenseID', flex: 2 },
+      { field: 'specialty', headerName: 'Speciality', flex: 2 },
+    ];
+  }
+
+  if (role === ROLES.CITIZEN) {
+    columns = [
+      ...columns,
+      { field: 'pincode', headerName: 'PinCode', flex: 2 },
+      { field: 'address', headerName: 'Address', flex: 2 },
+      { field: 'abhaId', headerName: 'ABHAId', flex: 2 }
+    ];
+  }
+
+  const actionColumn = {
+    field: 'edit',
+    headerName: 'Action',
+    width: 110,
+    renderCell: (params) => (
+      <Button variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
+    ),
   };
-  useEffect(() => {
-    filterData()
-  }, [searchText]);
 
+  if (role !== ROLES.CITIZEN) {
+    columns.push(actionColumn);
+  }
 
-  useEffect(() => {
-    // fetchListData();
-},[])
-
-
-const token  = localStorage.getItem("JwtToken");
-
-
-const fetchListData = async () => {
-
-    try {
-      console.log(token);
-      const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors');
-      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
-      //   headers : {
-      //     Authorization : `Bearer ${token}`,
-      //   }
-      // });
-
-      // Handle the API response
-      setDataList(response.data);
-      console.log(response);
-    } catch (error) {
-      // Handle errors
-      console.log(error)
-      // console.error(error);
-    }
-
-   
-
-} 
-    return (
-        <div className='list-table-grid'>
-          <DataGrid
-            rows={dataListWithIndex}
-            columns={columns}
-            // initialState={{
-            //   pagination: false,
-            // }}
-            // pageSizeOptions={[5, 10]}
-            autoHeight
-            // autoPageSize
-          />
+  return (
+    <div className='list-table-grid'>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+          <CircularProgress size={100} /> 
         </div>
-      );
-}
+      ) : (
+        <DataGrid
+          rows={filteredDataList.map((item, index) => ({ ...item, index: index + 1 }))}
+          columns={columns}
+          autoHeight
+        />
+      )}
+    </div>
+  );
+};
 
 export default ViewList;
