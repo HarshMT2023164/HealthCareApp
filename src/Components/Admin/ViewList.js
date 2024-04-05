@@ -21,7 +21,20 @@ const ViewList = (props) => {
 
   useEffect(() => {
     fetchListData();
-  }, [role, searchText]); // Include searchText in dependency array
+  }, [role]); // Include searchText in dependency array
+
+
+
+  useEffect(() => {
+    filterData()
+  }, [searchText]);
+
+  const filterData = () => {
+    const filteredRows = dataList.filter(row =>
+      row.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredDataList(filteredRows);
+  };
 
   const fetchListData = async () => {
     try {
