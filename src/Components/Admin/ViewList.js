@@ -66,6 +66,7 @@ const ViewList = (props) => {
       });
       setDataList(response.data);
       setFilteredDataList(response.data);
+      console.log(filteredDataList);
       setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.log(error);
@@ -75,12 +76,12 @@ const ViewList = (props) => {
 
   const handleEdit = (data) => {
     setUserDetails(data);
-    navigate("/register/" + role);
+    navigate("/admin/register/" + role);
   };
 
   // Define columns array based on role
   let columns = [
-    { field: 'index', headerName: '#', flex: 1 },
+    { field: 'id', headerName: '#', flex: 1 },
     { field: 'name', headerName: 'Name', flex: 2 },
     { field: 'age', headerName: 'Age', flex: 1 },
     { field: 'gender', headerName: 'Gender', flex: 1 },
@@ -133,7 +134,7 @@ const ViewList = (props) => {
         </div>
       ) : (
         <DataGrid
-          rows={filteredDataList.map((item, index) => ({ ...item, index: index + 1 }))}
+          rows={filteredDataList.map((item, id) => ({ ...item, id: id + 1 }))}
           columns={columns}
           autoHeight
         />

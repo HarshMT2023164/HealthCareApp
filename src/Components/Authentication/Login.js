@@ -8,6 +8,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../utils/images/avatar.jpeg";
+import {BASE_URL,signIn} from '../../utils/constants/Urls'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,6 +23,10 @@ const Login = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleForgotPassword = async() => {
+    navigate("/forgotPassword");
+  }
 
   const validateSubmit = () => {
     console.log(user);
@@ -85,7 +90,7 @@ const Login = () => {
     // }
 
     let res = await axios
-      .post("http://192.168.199.137:8080/auth/signin", user)
+      .post(BASE_URL+signIn, user)
       .then((res) => {
         console.log(res.data.jwtResponse.accessToken);
         localStorage.setItem("JwtToken", res.data.jwtResponse.accessToken);
@@ -93,8 +98,25 @@ const Login = () => {
         // localStorage.setItem('RoleCount', JSON.stringify(res.data.counts));
 
         if (res) {
-          navigate("/roles");
-
+          if(res.data.jwtResponse.logInFirst==true)
+          {
+            navigate('/setPassword');
+          }
+          else{
+            if(res.data.jwtResponse.roles[0]==="ROLE_ADMIN")
+            {
+              navigate("/admin/roles");
+            }
+            else if(res.data.jwtResponse.roles[0]==="supervisor")
+            {
+              localStorage.setItem("username",res.data.jwtResponse.username);
+              localStorage.setItem("district",res.data.userRole.district.name);
+              navigate("/supervisor/home");
+            }
+            else{
+              //doctor code
+            }  
+          }
           // window.localStorage.setItem('student', JSON.stringify(res.data));
           // window.localStorage.setItem('IsAuthenticated', true);
         } else {
@@ -207,6 +229,9 @@ const Login = () => {
           type="password"
           fullWidth
         />
+         <div style={{ marginTop: '10px',textAlign:'center'}}>
+            <a href="/forgotPassword" onClick={handleForgotPassword}>Forgot Password? Click Here</a>
+          </div>
 
         {/* <FormControl fullWidth margin="normal">
             <InputLabel id="role-label">Select Role</InputLabel>

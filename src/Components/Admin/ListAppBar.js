@@ -1,6 +1,6 @@
 import { Search } from "@mui/icons-material";
 import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchContext from "../../utils/Context/SearchContext";
 import { ROLES } from "../../utils/constants/Roles";
@@ -43,7 +43,7 @@ export default function ListAppBar(props) {
               className="list-toolbar-button"
               onClick={() => {
                 setUserDetails(null);
-                navigate("/register/" + role);
+                navigate("/admin/register/" + role);
               }}
             >
               Add {role}

@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Login from './Components/Authentication/Login';
+import App from './App';
 import RegisterForm from './Components/Admin/RegisterForm';
-import { ViewListMain } from './Components/Admin/ViewListMain';
 import RoleCards from './Components/Admin/RoleCards';
+import { ViewListMain } from './Components/Admin/ViewListMain';
+import Login from './Components/Authentication/Login';
+import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
+import FHWListMain from './Components/Supervisor/FHWListMain';
+import ProfilePage from './Components/Supervisor/ProfilePage';
+import Supervisor from './Components/Supervisor/Supervisor';
+import SupervisorHome from './Components/Supervisor/SupervisorHome';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import Admin from './Components/Admin/Admin';
+import ForgotPassword from './Components/Authentication/ForgotPassword';
+import ResetPassword from './Components/Authentication/ResetPassword.js';
+import SetPassword from './Components/Authentication/SetPassword.js';
+
 
 const appRouter = createBrowserRouter([
   {
@@ -19,20 +29,61 @@ const appRouter = createBrowserRouter([
         element : <Login/>
       },
       {
-        path : "/roles",
-        element : <RoleCards />
+        path : "/forgotPassword",
+        element : <ForgotPassword/>
       },
       {
-        path : "/viewList/:role",
-        element : <ViewListMain />
+        path : "/resetPassword",
+        element : <ResetPassword/>
       },
       {
-        path : "/register/:role",
-        element : <RegisterForm />
+        path : "/setPassword",
+        element : <SetPassword/>
+      },
+
+      {
+        path:"/admin",
+        element:<Admin/>,
+        children:[
+          {
+            path : "/admin/roles",
+            element : <RoleCards />
+          },
+          {
+            path : "/admin/viewList/:role",
+            element : <ViewListMain />
+          },
+          {
+            path : "/admin/register/:role",
+            element : <RegisterForm />
+          },
+        ]
+      },
+      {
+        path:"/supervisor",
+        element : <Supervisor/>,
+        children :[
+          {
+            path: "/supervisor/home",
+            element: <SupervisorHome/>
+          },
+          {
+            path :"/supervisor/AreaPatientlist",
+            element : <AreawisePatientsMain />
+          },
+          {
+            path:"/supervisor/FHWList",
+            element:<FHWListMain/>
+          },
+          {
+            path:"/supervisor/Profile",
+            element:<ProfilePage/>
+          }
+        ]
       },
     ]
   }
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

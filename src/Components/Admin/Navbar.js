@@ -1,8 +1,8 @@
 import { List, ListItemButton, Paper } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Logoimage from "../utils/images/logo_bg-removebg-preview.png";
-import { ROLES } from "../utils/constants/Roles";
+import Logoimage from "../../utils/images/logo_bg-removebg-preview.png";
+import { ROLES } from "../../utils/constants/Roles";
 
 const NavBar = () => {
   const onClickLogout = () => {
@@ -15,7 +15,7 @@ const NavBar = () => {
           <img src={Logoimage} alt="logo" className="sidebar-img" />
         </ListItemButton>
         <NavLink
-          to={"/roles"}
+          to={"/admin/roles"}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -25,7 +25,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/" + ROLES.SUPERVISOR}
+          to={"/admin/viewList/" + ROLES.SUPERVISOR}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -35,7 +35,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/" + ROLES.FHW}
+          to={"/admin/viewList/" + ROLES.FHW}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -45,7 +45,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/" + ROLES.DOCTOR}
+          to={"/admin/viewList/" + ROLES.DOCTOR}
           className="link-tag"
           activeClassName="active-link"
         >
@@ -55,7 +55,7 @@ const NavBar = () => {
         </NavLink>
 
         <NavLink
-          to={"/viewList/" + ROLES.CITIZEN}
+          to={"/admin/viewList/" + ROLES.CITIZEN}
           className="link-tag"
           activeClassName="active-link"
         >

@@ -50,7 +50,10 @@ export default function RoleCards() {
             display_name: key
               .split(/(?=[A-Z])/)
               .join(" ")
-              .replace(/^\w/, (c) => c.toUpperCase()), // Convert camelCase to Title Case
+              .replace( /\w\S*/g,
+              function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+              }), // Convert camelCase to Title Case
             count: value,
             icon: getIconForRole(key),
           })
@@ -84,9 +87,9 @@ export default function RoleCards() {
     >
       {roleCounts &&
         roleCounts.map((elem) => (
-          <Grid item key={elem.role} xs={12} md={6}>
+          <Grid item key={elem.display_name} xs={12} md={6}>
             <Card style={{ height: "30vh", width: "30vw" }} elevation={5}>
-              <Link to={"/viewList/" + elem.role} className="link-tag">
+              <Link to={"/admin/viewList/" + elem.display_name} className="link-tag">
                 <CardContent className="admin-cardcontent">
                   <div className="admin-cardcontent-items">
                     <h2>{elem.display_name}</h2>

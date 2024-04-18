@@ -54,7 +54,7 @@ let RegisterForm = () => {
 
   const fetchDistricts = async () => {
     let apiUrl = getAllDistricts;
-    if (role === "supervisors") {
+    if (role === "Supervisors") {
       apiUrl = getUnallocatedDistricts;
     }
     const response = await axios.get(BASE_URL + apiUrl, {
@@ -116,7 +116,7 @@ let RegisterForm = () => {
         console.log(res);
         setUserDetails(null);
         if (res) {
-          navigate("/viewList/" + role);
+          navigate("/admin/viewList/" + role);
           // navigate(`/bills/${res?.data?.student_id}`);
           // window.localStorage.setItem('student', JSON.stringify(res.data));
           // window.localStorage.setItem('IsAuthenticated', true);
@@ -167,7 +167,7 @@ let RegisterForm = () => {
         console.log(res);
         setUserDetails(null);
         if (res) {
-          navigate("/viewList/" + role);
+          navigate("/admin/viewList/" + role);
           // navigate(`/bills/${res?.data?.student_id}`);
           // window.localStorage.setItem('student', JSON.stringify(res.data));
           // window.localStorage.setItem('IsAuthenticated', true);
