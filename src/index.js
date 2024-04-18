@@ -14,6 +14,9 @@ import SupervisorHome from './Components/Supervisor/SupervisorHome';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Admin from './Components/Admin/Admin';
+import ForgotPassword from './Components/Authentication/ForgotPassword';
+import ResetPassword from './Components/Authentication/ResetPassword.js';
+import SetPassword from './Components/Authentication/SetPassword.js';
 
 
 const appRouter = createBrowserRouter([
@@ -25,6 +28,19 @@ const appRouter = createBrowserRouter([
         path : "/",
         element : <Login/>
       },
+      {
+        path : "/forgotPassword",
+        element : <ForgotPassword/>
+      },
+      {
+        path : "/resetPassword",
+        element : <ResetPassword/>
+      },
+      {
+        path : "/setPassword",
+        element : <SetPassword/>
+      },
+
       {
         path:"/admin",
         element:<Admin/>,

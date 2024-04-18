@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
-
+import { BASE_URL,getUnassignedFHW,getByUsername,assignWorkerToLocalArea } from '../../utils/constants/Urls';
 
 
 
@@ -23,6 +23,7 @@ const  FHWList = () => {
       username:row.username,
     }
     assignFHW(reqObj);
+    navigate("/supervisor/home");
     // navigate("/supervisor/AreaPatientlist");
   }
 
@@ -70,17 +71,17 @@ const data=[];
 
 
   const [dataList , setDataList] = useState(data);
-
-  const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
+  const [filteredDataList, setFilteredDataList] = useState([]);
   
 
   const filterData = () => {
-    const filteredRows = data.filter(row =>
+    const filteredRows = dataList.filter(row =>
       row.name.toLowerCase().includes(searchFHW.toLowerCase())
     );
-    setDataList(filteredRows);
+    setFilteredDataList(filteredRows);
   };
   useEffect(() => {
+    console.log(searchFHW);
     filterData()
   }, [searchFHW]);
 
@@ -92,16 +93,13 @@ const data=[];
 
 const token  = localStorage.getItem("JwtToken");
 const username = localStorage.getItem("username");
-const requestObj = {
-  username:username
-}
 
 const assignFHW = async (reqObj) => {
 
     try {
-      console.log(token);
+      console.log(token);   
       //to be continued
-      const response = await axios.post('http://192.168.127.137:8080/supervisor/assignWorkerToLocalArea',reqObj,{
+      const response = await axios.post(BASE_URL+assignWorkerToLocalArea,reqObj,{
       headers : {
             Authorization : `Bearer ${token}`,
           }}
@@ -131,10 +129,17 @@ const assignFHW = async (reqObj) => {
 
    const fetchListData = async () => {
 
+    const reqObj = {
+      username:username
+    }
+
+    const queryString = Object.keys(reqObj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+    .join('&');
     try {
       console.log(token);
       //to be continued
-      const response = await axios.post('http://192.168.127.137:8080/FieldHealthCareWorker/getUnassignedFHW',requestObj,{
+      const response = await axios.get(BASE_URL+getUnassignedFHW+queryString,{
       headers : {
             Authorization : `Bearer ${token}`,
           }}
@@ -154,6 +159,7 @@ const assignFHW = async (reqObj) => {
       //   contact
       // };
       setDataList(response.data);
+      setFilteredDataList(response.data);
       console.log(response.data);
     } catch (error) {
       // Handle errors
@@ -166,7 +172,7 @@ const assignFHW = async (reqObj) => {
     return (
         <div className='list-table-grid'>
           <DataGrid
-            rows={dataListWithIndex}
+             rows={filteredDataList.map((item, index) => ({ ...item, index: index + 1 }))}
             columns={columns}
             // sx={{
             //   '& .simple-row': {

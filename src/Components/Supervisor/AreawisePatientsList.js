@@ -6,6 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 // import SupervisorContext from "../../utils/Context/SupervisorContext";
 import UserDetailsContext from '../../utils/Context/UserContext';
 import './Supervisor.css';
+import { BASE_URL, getByUsername} from '../../utils/constants/Urls';
+import SupervisorContext from '../../utils/Context/SupervisorContext';
 
 
 
@@ -15,7 +17,8 @@ const  ViewList = (props) => {
   const navigate = useNavigate();
   const data=[];
 
-  const {setUserDetails} = useContext(UserDetailsContext);
+  const {searchPatient} = useContext(SupervisorContext);
+  // const {setUserDetails} = useContext(UserDetailsContext);
   const FHW_assign_Username = localStorage.getItem("FHW_assign_Username");
   const reqObj = {
     username:FHW_assign_Username,
@@ -24,7 +27,7 @@ const  ViewList = (props) => {
  
 
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'id', headerName: '#', flex: 1, headerClassName: 'header-highlight' },
     { field: 'name', headerName: 'Patient Name', flex: 1, headerClassName: 'header-highlight' },
     { field: 'gender', headerName: 'Gender', flex: 1, headerClassName: 'header-highlight' },
     { field: 'age', headerName: 'Patient Age', flex: 1, headerClassName: 'header-highlight' },
@@ -79,21 +82,19 @@ const getColor = (status) => {
   
   
 
-  const { searchPatient,setSearchPatient} = useState('');
-
   const [dataList , setDataList] = useState(data);
-
-  const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
+  const [filteredDataList, setFilteredDataList] = useState([]);
 
 
   const filterData = () => {
-    const filteredRows = data.filter(row =>
+    const filteredRows = dataList.filter(row =>
       row.name.toLowerCase().includes(searchPatient.toLowerCase())
     );
-    setDataList(filteredRows);
+    setFilteredDataList(filteredRows);
   };
   useEffect(() => {
-    filterData()
+    console.log(searchPatient);
+    filterData();
   }, [searchPatient]);
 
 
@@ -109,7 +110,11 @@ const fetchListData = async (reqObj) => {
 
     try {
       console.log(token);
-      const response = await axios.post('http://192.168.127.137:8080/FieldHealthCareWorker/getByUsername',reqObj,{
+      const queryString = Object.keys(reqObj)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+      .join('&');
+      console.log(queryString);
+      const response = await axios.get(BASE_URL+getByUsername+queryString,{
         headers : {
               Authorization : `Bearer ${token}`,
             }
@@ -139,6 +144,8 @@ const fetchListData = async (reqObj) => {
           status:obj.followUps[(obj.followUps.length)-1].status,
         }));
         setDataList(data);
+        setFilteredDataList(data);
+        console.log(filteredDataList);
     } catch (error) {
       // Handle errors
       console.log(error)
@@ -151,7 +158,7 @@ const fetchListData = async (reqObj) => {
     return (
         <div className='list-table-grid'>
           <DataGrid
-            rows={dataListWithIndex}
+            rows={filteredDataList.map((item, index) => ({ ...item, index: index+ 1 }))}
             columns={columns}
             // initialState={{
             //   pagination: false,

@@ -1,103 +1,29 @@
-// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { Avatar, TextField } from '@mui/material';
-// import React, { useEffect, useState } from 'react';
-// import './ProfilePage.css'; // Import CSS file for styling
-
-// const ProfilePage = () => {
-//   // State variables for profile information
-//   const tempData = {
-//       name:"Tanvi Motwani",
-//       age:23,
-//       gender:"Female",
-//       email:"tanvi@gmail.com",
-//       phone:9827939337,
-//       district:"Surat",
-//   }
-//   const [formData,setFormData] = useState(tempData);
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prevData) => ({
-//       ...prevData,
-//       [name]: value,
-//     }));
-//   };
-
-//   const saveDetails = ()=>{
-//     console.log(formData);
-//   }
-//   // const [name, setName] = useState('Tanvi Motwani');
-//   // const [age, setAge] = useState('23');
-//   // const [gender, setGender] = useState('Female');
-//   // const [email, setEmail] = useState('tanvi@gmail.com');
-//   // const [phone, setPhone] = useState('91823XXXXX');
-//   // const [district, setDistrict] = useState('Surat');
-
-//   // Function to handle saving profile details
-//   // const saveDetails = () => {
-//   //   // Logic to save details, you can send data to backend or store in local storage
-//   //   console.log('Details saved:', { name, age, gender, email, phone, district });
-//   // };
-
-
-//   return (
-//     <div className="profile-container">
-//       <div className="profile-card card-1">
-//         <div className="profile-picture">
-//           {/* Profile icon */}
-//           <Avatar sx={{ width: 150, height: 150, marginBottom: 2, marginLeft: '10%' }} alt="Profile Picture">
-//             <AccountCircleIcon />
-//           </Avatar>
-//           {/* Name */}
-//           <h2 className='name'>{formData.name}</h2>
-//           {/* Upload picture button */}
-//           <input className='file-input' type="file" accept="image/*" /> 
-//         </div>
-//       </div>
-//       <div className="profile-card">
-//         <h2>Profile</h2>
-//         {/* Profile information fields */}
-//         <div className="form-group">
-//           <TextField className="form-input" name="name" label="name" variant="outlined" value={formData.name} onChange={handleInputChange} />
-//           <TextField className="form-input" name="age" label="age" variant="outlined" value={formData.age} onChange={handleInputChange} sx={{ marginLeft: '1rem' }} />
-
-//         </div>
-//         <div className="form-group">
-//           <TextField className="form-input" name="gender" label="gender" variant="outlined" value={formData.gender} onChange={handleInputChange} />
-//           <TextField className="form-input" name="email" label="email" variant="outlined" type="email" value={formData.email} onChange={handleInputChange} sx={{ marginLeft: '1rem' }}/>
-//         </div>
-//         <div className="form-group">
-//           <TextField className="form-input" name="phone" label="phone" variant="outlined" type="tel" value={formData.phone} onChange={handleInputChange} />
-//           <TextField className="form-input" name="district" label="district" variant="outlined" value={formData.district} onChange={handleInputChange} sx={{ marginLeft: '1rem' ,backgroundColor:'lightgray',color:'black'}} InputProps={{
-//     readOnly: true,shrink:true
-//   }}/>
-//         </div>
-        
-//         {/* Save details button */}
-//         <button onClick={saveDetails} style={{ backgroundColor: '#007bff' }}>Save Details</button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProfilePage;
-
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Avatar, Button, Input,InputLabel } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css'; // Import CSS file for styling
+import axios from 'axios';
+import { BASE_URL,getSupervisor,setSupervisor } from '../../utils/constants/Urls';
 
 const ProfilePage = () => {
   // State variables for profile information
-  const tempData = {
-    name: "Tanvi Motwani",
-    age: 23,
-    gender: "Female",
-    email: "tanvi@gmail.com",
-    phone: 9827939337,
-    district: "Surat",
-  };
-  const [formData, setFormData] = useState(tempData);
 
+  const [nameHeading,setNameHeading] = useState('');
+  const token = localStorage.getItem("JwtToken");
+  const username = localStorage.getItem("username");
+  const [formData, setFormData] = useState({
+    name:'',
+    age:'',
+    gender:'',
+    email:'',
+    phoneNum:'',
+    district:{
+      id:'',
+      name:''
+    }
+  });
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -106,9 +32,89 @@ const ProfilePage = () => {
     }));
   };
 
-  const saveDetails = () => {
-    console.log(formData);
+  const reqObj = {
+    username:username,
+  }
+  
+  const getDetails = async() => {
+    try {
+      console.log(token);
+      const queryString = Object.keys(reqObj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+    .join('&');
+      const response = await axios.get(BASE_URL+getSupervisor+queryString,{
+        headers : {
+              Authorization : `Bearer ${token}`,
+            }
+      });
+      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+      //   headers : {
+      //     Authorization : `Bearer ${token}`,
+      //   }
+      // });
+  
+      // Handle the API response
+      console.log(response.data);
+      const data = {
+        name:response.data.name,
+        age:response.data.age,
+        gender:response.data.gender,
+        email:response.data.email,
+        phoneNum:response.data.phoneNum,
+        district:response.data.district,
+      }
+      setNameHeading(response.data.name);
+      setFormData(data);
+  
+    } catch (error) {
+      // Handle errors
+      console.log(error)
+      // console.error(error);
+    }
+  }
+
+
+  const saveDetails = async() => {
+    try {
+      console.log(token);
+      const reqObj = {
+        username:username,
+        name:formData.name,
+        age:formData.age,
+        email:formData.email,
+        phoneNum:formData.phoneNum,
+        district:formData.district
+      }
+      const response = await axios.post(BASE_URL+setSupervisor,reqObj,{
+        headers : {
+              Authorization : `Bearer ${token}`,
+            }
+      });
+      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+      //   headers : {
+      //     Authorization : `Bearer ${token}`,
+      //   }
+      // });
+  
+      // Handle the API response
+      console.log(response.data);
+      getDetails();
+  
+    } catch (error) {
+      // Handle errors
+      console.log(error)
+      // console.error(error);
+    }
   };
+
+  useEffect(()=>{
+    getDetails();
+  },[]);
+
+  useEffect(()=>{
+    
+  },[nameHeading]);
+
 
   return (
     <div className="profile-container">
@@ -119,7 +125,7 @@ const ProfilePage = () => {
               <AccountCircleIcon />
             </Avatar>
             {/* Name */}
-            <h2 className='name'>{formData.name}</h2>
+            <h2 className='name'>{nameHeading}</h2>
             <div className='file-input'>
             {/* Upload picture button */}
             <input  type="file" accept="image/*" />
@@ -152,11 +158,11 @@ const ProfilePage = () => {
         <div className="form-group">
           <div>
           <InputLabel htmlFor="phone">Phone</InputLabel>
-          <Input id="phone" className="form-input" name="phone" placeholder="Phone" type="tel" value={formData.phone} onChange={handleInputChange} />
+          <Input id="phone" className="form-input" name="phoneNum" placeholder="Phone" type="tel" value={formData.phoneNum} onChange={handleInputChange} />
           </div>
           <div>
           <InputLabel htmlFor="district">District</InputLabel>
-          <Input id="district" className="form-input" name="district" placeholder="District" value={formData.district} onChange={handleInputChange} disabled />
+          <Input id="district" className="form-input" name="district" placeholder="District" value={formData.district.name} onChange={handleInputChange} disabled />
           </div>
         </div>
         <div className='button'>

@@ -4,83 +4,100 @@ import avatar from "../../utils/images/avatar.jpeg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SupervisorContext from "../../utils/Context/SupervisorContext";
-import { BASE_URL,signIn } from "../../utils/constants/Urls";
+import { BASE_URL,forgotPassword } from "../../utils/constants/Urls";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    username: "",
-    password: "",
+  const [formData, setFormData] = useState({
+    email: "",
   });
 
   const [errors, setErrors] = useState({
-    username: "",
-    password: "",
+    email: "",
   });
 
   const [errorMessage , setErrorMessage] = useState(null);
 
-  const handleForgotPassword = async() => {
-    navigate("/forgotPassword");
-  }
+  const handleSubmit = () => {
+    console.log(formData);
+    // Validate form fields before submitting
+    const validationErrors = {};
 
-  const authenticate = async () => {
-    const res = await axios.post(BASE_URL+signIn,user
-        ).then((res) => {
-          if(res){
-          console.log(res.data.jwtResponse.accessToken);
-          localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
-          localStorage.setItem("username" , res.data.jwtResponse.username);
-          localStorage.setItem("district",res.data.userRole.district.name);
+    Object.keys(formData).forEach((fieldName) => {
+      switch (fieldName) {
+        case "email":
+          if (!formData[fieldName] || !validateEmail(formData[fieldName])) {
+            validationErrors[fieldName] = "Enter a valid email address";
+          }
+          break;
+        default:
+          break;
+      }
+    });
 
-              if(res.data.jwtResponse.logInFirst===true)
-              {
-                navigate('/setPassword');
-              }
-              else
-              {
-                if(res.data.jwtResponse.roles[0] === "supervisor")
-                {
-                  navigate('/supervisor/home');
-                }
-              }
-          }
-          else{
-            console.log('Username or password incorrect');
-          }
+    setErrors(validationErrors);
+
+    // If there are no validation errors, proceed with submission
+    if (Object.keys(validationErrors).length === 0) {
+      setErrors({})
+      handleNext();
+    }
+  };
+
+  const validateEmail = (input) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(input);
+  };
+
+  const handleNext = async () => {
+
+    console.log(formData);
+  
+      const res = await axios.post(        
+         BASE_URL+forgotPassword,formData
+         ).then((res) => {
+           if(res){
+                navigate('/resetPassword');
+           }
+           else{
+             console.log('Email is not registered');
+        }
           
         }).catch((err) => {
-          setErrorMessage("Username or password is incorrect");
-          console.log('Username or password incorrect in catch');
-        })
+          if (
+            err &&
+            err.response &&
+            err.response.data &&
+            err.response.data.message
+          ) {
+            setErrorMessage(err.response.data.message);
+          }
+        });
   
   };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     // Update the corresponding field in the form data state
-    setUser({
-      ...user,
+    setFormData({
+      ...formData,
       [name]: value,
     });
-    console.log(user);
+    console.log(formData);
   };
 
   const handleBlur = (event) => {
     const { name, value } = event.target;
     // Basic validation
-    if (name === "username" && !value.trim()) {
+    if (name === "email" && !value.trim()) {
       setErrors({
         ...errors,
-        username: "Username is required",
+        email: "Email is required",
       });
-    } else if (name === "password" && value.length < 6) {
-      setErrors({
-        ...errors,
-        password: "Password must be at least 6 characters",
-      });
-    } else {
+    } 
+    else {
       setErrors({
         ...errors,
         [name]: "",
@@ -111,24 +128,25 @@ const Login = () => {
             <Avatar style={avatarStyle} src={avatar}></Avatar>
           </div>
           <div className="heading-txt">
-            <h2>Login</h2>
+            <h2>Find your Account</h2>
           </div>
         </div>
 
         <TextField
           id="standard-basic"
-          name="username"
-          value={user.username}
+          name="email"
+          value={formData.email}
           onBlur={handleBlur}
-          helperText={errors.username}
-          error={Boolean(errors.username)}
+          helperText={errors.email}
+          error={Boolean(errors.email)}
           onChange={handleInputChange}
           style={textFieldStyle}
-          label="Username"
+          label="Email"
           variant="standard"
           fullWidth
+          type="email"
         />
-        <TextField
+        {/* <TextField
           id="standard-basic"
           name="password"
           value={user.password}
@@ -141,10 +159,10 @@ const Login = () => {
           variant="standard"
           type="password"
           fullWidth
-        />
-         <div style={{ marginTop: '10px',textAlign:'center'}}>
-            <a href="/forgotPassword" onClick={handleForgotPassword}>Forgot Password? Click Here</a>
-          </div>
+        /> */}
+         {/* <div style={{ marginTop: '10px',textAlign:'center'}}>
+            <a href="/forgot-password">Forgot Password? Click Here</a>
+          </div> */}
 
           {/* <FormControl fullWidth margin="normal">
             <InputLabel id="role-label">Select Role</InputLabel>
@@ -164,11 +182,11 @@ const Login = () => {
 
         <div className="login-submit-btn">
           <Button variant="contained" onClick={() => {
-            if((!errors.username  && !errors.password)){
-              return authenticate();
+            if((!errors.email)){
+              return handleSubmit();
             }
           }}>
-            Log in
+            Next
           </Button>
         </div>
         {errorMessage && (
@@ -181,4 +199,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

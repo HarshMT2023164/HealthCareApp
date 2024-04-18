@@ -4,83 +4,109 @@ import avatar from "../../utils/images/avatar.jpeg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SupervisorContext from "../../utils/Context/SupervisorContext";
-import { BASE_URL,signIn } from "../../utils/constants/Urls";
+import { BASE_URL,resetPassword } from "../../utils/constants/Urls";
 
-const Login = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    username: "",
+  const [formData, setFormData] = useState({
+    token: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
-    username: "",
+    token: "",
     password: "",
   });
 
   const [errorMessage , setErrorMessage] = useState(null);
 
-  const handleForgotPassword = async() => {
-    navigate("/forgotPassword");
-  }
-
-  const authenticate = async () => {
-    const res = await axios.post(BASE_URL+signIn,user
-        ).then((res) => {
-          if(res){
-          console.log(res.data.jwtResponse.accessToken);
-          localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
-          localStorage.setItem("username" , res.data.jwtResponse.username);
-          localStorage.setItem("district",res.data.userRole.district.name);
-
-              if(res.data.jwtResponse.logInFirst===true)
-              {
-                navigate('/setPassword');
-              }
-              else
-              {
-                if(res.data.jwtResponse.roles[0] === "supervisor")
-                {
-                  navigate('/supervisor/home');
-                }
-              }
-          }
-          else{
-            console.log('Username or password incorrect');
-          }
+  const handleResetPassword = async () => {
+    const res = await axios.post(        
+         BASE_URL+resetPassword,{
+          token:formData.token,
+          newPassword:formData.password
+         }
+         ).then((res) => {
+           if(res){
+            navigate('/');
+           }
+           else{
+             console.log('Inavlid token or Password');
+           }
           
-        }).catch((err) => {
-          setErrorMessage("Username or password is incorrect");
-          console.log('Username or password incorrect in catch');
-        })
-  
+         }).catch((err) => {
+           setErrorMessage('Inavlid token or Password');
+           console.log('Inavlid token or Password in catch');
+         })
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     // Update the corresponding field in the form data state
-    setUser({
-      ...user,
+    setFormData({
+      ...formData,
       [name]: value,
     });
-    console.log(user);
+
+    if (name === "password") {
+      if (!value) {
+        setErrors({
+          ...errors,
+          password: "Password is required!",
+        });
+      } else if (value.length < 6) {
+        setErrors({
+          ...errors,
+          password: "Password must be at least 6 characters long",
+        });
+      } else if (!/[A-Z]/.test(value)) {
+        setErrors({
+          ...errors,
+          password: "Password must contain at least one uppercase letter",
+        });
+      } else if (!/[a-z]/.test(value)) {
+        setErrors({
+          ...errors,
+          password: "Password must contain at least one lowercase letter",
+        });
+      } else if (!/\d/.test(value)) {
+        setErrors({
+          ...errors,
+          password: "Password must contain at least one digit",
+        });
+      } else if (!/[@#$%^&*!]/.test(value)) {
+        setErrors({
+          ...errors,
+          password: "Password must contain at least one special character",
+        });
+      }
+      else{
+        setErrors({
+          ...errors,
+          password: "",
+        });
+      }
+    console.log(formData);
   };
+}
 
   const handleBlur = (event) => {
     const { name, value } = event.target;
     // Basic validation
-    if (name === "username" && !value.trim()) {
+    if (name === "token" && !value.trim()) {
       setErrors({
         ...errors,
-        username: "Username is required",
+        token: "Token is required",
       });
-    } else if (name === "password" && value.length < 6) {
+    }
+    else if (name === "password" && !value.trim()) {
       setErrors({
         ...errors,
-        password: "Password must be at least 6 characters",
+        password: "Password is required",
       });
-    } else {
+    }
+    else {
       setErrors({
         ...errors,
         [name]: "",
@@ -111,27 +137,27 @@ const Login = () => {
             <Avatar style={avatarStyle} src={avatar}></Avatar>
           </div>
           <div className="heading-txt">
-            <h2>Login</h2>
+            <h2>Change Password</h2>
           </div>
         </div>
 
         <TextField
           id="standard-basic"
-          name="username"
-          value={user.username}
+          name="token"
+          value={formData.token}
           onBlur={handleBlur}
-          helperText={errors.username}
-          error={Boolean(errors.username)}
+          helperText={errors.token}
+          error={Boolean(errors.token)}
           onChange={handleInputChange}
           style={textFieldStyle}
-          label="Username"
+          label="Token"
           variant="standard"
           fullWidth
         />
         <TextField
           id="standard-basic"
           name="password"
-          value={user.password}
+          value={formData.password}
           onBlur={handleBlur}
           helperText={errors.password}
           error={Boolean(errors.password)}
@@ -142,9 +168,9 @@ const Login = () => {
           type="password"
           fullWidth
         />
-         <div style={{ marginTop: '10px',textAlign:'center'}}>
-            <a href="/forgotPassword" onClick={handleForgotPassword}>Forgot Password? Click Here</a>
-          </div>
+         {/* <div style={{ marginTop: '10px',textAlign:'center'}}>
+            <a href="/forgotPassword">Forgot Password? Click Here</a>
+          </div> */}
 
           {/* <FormControl fullWidth margin="normal">
             <InputLabel id="role-label">Select Role</InputLabel>
@@ -164,11 +190,11 @@ const Login = () => {
 
         <div className="login-submit-btn">
           <Button variant="contained" onClick={() => {
-            if((!errors.username  && !errors.password)){
-              return authenticate();
+            if((!errors.token  && !errors.password)){
+             return handleResetPassword();
             }
           }}>
-            Log in
+            Change Password
           </Button>
         </div>
         {errorMessage && (
@@ -181,4 +207,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

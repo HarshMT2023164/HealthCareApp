@@ -2,9 +2,9 @@ import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
-
+import { BASE_URL,getLocalAreas } from '../../utils/constants/Urls';
 
 
 
@@ -15,7 +15,7 @@ const  AreaList = (props) => {
 
   const data = [];
  
-  const {searchArea,setsearchArea} = useContext(SupervisorContext);
+  const {searchArea,setSearchArea} = useContext(SupervisorContext);
   // const {supervisor,setSupervisor} = useContext(SupervisorContext);
 
 
@@ -27,6 +27,8 @@ const  AreaList = (props) => {
     }
     else{
       localStorage.setItem("FHW_assign_Username",rowData.fhwUsername);
+      localStorage.setItem("FHWName",rowData.fhw);
+      localStorage.setItem("AreaName",rowData.area);
       navigate("/supervisor/AreaPatientlist")
     }
   }
@@ -71,15 +73,14 @@ const  AreaList = (props) => {
   // ];
 
   const [dataList , setDataList] = useState([]);
+  const [filteredDataList, setFilteredDataList] = useState([]);
 
-  const dataListWithIndex = dataList.map((item, index) => ({ ...item, index: index + 1 }));
-  
 
   const filterData = () => {
-    const filteredRows = data.filter(row =>
+    const filteredRows = dataList.filter(row =>
       row.area.toLowerCase().includes(searchArea.toLowerCase())
     );
-    setDataList(filteredRows);
+    setFilteredDataList(filteredRows);
   };
   useEffect(() => {
     filterData()
@@ -97,11 +98,16 @@ const username = localStorage.getItem("username");
 const reqObj = {
   username:username
 }
+const queryString = Object.keys(reqObj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+    .join('&');
+
 const fetchListData = async () => {
+
 
     try {
       // console.log(token);
-      const response = await axios.post("http://192.168.127.137:8080/district/getlocalareaswithindistrict",reqObj,{
+      const response = await axios.get(BASE_URL+getLocalAreas+queryString,{
         headers : {
               Authorization : `Bearer ${token}`,
             }
@@ -124,6 +130,7 @@ const fetchListData = async () => {
         pincode:obj.pincode,
       }));
       setDataList(data);
+      setFilteredDataList(data);
 
     } catch (error) {
       // Handle errors
@@ -138,7 +145,7 @@ const fetchListData = async () => {
     return (
         <div className='list-table-grid'>
           <DataGrid
-            rows={dataListWithIndex}
+            rows={filteredDataList.map((item, index) => ({ ...item, index: index + 1 }))}
             columns={columns}
             sx={{
               '& .simple-row': {
