@@ -5,7 +5,7 @@ import DoctorMainContext from "../../utils/Context/DoctorMainContext";
 
 export default function DoctorSearchBar() {
   const { setselectedStatus, patientCount, searchText, setSearchText } = useContext(DoctorMainContext);
-  const [selectedChip, setSelectedChip] = useState(null);
+  const [selectedChip, setSelectedChip] = useState("all");
 
   const onChipClick = (status) => {
     setselectedStatus(status.toLowerCase());
@@ -34,6 +34,15 @@ export default function DoctorSearchBar() {
             <div className="doctor-bar-btn-container">
               <div className="doctor-bar-btn-inner">
                 <Stack direction="row" spacing={1}>
+                <Chip
+                    label={"All - " + patientCount.all}
+                    component="a"
+                    href="#basic-chip"
+                    clickable
+                    className="doctor-bar-chip"
+                    onClick={() => onChipClick("All")}
+                    style={{ backgroundColor: chipBackgroundColor("All"), color: chipFontColor("All") }}
+                  />
                   <Chip
                     label={"New - " + patientCount.new}
                     component="a"
