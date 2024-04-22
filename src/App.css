@@ -58,7 +58,7 @@ margin-top: 50px;
 
 .login-container-paper{
   max-height: 52vh;
-  min-height: 50vh;
+  min-height: 45vh;
 }
 
 .register-container-paper{
@@ -213,7 +213,7 @@ margin-top: 50px;
 
   display: inline-block;
   /* justify-content: space-between; */
-  width: 40%;
+  width: 50%;
 }
 
 .doctor-bar-search-container{
@@ -345,4 +345,16 @@ margin-top: 50px;
   width: 100%;
   padding: 20px 50px 30px 50px;
   margin-top: 30px;
+}
+
+.demographic-btn {
+  background-color: white;
+  color: #1976d2;
+  
+}
+
+.demographic-btn:hover {
+  background-color: #1976d2 !important;
+  color: white;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
