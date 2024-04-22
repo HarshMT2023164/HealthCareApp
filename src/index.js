@@ -13,6 +13,7 @@ import PatientHistory from './Components/Doctor/PatientHistory';
 import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Profile from './Components/Doctor/Profiile';
 
 const appRouter = createBrowserRouter([
   {
@@ -40,7 +41,7 @@ const appRouter = createBrowserRouter([
         element : <DoctorMain />,
         children : [
           {
-            path : "/doctor",
+            path : "/doctor/landingScreen",
             element : <DoctorLandingScreen />
           },
           {
@@ -54,6 +55,10 @@ const appRouter = createBrowserRouter([
           {
             path : "/doctor/history",
             element : <PatientHistory />
+          },
+          {
+            path : "/doctor/profile",
+            element : <Profile />
           },
           // {
           //   path : "/doctor/add-presctiprion",
