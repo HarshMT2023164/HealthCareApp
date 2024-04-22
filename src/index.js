@@ -14,6 +14,18 @@ import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Profile from './Components/Doctor/Profiile';
+import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
+import FHWListMain from './Components/Supervisor/FHWListMain';
+import ProfilePage from './Components/Supervisor/ProfilePage';
+import Supervisor from './Components/Supervisor/Supervisor';
+import SupervisorHome from './Components/Supervisor/SupervisorHome';
+import './index.css';
+
+import Admin from './Components/Admin/Admin';
+import ForgotPassword from './Components/Authentication/ForgotPassword';
+import ResetPassword from './Components/Authentication/ResetPassword.js';
+import SetPassword from './Components/Authentication/SetPassword.js';
+
 
 const appRouter = createBrowserRouter([
   {
@@ -25,16 +37,57 @@ const appRouter = createBrowserRouter([
         element : <Login/>
       },
       {
-        path : "/roles",
-        element : <RoleCards />
+        path : "/forgotPassword",
+        element : <ForgotPassword/>
       },
       {
-        path : "/viewList/:role",
-        element : <ViewListMain />
+        path : "/resetPassword",
+        element : <ResetPassword/>
       },
       {
-        path : "/register/:role",
-        element : <RegisterForm />
+        path : "/setPassword",
+        element : <SetPassword/>
+      },
+
+      {
+        path:"/admin",
+        element:<Admin/>,
+        children:[
+          {
+            path : "/admin/roles",
+            element : <RoleCards />
+          },
+          {
+            path : "/admin/viewList/:role",
+            element : <ViewListMain />
+          },
+          {
+            path : "/admin/register/:role",
+            element : <RegisterForm />
+          },
+        ]
+      },
+      {
+        path:"/supervisor",
+        element : <Supervisor/>,
+        children :[
+          {
+            path: "/supervisor/home",
+            element: <SupervisorHome/>
+          },
+          {
+            path :"/supervisor/AreaPatientlist",
+            element : <AreawisePatientsMain />
+          },
+          {
+            path:"/supervisor/FHWList",
+            element:<FHWListMain/>
+          },
+          {
+            path:"/supervisor/Profile",
+            element:<ProfilePage/>
+          }
+        ]
       },
       {
         path : "/doctor",
@@ -73,7 +126,7 @@ const appRouter = createBrowserRouter([
       }
     ]
   }
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

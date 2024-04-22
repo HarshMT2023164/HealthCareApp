@@ -17,11 +17,52 @@ const Login = () => {
     password: "",
   });
 
-  const [errorMessage , setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleForgotPassword = async() => {
+    navigate("/forgotPassword");
+  }
+
+  const validateSubmit = () => {
+    console.log(user);
+    // Validate form fields before submitting
+    const validationErrors = {};
+
+    Object.keys(user).forEach((fieldName) => {
+      switch (fieldName) {
+        case "username":
+          if (!user[fieldName]) {
+            validationErrors[fieldName] = "Username is required";
+          }
+          break;
+        case "password":
+          if (!user[fieldName]) {
+            validationErrors[fieldName] = "Password is required";
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    // Set validation errors in state
+    // setErrors(validationErrors);
+    // validationErrors.email = "Email already exists";
+    // validationErrors.licenseId = "LicenseId already exists";
+
+    setErrors(validationErrors);
+
+    // If there are no validation errors, proceed with submission
+    if (Object.keys(validationErrors).length === 0) {
+      // Your submission logic here
+      authenticate();
+    }
+  };
 
   const authenticate = async () => {
     // navigate(`/roles`);
-  
+
     // console.log(user);
     // try {
     //   const response = await fetch("http://172.16.142.169:8080/auth/signin", {
@@ -43,32 +84,46 @@ const Login = () => {
     //   console.error('Error during login:', error.message);
     // }
 
-
     let res = await axios.post(        
         BASE_URL + LOGIN_URL,user
         ).then((res) => {
           console.log(res.data.jwtResponse.accessToken);
           localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
-            console.log(res);
-          if(res){
-            if(res.data.jwtResponse.roles[0] === "doctor"){
-              navigate("/doctor/landingScreen");
-              localStorage.setItem("username" , res.data.jwtResponse.username);
-            }
-            
+            console.log(res);   
             // navigate(`/bills/${res?.data?.student_id}`);
             // window.localStorage.setItem('student', JSON.stringify(res.data));
             // window.localStorage.setItem('IsAuthenticated', true);
+        if (res) {
+          if(res.data.jwtResponse.logInFirst==true)
+          {
+            navigate('/setPassword');
           }
           else{
-            console.log('Username or password incorrect');
+            if(res.data.jwtResponse.roles[0]==="ROLE_ADMIN")
+            {
+              navigate("/admin/roles");
+            }
+            else if(res.data.jwtResponse.roles[0]==="supervisor")
+            {
+              localStorage.setItem("username",res.data.jwtResponse.username);
+              localStorage.setItem("district",res.data.userRole.district.name);
+              navigate("/supervisor/home");
+            }
+            else if(res.data.jwtResponse.roles[0] === "doctor"){
+              navigate("/doctor/landingScreen");
+              localStorage.setItem("username" , res.data.jwtResponse.username);
+            }
           }
-          
-        }).catch((err) => {
-          setErrorMessage("Username or password is incorrect");
-          console.log('Username or password incorrect in catch');
-        })
-
+          // window.localStorage.setItem('student', JSON.stringify(res.data));
+          // window.localStorage.setItem('IsAuthenticated', true);
+        } else {
+          console.log("Username or password incorrect");
+        }
+      })
+      .catch((err) => {
+        setErrorMessage("Username or password is incorrect");
+        console.log("Username or password incorrect in catch");
+      });
 
     // const response = await fetch('http://172.16.142.16:8080/api/auth/signin', {
     //     method: 'POST',
@@ -79,7 +134,6 @@ const Login = () => {
     //   });
 
     //   console.log(response);
-    
   };
 
   const handleInputChange = (e) => {
@@ -130,8 +184,12 @@ const Login = () => {
   };
 
   return (
-    <div style={{minHeight : '100vh'}} className="login-container">
-      <Paper elevation={10} style={paperStyle} className="login-container-paper">
+    <div style={{ minHeight: "100vh" }} className="login-container">
+      <Paper
+        elevation={10}
+        style={paperStyle}
+        className="login-container-paper"
+      >
         <div className="login-heading">
           <div className="heading-avatar">
             <Avatar style={avatarStyle} src={avatar}></Avatar>
@@ -168,6 +226,9 @@ const Login = () => {
           type="password"
           fullWidth
         />
+         <div style={{ marginTop: '10px',textAlign:'center'}}>
+            <a href="/forgotPassword" onClick={handleForgotPassword}>Forgot Password? Click Here</a>
+          </div>
 
           {/* <FormControl fullWidth margin="normal">
             <InputLabel id="role-label">Select Role</InputLabel>
@@ -186,20 +247,22 @@ const Login = () => {
           </FormControl> */}
 
         <div className="login-submit-btn">
-          <Button variant="contained" onClick={() => {
-            if((!errors.username  && !errors.password)){
-              return authenticate();
-            }
-          }}>
+          <Button variant="contained" onClick={() => validateSubmit()}>
             Log in
           </Button>
-          
         </div>
         {errorMessage && (
-            <div style={{ color: 'red', marginTop: '10px' , display: "flex" , justifyContent:"center"}}>
-              {errorMessage}
-            </div>
-          )}
+          <div
+            style={{
+              color: "red",
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {errorMessage}
+          </div>
+        )}
       </Paper>
     </div>
   );

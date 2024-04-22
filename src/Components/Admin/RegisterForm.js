@@ -13,51 +13,178 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UserDetailsContext from "../../utils/Context/UserContext";
+import {
+  BASE_URL,
+  addDoctor,
+  addFHW,
+  addSupervisor,
+  getAllDistricts,
+  getUnallocatedDistricts,
+  updateDoctor,
+  updateFieldHealthCareWorker,
+  updateSupervisor,
+} from "../../utils/constants/URLS";
+import { ROLES } from "../../utils/constants/Roles";
 
 let RegisterForm = () => {
   const initialFormState = {
     name: "",
     email: "",
     licenseId: "",
-    phonenumber: "",
+    phoneNum: "",
     district: null, // Change this based on your district options structure
     gender: "",
     age: "",
-    specialty: "psychiatrist",
+    specialty: "",
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [districtOptions, setDistrictOptions] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
 
   const { role } = useParams();
 
-  const { userDetails } = useContext(UserDetailsContext);
+  const { userDetails,setUserDetails } = useContext(UserDetailsContext);
+
+  const token = localStorage.getItem("JwtToken");
+
+   const [formType, setFormType] = useState("Register");
+
+  const fetchDistricts = async () => {
+    let apiUrl = getAllDistricts;
+    if (role === "Supervisors") {
+      apiUrl = getUnallocatedDistricts;
+    }
+    const response = await axios.get(BASE_URL + apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const mappedDistrictList = response.data.map((district) => ({
+      id: district.id,
+      name: district.name,
+    }));
+    // Handle the API response
+    console.log(response.data);
+    setDistrictOptions(mappedDistrictList);
+  };
 
   useEffect(() => {
-    if (userDetails) {
-      setFormData(userDetails);
+    if(!token){
+      navigate("/");
+      return;
     }
+    if (userDetails) {
+      console.log(userDetails);
+      setFormData(userDetails);
+      setFormType("Edit");
+    }
+    fetchDistricts();
   }, []);
 
   const handleSubmitValidated = async () => {
-    let res = await axios.post(
-      "http://192.168.0.104:8080/doctor/addDoctor",formData
-      ).then((res) => {
-          console.log(res);
-        if(res){
+    let apiUrl;
+    switch (role) {
+      case ROLES.DOCTOR:
+        apiUrl = addDoctor;
+        break;
+      case ROLES.SUPERVISOR:
+        apiUrl = addSupervisor;
+        break;
+      case ROLES.FHW:
+        apiUrl = addFHW;
+        break;
+      default:
+        apiUrl = addDoctor; // Default to getDoctors if role not specified or recognized
+        break;
+    }
+
+    formData.age = parseInt(formData.age);
+
+    formData.phoneNum = parseInt(formData.phoneNum);
+
+    let res = await axios
+      .post(BASE_URL + apiUrl, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setUserDetails(null);
+        if (res) {
+          navigate("/admin/viewList/" + role);
           // navigate(`/bills/${res?.data?.student_id}`);
           // window.localStorage.setItem('student', JSON.stringify(res.data));
           // window.localStorage.setItem('IsAuthenticated', true);
+        } else {
+          console.log("Username or password incorrect in else of res");
         }
-        else{
-          console.log('Username or password incorrect');
-        }
-
-      }).catch((err) => {
-        console.log('Username or password incorrect');
       })
-    navigate("/viewList/" + role);
+      .catch((err) => {
+        if (
+          err &&
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          setErrorMessage(err.response.data.message);
+        }
+      });
+  };
+
+  const handleEditFormSubmit = async () => {
+    let apiUrl;
+    switch (role) {
+      case ROLES.DOCTOR:
+        apiUrl = updateDoctor;
+        break;
+      case ROLES.SUPERVISOR:
+        apiUrl = updateSupervisor;
+        break;
+      case ROLES.FHW:
+        apiUrl = updateFieldHealthCareWorker;
+        break;
+      default:
+        apiUrl = updateDoctor; // Default to getDoctors if role not specified or recognized
+        break;
+    }
+
+    formData.age = parseInt(formData.age);
+
+    formData.phoneNum = parseInt(formData.phoneNum);
+
+    let res = await axios
+      .post(BASE_URL + apiUrl, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setUserDetails(null);
+        if (res) {
+          navigate("/admin/viewList/" + role);
+          // navigate(`/bills/${res?.data?.student_id}`);
+          // window.localStorage.setItem('student', JSON.stringify(res.data));
+          // window.localStorage.setItem('IsAuthenticated', true);
+        } else {
+          console.log("Username or password incorrect in res else");
+        }
+      })
+      .catch((err) => {
+        if (
+          err &&
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          setErrorMessage(err.response.data.message);
+        }
+      });
   };
 
   const paperStyle = {
@@ -69,43 +196,6 @@ let RegisterForm = () => {
   const textFieldStyle = {
     margin: "10px auto",
   };
-
-  const districtOptions = [
-    "Ahmedabad",
-    "Amreli",
-    "Anand",
-    "Aravalli",
-    "Banaskantha",
-    "Bharuch",
-    "Bhavnagar",
-    "Botad",
-    "Chhota Udaipur",
-    "Dahod",
-    "Dang",
-    "Devbhoomi Dwarka",
-    "Gandhinagar",
-    "Gir Somnath",
-    "Jamnagar",
-    "Junagadh",
-    "Kheda",
-    "Kutch",
-    "Mahisagar",
-    "Mehsana",
-    "Morbi",
-    "Narmada",
-    "Navsari",
-    "Panchmahal",
-    "Patan",
-    "Porbandar",
-    "Rajkot",
-    "Sabarkantha",
-    "Surat",
-    "Surendranagar",
-    "Tapi",
-    "Vadodara",
-    "Valsad",
-    // Add more districts as needed
-  ];
 
   // const handleBlur = (event) => {
   //   const { name, value } = event.target;
@@ -123,10 +213,11 @@ let RegisterForm = () => {
     name: "",
     email: "",
     licenseId: "",
-    phonenumber: "",
+    phoneNum: "",
     district: "",
     gender: "",
     age: "",
+    specialty: "",
   });
 
   const handleInputChange = (e) => {
@@ -165,6 +256,7 @@ let RegisterForm = () => {
   };
 
   const handleSubmit = () => {
+    console.log(formData);
     // Validate form fields before submitting
     const validationErrors = {};
 
@@ -181,13 +273,24 @@ let RegisterForm = () => {
           }
           break;
         case "licenseId":
-          if (!formData[fieldName]) {
+          if (!formData[fieldName] && role === ROLES.DOCTOR) {
             validationErrors[fieldName] = "License is required";
           }
+          else if (role === ROLES.DOCTOR && !/^MCI-IN-\d{6}$/.test(formData[fieldName])) {
+            validationErrors[fieldName] = 'LicenseId must follow the format MCI-IN-XXXXXX' ;
+          } 
           break;
-        case "phonenumber":
+        case "specialty":
+          if (!formData[fieldName] && role === ROLES.DOCTOR) {
+            validationErrors[fieldName] = "Specialty is required";
+          }
+          break;
+        case "phoneNum":
           if (!formData[fieldName]) {
             validationErrors[fieldName] = "Phone number is required";
+          }
+          else if(formData[fieldName].length > 10){
+            validationErrors[fieldName] = "Phone numbers cannot exceed 10 characters.";
           }
           break;
         case "district":
@@ -211,16 +314,20 @@ let RegisterForm = () => {
     });
 
     // Set validation errors in state
-    setErrors(validationErrors);
-    validationErrors.email = "Email already exists";
-    validationErrors.licenseId = "LicenseId already exists";
+    // setErrors(validationErrors);
+    // validationErrors.email = "Email already exists";
+    // validationErrors.licenseId = "LicenseId already exists";
 
     setErrors(validationErrors);
 
     // If there are no validation errors, proceed with submission
     if (Object.keys(validationErrors).length === 0) {
       // Your submission logic here
-      handleSubmitValidated();
+      if (userDetails) {
+        handleEditFormSubmit();
+      } else {
+        handleSubmitValidated();
+      }
     }
   };
 
@@ -241,7 +348,7 @@ let RegisterForm = () => {
             <Avatar style={avatarStyle} src={avatar}></Avatar>
           </div> */}
           <div className="heading-txt">
-            <h2>Register {role}</h2>
+            <h2> {formType} {role}</h2>
           </div>
         </div>
 
@@ -272,35 +379,56 @@ let RegisterForm = () => {
           onChange={handleInputChange}
         />
 
+        {role === ROLES.DOCTOR && (
+          <TextField
+            id="standard-basic"
+            name="licenseId"
+            value={formData.licenseId}
+            style={textFieldStyle}
+            label="License "
+            variant="standard"
+            fullWidth
+            onChange={handleInputChange}
+            error={Boolean(errors.licenseId)}
+            helperText={errors.licenseId}
+          />
+        )}
+
+        {role === ROLES.DOCTOR && (
+          <TextField
+            id="standard-basic"
+            name="specialty"
+            value={formData.specialty}
+            style={textFieldStyle}
+            label="Specialty "
+            variant="standard"
+            fullWidth
+            onChange={handleInputChange}
+            error={Boolean(errors.specialty)}
+            helperText={errors.specialty}
+          />
+        )}
+
         <TextField
           id="standard-basic"
-          name="licenseId"
-          value={formData.licenseId}
-          style={textFieldStyle}
-          label="License "
-          variant="standard"
-          fullWidth
-          onChange={handleInputChange}
-          error={Boolean(errors.licenseId)}
-          helperText={errors.licenseId}
-        />
-        <TextField
-          id="standard-basic"
-          name="phonenumber"
+          name="phoneNum"
           type="number"
-          value={formData.phonenumber}
+          value={formData.phoneNum}
           style={textFieldStyle}
           label="phone number "
           variant="standard"
           fullWidth
           onChange={handleInputChange}
-          error={Boolean(errors.phonenumber)}
-          helperText={errors.phonenumber}
+          error={Boolean(errors.phoneNum)}
+          helperText={errors.phoneNum}
+          InputProps={{ inputProps: { maxLength: 10 } }}
         />
 
         <Autocomplete
+          value={formData.district}
           options={districtOptions}
           style={textFieldStyle}
+          getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -350,6 +478,19 @@ let RegisterForm = () => {
             Submit
           </Button>
         </div>
+
+        {errorMessage && (
+          <div
+            style={{
+              color: "red",
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {errorMessage}
+          </div>
+        )}
       </Paper>
     </div>
   );

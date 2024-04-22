@@ -57,7 +57,7 @@ margin-top: 50px;
 }
 
 .login-container-paper{
-  max-height: 52vh;
+  max-height: 60vh;
   min-height: 45vh;
 }
 
@@ -146,6 +146,13 @@ margin-top: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 60%;
+  justify-content: center;
+}
+
+.list-item-button {
+  background-color: #11B3CF !important;
+  color: #FFFFFF;
 }
 
 .list-table-grid{
@@ -357,4 +364,16 @@ margin-top: 50px;
   background-color: #1976d2 !important;
   color: white;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+.admin-search-text-field{
+  width: 60%;
+}
+
+.list-app-bar-cont{
+  /* position: fixed !important;
+  top: 0; 
+
+  background-color: white; 
+  z-index: 1000;
+  */
 }
