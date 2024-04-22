@@ -41,22 +41,22 @@ let RegisterForm = () => {
   }, []);
 
   const handleSubmitValidated = async () => {
-    // let res = await axios.post(
-    //   "http://192.168.0.104:8080/doctor/addDoctor",formData
-    //   ).then((res) => {
-    //       console.log(res);
-    //     if(res){
-    //       // navigate(`/bills/${res?.data?.student_id}`);
-    //       // window.localStorage.setItem('student', JSON.stringify(res.data));
-    //       // window.localStorage.setItem('IsAuthenticated', true);
-    //     }
-    //     else{
-    //       console.log('Username or password incorrect');
-    //     }
+    let res = await axios.post(
+      "http://192.168.0.104:8080/doctor/addDoctor",formData
+      ).then((res) => {
+          console.log(res);
+        if(res){
+          // navigate(`/bills/${res?.data?.student_id}`);
+          // window.localStorage.setItem('student', JSON.stringify(res.data));
+          // window.localStorage.setItem('IsAuthenticated', true);
+        }
+        else{
+          console.log('Username or password incorrect');
+        }
 
-    //   }).catch((err) => {
-    //     console.log('Username or password incorrect');
-    //   })
+      }).catch((err) => {
+        console.log('Username or password incorrect');
+      })
     navigate("/viewList/" + role);
   };
 

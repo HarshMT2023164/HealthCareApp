@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../utils/images/avatar.jpeg";
+import { BASE_URL, LOGIN_URL } from "../../utils/constants/URLS";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -44,12 +45,17 @@ const Login = () => {
 
 
     let res = await axios.post(        
-        "auth/signin",user
+        BASE_URL + LOGIN_URL,user
         ).then((res) => {
           console.log(res.data.jwtResponse.accessToken);
           localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
             console.log(res);
           if(res){
+            if(res.data.jwtResponse.roles[0] === "doctor"){
+              navigate("/doctor/landingScreen");
+              localStorage.setItem("username" , res.data.jwtResponse.username);
+            }
+            
             // navigate(`/bills/${res?.data?.student_id}`);
             // window.localStorage.setItem('student', JSON.stringify(res.data));
             // window.localStorage.setItem('IsAuthenticated', true);
@@ -73,7 +79,7 @@ const Login = () => {
     //   });
 
     //   console.log(response);
-    navigate("/doctor");
+    
   };
 
   const handleInputChange = (e) => {
@@ -163,7 +169,7 @@ const Login = () => {
           fullWidth
         />
 
-          <FormControl fullWidth margin="normal">
+          {/* <FormControl fullWidth margin="normal">
             <InputLabel id="role-label">Select Role</InputLabel>
             <Select
               labelId="role-label"
@@ -177,7 +183,7 @@ const Login = () => {
               <MenuItem value="doctor">Doctor</MenuItem>
               <MenuItem value="FHW">FHW (Field Health Worker)</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
         <div className="login-submit-btn">
           <Button variant="contained" onClick={() => {
