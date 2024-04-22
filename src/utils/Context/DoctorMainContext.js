@@ -4,10 +4,12 @@ const DoctorMainContext = createContext();
 
 export const DoctorMainProvider = ({ children }) => {
   const [patientDemographics, setPatientDemographics] = useState(null);
-  const [selectedStatus, setselectedStatus] = useState(null);
+  const [selectedStatus, setselectedStatus] = useState('all');
   const [searchText , setSearchText] = useState("");
   const [patientCount, setPatientCount]  = useState(
-    {new : 0,
+    {
+      All : 0,
+      new : 0,
     completed : 0,
     ongoing : 0});
 

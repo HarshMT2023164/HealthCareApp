@@ -2,9 +2,12 @@ import { Avatar, Card, CardContent, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import DoctorMainContext from "../../utils/Context/DoctorMainContext";
 import patientListData from "../../utils/constants/PatientList";
+import { BASE_URL, GET_PATIENT_LIST } from "../../utils/constants/URLS";
+import axios from "axios";
 
 const PatientList = () => {
-  const [patientList, setPatientList] = useState(patientListData);
+  let patientList = [];
+  const [filteredPatientList, setFilteredPatientList] = useState([]);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
   const {
@@ -17,43 +20,82 @@ const PatientList = () => {
 
   const onSelectPatient = (patient, index) => {
     setSelectedCardIndex(index);
+    console.log(patient);
     setPatientDemographics(patient);
     console.log(patientDemographics);
   };
 
   useEffect(() => {
-    const filteredList = patientListData.filter((item) =>
+    const filteredList = patientList.filter((item) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    setPatientList(filteredList);
+    setFilteredPatientList(filteredList);
   }, [searchText]);
 
   const onSetPatientCount = () => {
-    let patientCount = { new: 0, completed: 0, ongoing: 0 };
+    let patientCount = {all : 0,  new: 0, completed: 0, ongoing: 0 };
     patientList.forEach((item) => {
       patientCount[item.status]++;
     });
+    patientCount.all = patientList.length;
+
     setPatientCount(patientCount);
   }
 
+  const getPatientList = async() => {
+    try{
+    const username  = localStorage.getItem("username");
+    const token  = localStorage.getItem("JwtToken");
+    const response = await axios.get(BASE_URL + GET_PATIENT_LIST + `?username=${username}`,{
+      headers : {
+        Authorization : `Bearer ${token}` ,
+      } 
+    });
+      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+      //   headers : {
+      //     Authorization : `Bearer ${token}`,
+      //   }
+      // });
+
+      // Handle the API response
+      console.log(response.data);
+      console.log(response);
+      patientList = response.data;
+      setFilteredPatientList(patientList);
+      onSetPatientCount();
+      setPatientDemographics(patientList[0]);
+      setSelectedCardIndex(0);
+    } catch (error) {
+      // Handle errors
+      console.log(error)
+      // console.error(error);
+    }
+  }
+
   useEffect(() => {
-    onSetPatientCount();
-    setPatientDemographics(patientList[0]);
+     getPatientList();
+   
   }, []);
 
   useEffect(() => {
     console.log(selectedStatus);
     if (selectedStatus) {
-      const updatedPatientList = patientListData.filter(
-        (item) => item.status.toLowerCase() === selectedStatus.toLowerCase()
-      );
-      setPatientList(updatedPatientList);
+      if(selectedStatus === 'all'){
+        setFilteredPatientList(patientList);
+      }
+      else{
+        const updatedPatientList = patientList.filter(
+          (item) => item.status.toLowerCase() === selectedStatus.toLowerCase()
+        );
+        setFilteredPatientList(updatedPatientList);
+      }
+    
     }
   }, [selectedStatus]);
 
   return (
     <div className="patient-list-cont">
-      {patientList.map((patient, index) => (
+      {filteredPatientList.map((patient, index) => (
         <div
           className="patient-card-cont"
           onClick={() => onSelectPatient(patient, index)}
@@ -91,7 +133,7 @@ const PatientList = () => {
                     Address: {patient.address}, Pincode: {patient.pincode}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    Abha ID: {patient.abha_id}
+                    Abha ID: {patient.abha_Id}
                   </Typography>
                 </div>
               </div>

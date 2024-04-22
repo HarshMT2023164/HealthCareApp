@@ -1,6 +1,6 @@
 const patientListData = [
     {
-        "name": "John Doe",
+        "name": "Aarav Patel",
         "age": 35,
         "gender": "male",
         "address": "123 Main St",
@@ -9,7 +9,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Jane Smith",
+        "name": "Aishwarya Sharma",
         "age": 45,
         "gender": "female",
         "address": "456 Elm St",
@@ -18,7 +18,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Alex Johnson",
+        "name": "Akash Gupta",
         "age": 25,
         "gender": "male",
         "address": "789 Oak St",
@@ -27,7 +27,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "Emily Brown",
+        "name": "Ananya Singh",
         "age": 30,
         "gender": "female",
         "address": "321 Pine St",
@@ -36,7 +36,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Michael Lee",
+        "name": "Arjun Kumar",
         "age": 40,
         "gender": "male",
         "address": "654 Cedar St",
@@ -45,7 +45,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Sophia Wang",
+        "name": "Avni Joshi",
         "age": 28,
         "gender": "female",
         "address": "987 Maple St",
@@ -54,7 +54,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "William Kim",
+        "name": "Dhruv Verma",
         "age": 50,
         "gender": "male",
         "address": "135 Birch St",
@@ -63,7 +63,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Olivia Garcia",
+        "name": "Esha Mishra",
         "age": 22,
         "gender": "female",
         "address": "246 Walnut St",
@@ -72,7 +72,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Daniel Martinez",
+        "name": "Hari Singh",
         "age": 38,
         "gender": "male",
         "address": "789 Cherry St",
@@ -81,7 +81,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "Ava Hernandez",
+        "name": "Ishaani Reddy",
         "age": 32,
         "gender": "female",
         "address": "543 Oak St",
@@ -90,7 +90,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "James Nguyen",
+        "name": "Jai Shah",
         "age": 48,
         "gender": "male",
         "address": "678 Elm St",
@@ -99,7 +99,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Emma Rivera",
+        "name": "Kriti Singh",
         "age": 26,
         "gender": "female",
         "address": "123 Maple St",
@@ -108,7 +108,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "Benjamin Patel",
+        "name": "Lakshay Sharma",
         "age": 42,
         "gender": "male",
         "address": "456 Cedar St",
@@ -117,7 +117,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Mia Lopez",
+        "name": "Mira Patel",
         "age": 29,
         "gender": "female",
         "address": "789 Pine St",
@@ -126,7 +126,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Ethan Smith",
+        "name": "Neha Gupta",
         "age": 55,
         "gender": "male",
         "address": "987 Walnut St",
@@ -135,7 +135,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "Charlotte Brown",
+        "name": "Ojasvi Kumar",
         "age": 33,
         "gender": "female",
         "address": "321 Cherry St",
@@ -144,7 +144,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Noah Garcia",
+        "name": "Pranav Gupta",
         "age": 27,
         "gender": "male",
         "address": "654 Birch St",
@@ -153,7 +153,7 @@ const patientListData = [
         "status": "completed"
     },
     {
-        "name": "Amelia Kim",
+        "name": "Qamar Khan",
         "age": 47,
         "gender": "female",
         "address": "987 Elm St",
@@ -162,7 +162,7 @@ const patientListData = [
         "status": "ongoing"
     },
     {
-        "name": "Liam Wang",
+        "name": "Rishi Sharma",
         "age": 31,
         "gender": "male",
         "address": "246 Oak St",
@@ -171,7 +171,7 @@ const patientListData = [
         "status": "new"
     },
     {
-        "name": "Isabella Martinez",
+        "name": "Sanya Patel",
         "age": 36,
         "gender": "female",
         "address": "789 Maple St",
@@ -180,6 +180,5 @@ const patientListData = [
         "status": "completed"
     }
 ]
-
 
 export default patientListData;
