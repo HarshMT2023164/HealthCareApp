@@ -11,7 +11,7 @@ const DoctorNavBar = () => {
             <img src={Logoimage} alt="logo" className="sidebar-img" />
           </ListItemButton>
           <NavLink
-            to={"/doctor"}
+            to={"/doctor/landingScreen"}
             className="link-tag"
             activeClassName="active-link"
           >
@@ -22,6 +22,12 @@ const DoctorNavBar = () => {
           <NavLink to={"/doctor/dashboard"} className="link-tag" activeClassName="active-link">
             <ListItemButton>
               <h4 className="nav-bar-items-text">Dashboard</h4>
+            </ListItemButton>
+          </NavLink>
+
+          <NavLink to={"/doctor/profile"} className="link-tag" activeClassName="active-link">
+            <ListItemButton>
+              <h4 className="nav-bar-items-text">Profile</h4>
             </ListItemButton>
           </NavLink>
 
