@@ -17,7 +17,7 @@ const PatientQuestionnaire = () => {
   const [answers, setAnswers] = useState(Array(data?.questions?.length).fill(null));
   const [questions, setQuestions] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true); // State to control input disable
- 
+  const [score, setScore] = useState(0);
   const {patientDemographics} = useContext(DoctorMainContext);
 
 
@@ -31,6 +31,7 @@ const PatientQuestionnaire = () => {
       console.log(response.data);
       const toSetAnswers = response?.data?.answers.map((ans) => +ans );
       setAnswers(toSetAnswers);
+      setScore(response.data.score);
     } catch (error) {
       console.log(error);
     }
@@ -74,12 +75,15 @@ const PatientQuestionnaire = () => {
         <Typography variant="h4" align="center" gutterBottom>
           {data?.name}
         </Typography>
+        <Typography variant="h4" align="center" gutterBottom>
+          Health Score : {score}
+        </Typography>
         <div className='patient-question-data'>
           <Grid container spacing={2}>
             {questions.map((question, index) => (
               <Grid item xs={12} key={question.id}>
                 <Paper elevation={3} style={paperStyle}>
-                  <Typography variant="h6">{`${question.id}. ${question.questionText}`}</Typography>
+                  <Typography variant="h6">{`${index+1}. ${question.questionText}`}</Typography>
                   {question.optionText.map((option, optionIndex) => (
                     <FormControlLabel
                       key={optionIndex}

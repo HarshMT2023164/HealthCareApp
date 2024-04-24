@@ -8,7 +8,7 @@ export const DoctorMainProvider = ({ children }) => {
   const [searchText , setSearchText] = useState("");
   const [patientCount, setPatientCount]  = useState(
     {
-      All : 0,
+      all : 0,
       new : 0,
     completed : 0,
     ongoing : 0});

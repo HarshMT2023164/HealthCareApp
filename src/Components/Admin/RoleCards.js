@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { BASE_URL, getRoleCounts } from "../../utils/constants/Urls";
+import { BASE_URL, getRoleCounts } from "../../utils/constants/URLS";
 import { ROLES } from "../../utils/constants/Roles";
 export default function RoleCards() {
   const [roleCounts, setRoleCounts] = useState(null);
@@ -16,17 +16,17 @@ export default function RoleCards() {
 
   const getIconForRole = (role) => {
     let imgurl;
-    switch (role) {
-      case ROLES.DOCTOR:
+    switch (role.toLowerCase()) {
+      case ROLES.DOCTOR.toLowerCase():
         imgurl = "/doctor.png";
         break;
-      case ROLES.SUPERVISOR:
+      case ROLES.SUPERVISOR.toLowerCase():
         imgurl = "/supervisor.png";
         break;
-      case ROLES.FHW:
+      case ROLES.FHW.toLowerCase():
         imgurl = "/fhw.png";
         break;
-      case ROLES.CITIZEN:
+      case ROLES.CITIZEN.toLowerCase():
         imgurl = "/patient.png";
         break;
       default:

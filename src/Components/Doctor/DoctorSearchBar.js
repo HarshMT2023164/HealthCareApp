@@ -7,6 +7,8 @@ export default function DoctorSearchBar() {
   const { setselectedStatus, patientCount, searchText, setSearchText } = useContext(DoctorMainContext);
   const [selectedChip, setSelectedChip] = useState("all");
 
+  // const [patientCountSearch, patientCountSearch]
+
   const onChipClick = (status) => {
     setselectedStatus(status.toLowerCase());
     setSelectedChip(status.toLowerCase());

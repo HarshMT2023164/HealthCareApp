@@ -4,7 +4,7 @@ import avatar from "../../utils/images/avatar.jpeg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SupervisorContext from "../../utils/Context/SupervisorContext";
-import { BASE_URL,forgotPassword } from "../../utils/constants/Urls";
+import { BASE_URL,forgotPassword } from "../../utils/constants/URLS";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();

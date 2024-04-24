@@ -29,12 +29,21 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
   
   useEffect(() => {
     if(dialogData){
+      console.log(dialogData);
       const icdList = dialogData?.icd10codes;
       setFormData({
         diagnosis : dialogData?.diagnosis,
         conclusion : dialogData?.conclusion,
         prescription : dialogData?.prescriptions[dialogData.prescriptions.length-1],
         icdCodes : icdList
+      })
+    }
+    else{
+      setFormData({
+        diagnosis: '',
+    prescription: '',
+    conclusion: '',
+    icdCodes: []
       })
     }
  
@@ -98,8 +107,9 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
       conclusion : formData.conclusion,
       diagnosis : formData.diagnosis
     }
+    let postUrl = dialogData ? UPDATE_PRESCRIPTION : ADD_PRESCRIPTION
     let res = await axios.post(
-     BASE_URL + UPDATE_PRESCRIPTION ,reqBody,{
+     BASE_URL + postUrl ,reqBody,{
       headers : {
         Authorization : `Bearer ${token}` ,
       } 
@@ -120,9 +130,8 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
       })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmitFormData();
+  const handleSubmit = () => {
+    // e.preventDefault();
     // Validation
     const newErrors = {
       diagnosis: formData.diagnosis.trim() === '',
@@ -138,7 +147,7 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
     }
 
     // Submit form
-    console.log('Prescription Submitted:', formData);
+    
     onSubmitFormData(formData);
     // Optionally, reset form fields after submission
     setFormData({
@@ -223,7 +232,7 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
+        <Button onClick={() => handleSubmit()} variant="contained" color="primary">
           Submit
         </Button>
       </DialogActions>

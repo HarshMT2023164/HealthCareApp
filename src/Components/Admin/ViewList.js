@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SearchContext from '../../utils/Context/SearchContext';
 import UserDetailsContext from '../../utils/Context/UserContext';
-import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors } from '../../utils/constants/Urls';
+import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors } from '../../utils/constants/URLS';
 import { ROLES, Roles } from '../../utils/constants/Roles';
 
 const ViewList = (props) => {

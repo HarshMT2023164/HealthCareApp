@@ -4,9 +4,8 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
-import { BASE_URL,getLocalAreas } from '../../utils/constants/Urls';
-
-
+import { BASE_URL,getLocalAreas } from '../../utils/constants/URLS';
+import './Supervisor.css';
 
 
 const  AreaList = (props) => {
@@ -34,11 +33,10 @@ const  AreaList = (props) => {
   }
 
   const columns = [
-    { field: 'index', headerName: '#', flex : 1 },
-    {field: 'area' , headerName: 'Area', flex : 2},
-    {field: 'fhw', headerName: 'FHW',flex: 2},
-    {field: 'pincode', headerName: 'Pincode', flex:1},
-    {field:'fhwUsername',headerName:'FHWUserName',flex:1,hide:true},
+    { field: 'index', headerName: '#', flex : 1, headerClassName: 'header-highlight'},
+    {field: 'area' , headerName: 'Area', flex : 2 , headerClassName: 'header-highlight'},
+    {field: 'fhw', headerName: 'Field Health Worker Name',flex: 2 , headerClassName: 'header-highlight'},
+    {field: 'pincode', headerName: 'Pincode', flex:1 , headerClassName: 'header-highlight'},
     // { field: 'name', headerName: 'Name', flex: 2 },
     // { field: 'age', headerName: 'Age', flex: 1 },
     // { field: 'gender', headerName: 'Gender', flex: 1 },
@@ -50,8 +48,9 @@ const  AreaList = (props) => {
       field: 'view',
       headerName: 'Action',
       width: 150,
+      headerClassName: 'header-highlight',
       renderCell: (params) => (
-        <Button  variant="contained" color="primary" onClick={() => handleView(params.row)}>View</Button>
+        <Button  variant="contained" style={{background : "#11B3CF"}} onClick={() => handleView(params.row)}>View</Button>
       ),
       flex:1
     },

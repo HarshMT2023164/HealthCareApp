@@ -15,6 +15,7 @@ import FollowUpForm from "./FollowUpForm";
 import PrescriptionForm from "./PrescriptionForm";
 import { Card, Divider } from "antd";
 import { Surface } from "recharts";
+import NoDataFound from "../../utils/templates/NoDataFound";
 
 export const Demographics = () => {
   const [demographics, setDemographics] = useState({
@@ -41,10 +42,18 @@ export const Demographics = () => {
     navigate("/doctor/history");
   };
 
+  const showICDCodes = () => {
+    if(patientDemographics?.healthRecordDTO?.icd10codes){
+      return patientDemographics?.healthRecordDTO?.icd10codes.map(item => `${item.code} : ${item.description}`).join(', ');
+    }
+    else{
+      return "No ICD CODES SELECTED";
+    }
+  }
+
   const [openPrescriptionDialog, setOpenPrescriptionDialog] = useState(false);
   const [openFollowUpDialog, setOpenFollowUpDialog] = useState(false);
 
-  useEffect(() => {});
 
   const handleOpenPrescriptionDialog = () => {
     setOpenPrescriptionDialog(true);
@@ -72,6 +81,10 @@ export const Demographics = () => {
     console.log("Prescription Form Submitted:", formData);
   };
 
+  useEffect(() => {
+    console.log(patientDemographics);
+  })
+
   const paperStyle = {
     padding: "24px",
     marginBottom: "24px",
@@ -85,7 +98,7 @@ export const Demographics = () => {
           Demographics
         </Typography>
       </div> */}
-      {patientDemographics && (
+      {!patientDemographics ? (<NoDataFound/>) :  (
       <div className="demographic-data-cont">
         <div className="demogrphic-btn-cont">
           <Paper elevation={3}>
@@ -115,14 +128,14 @@ export const Demographics = () => {
             onClick={handleOpenPrescriptionDialog}
             className="demographic-btn"
           >
-            Add Prescription
+            {patientDemographics.healthRecordDTO? "Edit Prescription" : "Add Prescription"}
           </Button>
           </Paper>
           <PrescriptionForm
             open={openPrescriptionDialog}
             onClose={handleClosePrescriptionDialog}
             onSubmit={handleSubmitPrescriptionForm}
-            dialogData={patientDemographics?.healthRecordDTO}
+            dialogData={patientDemographics.healthRecordDTO}
           />
          <Paper elevation={3}>
           <Button
@@ -165,7 +178,7 @@ export const Demographics = () => {
                   pincode : {patientDemographics?.pincode}
                 </Typography>
               </Box>
-              <Divider />
+              <Divider className="divider"/>
               <Box sx={{ p: 2 }}>
                 <Typography gutterBottom variant="h4" component="div">
                   Diagnosis Details
@@ -183,8 +196,14 @@ export const Demographics = () => {
                     )}
                     {patientDemographics?.healthRecordDTO?.conclusion && (
                       <Typography color="text.secondary" variant="h6">
-                        Diagnosis :
+                        Conclusion :
                         {patientDemographics?.healthRecordDTO?.conclusion}
+                      </Typography>
+                    )}
+                    {patientDemographics?.healthRecordDTO?.icd10codes && (
+                      <Typography color="text.secondary" variant="h6">
+                        ICD Codes : {showICDCodes()}
+                      
                       </Typography>
                     )}
                   </div>

@@ -6,10 +6,11 @@ import { BASE_URL, GET_PATIENT_LIST } from "../../utils/constants/URLS";
 import axios from "axios";
 
 const PatientList = () => {
-  let patientList = [];
+  const [patientList, setPatientList] = useState([]);
   const [filteredPatientList, setFilteredPatientList] = useState([]);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
+  
   const {
     patientDemographics,
     setPatientDemographics,
@@ -27,30 +28,38 @@ const PatientList = () => {
 
   useEffect(() => {
     const filteredList = patientList.filter((item) =>
-      item.name.toLowerCase().includes(searchText.toLowerCase())
+      item.abhaId.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredPatientList(filteredList);
   }, [searchText]);
 
   const onSetPatientCount = () => {
-    let patientCount = {all : 0,  new: 0, completed: 0, ongoing: 0 };
+    let patientCount = { all: 0, new: 0, completed: 0, ongoing: 0 };
+    console.log(patientList);
     patientList.forEach((item) => {
-      patientCount[item.status]++;
+      patientCount[item.status.toLowerCase()]++;
     });
     patientCount.all = patientList.length;
-
+    // console.log(patientCount);
     setPatientCount(patientCount);
-  }
+  };
 
-  const getPatientList = async() => {
-    try{
-    const username  = localStorage.getItem("username");
-    const token  = localStorage.getItem("JwtToken");
-    const response = await axios.get(BASE_URL + GET_PATIENT_LIST + `?username=${username}`,{
-      headers : {
-        Authorization : `Bearer ${token}` ,
-      } 
-    });
+  useEffect(() => {
+    onSetPatientCount();
+  },[patientList])
+
+  const getPatientList = async () => {
+    try {
+      const username = localStorage.getItem("username");
+      const token = localStorage.getItem("JwtToken");
+      const response = await axios.get(
+        BASE_URL + GET_PATIENT_LIST + `?username=${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
       //   headers : {
       //     Authorization : `Bearer ${token}`,
@@ -60,36 +69,35 @@ const PatientList = () => {
       // Handle the API response
       console.log(response.data);
       console.log(response);
-      patientList = response.data;
-      setFilteredPatientList(patientList);
-      onSetPatientCount();
-      setPatientDemographics(patientList[0]);
-      setSelectedCardIndex(0);
+      if (response.data) {
+        setPatientList(response.data);
+        setFilteredPatientList(response.data);
+        
+        if (response.data[0]) setPatientDemographics(response?.data[0]);
+        setSelectedCardIndex(0);  
+      }
     } catch (error) {
       // Handle errors
-      console.log(error)
+      console.log(error);
       // console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
-     getPatientList();
-   
+    getPatientList();
   }, []);
 
   useEffect(() => {
     console.log(selectedStatus);
     if (selectedStatus) {
-      if(selectedStatus === 'all'){
+      if (selectedStatus === "all") {
         setFilteredPatientList(patientList);
-      }
-      else{
+      } else {
         const updatedPatientList = patientList.filter(
           (item) => item.status.toLowerCase() === selectedStatus.toLowerCase()
         );
         setFilteredPatientList(updatedPatientList);
       }
-    
     }
   }, [selectedStatus]);
 
@@ -106,20 +114,24 @@ const PatientList = () => {
               backgroundColor:
                 selectedCardIndex === index ? "#1976d2" : "white",
               transition: "background-color 0.3s ease",
-              color:
-                selectedCardIndex === index ? "white" : "black",
-              transition: "color 0.3s ease"
+              color: selectedCardIndex === index ? "white" : "black",
+              transition: "color 0.3s ease",
             }}
           >
             <CardContent>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Avatar style={{ width: 50, height: 50 ,
-              backgroundColor:
-                selectedCardIndex === index ? "#FFFFFF" : "#1976d2",
-              transition: "background-color 0.3s ease",
-              color:
-                selectedCardIndex === index ? "#1976d2" : "#FFFFFF",
-              transition: "color 0.3s ease"}} className="patient-card-avatar">
+                <Avatar
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor:
+                      selectedCardIndex === index ? "#FFFFFF" : "#1976d2",
+                    transition: "background-color 0.3s ease",
+                    color: selectedCardIndex === index ? "#1976d2" : "#FFFFFF",
+                    transition: "color 0.3s ease",
+                  }}
+                  className="patient-card-avatar"
+                >
                   {patient.name.charAt(0)}
                 </Avatar>
                 <div style={{ marginLeft: 10 }}>
@@ -133,7 +145,7 @@ const PatientList = () => {
                     Address: {patient.address}, Pincode: {patient.pincode}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    Abha ID: {patient.abha_Id}
+                    Abha ID: {patient.abhaId}
                   </Typography>
                 </div>
               </div>

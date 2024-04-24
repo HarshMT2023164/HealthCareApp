@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 // import SupervisorContext from "../../utils/Context/SupervisorContext";
 import UserDetailsContext from '../../utils/Context/UserContext';
 import './Supervisor.css';
-import { BASE_URL, getByUsername} from '../../utils/constants/Urls';
+import { BASE_URL, getByUsername} from '../../utils/constants/URLS';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
 
 

@@ -3,12 +3,11 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, M
 import { ADD_FOLLOWUP, BASE_URL } from '../../utils/constants/URLS';
 import DoctorMainContext from '../../utils/Context/DoctorMainContext';
 import axios from 'axios';
-
+import { format } from 'date-fns';
 const FollowUpForm = ({ open, onClose, onSubmit }) => {
   const { patientDemographics } = useContext(DoctorMainContext);
   const [formData, setFormData] = useState({
     instructions: '',
-    vitals: '',
     date: '',
     frequency: '',
     endDate: ''
@@ -16,7 +15,6 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
 
   const [errors, setErrors] = useState({
     instructions: false,
-    vitals: false,
     date: false,
     frequency: false,
     endDate: false
@@ -30,46 +28,43 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
     }));
   };
 
-  const onSubmitForm = async() => {
-    const token  = localStorage.getItem("JwtToken");
+  const onSubmitForm = async () => {
+    const token = localStorage.getItem("JwtToken");
     const reqBody = {
-  
       healthRecordId: +patientDemographics.healthRecordDTO.id,
-      workerUsername : patientDemographics.fieldHealthCareWorker.username,
-      datem : formData.date,
-      scheduledDateTimem : formData.endDate,
-      instructions : formData.instructions,
-      frequency : formData.frequency.toUpperCase(),
+      workerUsername: patientDemographics.fieldHealthCareWorker.username,
+      scheduledDateTime: formData.date,
+      recurrenceEndTime: formData.endDate,
+      instructions: formData.instructions,
+      frequency: formData.frequency.toUpperCase(),
+    };
+  
+    // Format dates if needed before sending
+    reqBody.scheduledDateTime = format(new Date(formData.date), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    reqBody.recurrenceEndTime = format(new Date(formData.endDate), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+  
+    try {
+      const res = await axios.post(BASE_URL + ADD_FOLLOWUP, reqBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      console.log(res.data);
+      // Handle success or navigate to another page
+      onSubmit(); // Call the onSubmit callback passed as prop
+      onClose(); // Close the dialog
+    } catch (error) {
+      console.log('Error submitting follow-up:', error);
+      // Handle error
     }
-    let res = await axios.post(
-     BASE_URL + ADD_FOLLOWUP ,reqBody,{
-      headers : {
-        Authorization : `Bearer ${token}` ,
-      } 
-     }
-      ).then((res) => {
-          console.log(res);
-        if(res){
-          // navigate(`/bills/${res?.data?.student_id}`);
-          // window.localStorage.setItem('student', JSON.stringify(res.data));
-          // window.localStorage.setItem('IsAuthenticated', true);
-        }
-        else{
-          console.log('Username or password incorrect');
-        }
-
-      }).catch((err) => {
-        console.log('Username or password incorrect');
-      })
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
+
     // Validation
     const newErrors = {
       instructions: formData.instructions.trim() === '',
-      vitals: formData.vitals.trim() === '',
       date: formData.date.trim() === '',
       frequency: formData.frequency.trim() === '',
       endDate: formData.endDate.trim() === ''
@@ -90,20 +85,16 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
     // Optionally, reset form fields after submission
     setFormData({
       instructions: '',
-      vitals: '',
       date: '',
       frequency: '',
       endDate: ''
     });
     setErrors({
       instructions: false,
-      vitals: false,
       date: false,
       frequency: false,
       endDate: false
     });
-
-    onClose();
   };
 
   return (
@@ -125,21 +116,8 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
             margin="normal"
           />
           <TextField
-            label="Measure of Vitals"
-            fullWidth
-            multiline
-            rows={4}
-            name="vitals"
-            value={formData.vitals}
-            onChange={handleChange}
-            required
-            error={errors.vitals}
-            helperText={errors.vitals ? 'Please enter measure of vitals' : ''}
-            margin="normal"
-          />
-          <TextField
             label="Date"
-            fullWidth
+            fullWidth 
             type="date"
             name="date"
             value={formData.date}
@@ -162,9 +140,19 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
             helperText={errors.frequency ? 'Please select frequency' : ''}
             margin="normal"
           >
-            <MenuItem value="daily">Daily</MenuItem>
-            <MenuItem value="weekly">Weekly</MenuItem>
-            <MenuItem value="monthly">Monthly</MenuItem>
+            <MenuItem value="NONE">None</MenuItem>
+            <MenuItem value="DAILY">Daily</MenuItem>
+            <MenuItem value="WEEKLY">Weekly</MenuItem>
+            <MenuItem value="TWICE_A_WEEK">Twice a Week</MenuItem>
+            <MenuItem value="ALTERNATE_DAY">Alternate Day</MenuItem>
+            <MenuItem value="EVERY_FEW_DAYS">Every Few Days</MenuItem>
+            <MenuItem value="MONTHLY">Monthly</MenuItem>
+            <MenuItem value="TWICE_A_MONTH">Twice a Month</MenuItem>
+            <MenuItem value="ALTERNATE_MONTH">Alternate Month</MenuItem>
+            <MenuItem value="EVERY_FEW_WEEKS">Every Few Weeks</MenuItem>
+            <MenuItem value="QUARTERLY">Quarterly</MenuItem>
+            <MenuItem value="BIANNUALLY">Biannually</MenuItem>
+            <MenuItem value="ANNUALLY">Annually</MenuItem>
           </TextField>
           <TextField
             label="End Date"
@@ -179,16 +167,16 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
             margin="normal"
             InputLabelProps={{ shrink: true }}
           />
+          <DialogActions>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
+          </DialogActions>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Submit
-        </Button>
-      </DialogActions>
     </Dialog>
   );
-}
+};
 
 export default FollowUpForm;

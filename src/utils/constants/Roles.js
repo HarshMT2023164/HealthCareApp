@@ -1,6 +1,6 @@
 export const ROLES = {
     SUPERVISOR : "Supervisors",
     DOCTOR : "Doctors",
-    FHW : "Field HealthCare Workers",
+    FHW : "fieldHealthcareWorkers",
     CITIZEN : "Citizens"
 } 

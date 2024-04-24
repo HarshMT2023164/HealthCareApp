@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
-import { BASE_URL,getUnassignedFHW,getByUsername,assignWorkerToLocalArea } from '../../utils/constants/Urls';
+import { BASE_URL,getUnassignedFHW,getByUsername,assignWorkerToLocalArea } from '../../utils/constants/URLS';
 
 
 
@@ -30,13 +30,13 @@ const  FHWList = () => {
   
 
   const columns = [
-    { field: 'index', headerName: '#', flex:1},
-    { field: 'name' , headerName: 'Name', flex:1},
-    { field: 'age', headerName: 'Age', flex: 1 },
-    { field: 'gender', headerName: 'Gender', flex: 1 },
-    { field: 'email', headerName: 'Email',flex:2},
-    { field: 'phoneNum', headerName: 'Contact', flex:1},
-    {field:'username', headerName:'UserName',flex:1,hide:true},
+    { field: 'index', headerName: '#', flex:1 , headerClassName: 'header-highlight'},
+    { field: 'name' , headerName: 'Name', flex:1, headerClassName: 'header-highlight'},
+    { field: 'age', headerName: 'Age', flex: 1  , headerClassName: 'header-highlight'},
+    { field: 'gender', headerName: 'Gender', flex: 1 ,headerClassName: 'header-highlight'},
+    { field: 'email', headerName: 'Email',flex:2, headerClassName: 'header-highlight'},
+    { field: 'phoneNum', headerName: 'Contact', flex:1, headerClassName: 'header-highlight'},
+    {field:'username', headerName:'UserName',flex:1,hide:true, headerClassName: 'header-highlight'},
 
     // { field: 'name', headerName: 'Name', flex: 2 },
     // // { field: 'district', headerName: 'District', flex: 1 },
@@ -47,8 +47,10 @@ const  FHWList = () => {
       field: 'assign',
       headerName: 'Action',
       width: 150,
+      headerClassName: 'header-highlight',
+      
       renderCell: (params) => (
-        <Button  variant="contained" color="primary" onClick={() => handleAssign(params.row)}>Assign</Button>
+        <Button  variant="contained" style={{background : "#11B3CF"}} onClick={() => handleAssign(params.row)}>Assign</Button>
       ),
     },
 ];

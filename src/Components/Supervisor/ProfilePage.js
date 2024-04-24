@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css'; // Import CSS file for styling
 import axios from 'axios';
-import { BASE_URL,getSupervisor,setSupervisor } from '../../utils/constants/Urls';
+import { BASE_URL,getSupervisor,setSupervisor } from '../../utils/constants/URLS';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
