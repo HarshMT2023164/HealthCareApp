@@ -113,6 +113,13 @@ const Login = () => {
               navigate("/doctor/landingScreen");
               localStorage.setItem("username" , res.data.jwtResponse.username);
             }
+            else if(res.data.jwtResponse.roles[0] === "receptionist")
+            {
+              localStorage.setItem("username",res.data.jwtResponse.username);
+              localStorage.setItem("HospitalName",res.data.userRole.HospitalName);
+              localStorage.setItem("ReceptionistName",res.data.userRole.ReceptionistName);
+              navigate("/receptionist/home");
+            }
           }
           // window.localStorage.setItem('student', JSON.stringify(res.data));
           // window.localStorage.setItem('IsAuthenticated', true);

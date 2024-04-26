@@ -72,3 +72,17 @@ export const ADD_FOLLOWUP = "/doctor/addFollowUp";
 export const FETCH_QUESTIONNAIRE = "/blackBox/getQuestionnaire";
 
 export const FETCH_RESPONSES  = "/doctor/getResponseByABHAId";
+
+//Receptionist Urls
+
+export const GET_PATIENT_LIST_BY_HOSPITAL = "";
+
+export const GET_DOCTORS_LIST_BY_HOSPITAL = "";
+
+export const ASSIGN_DOCTOR_TO_PATIENT = "";
+
+export const GET_RECEPTIONIST = "";
+
+export const SET_RECEPTIONIST = "";
+
+

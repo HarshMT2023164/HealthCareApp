@@ -27,6 +27,11 @@ import ResetPassword from './Components/Authentication/ResetPassword.js';
 import SetPassword from './Components/Authentication/SetPassword.js';
 
 
+import ReceptionistMain from './Components/Receptionist/ReceptionistMain.js';
+import DoctorsListMain from './Components/Receptionist/DoctorsListMain.js';
+import PatientsListMain from './Components/Receptionist/PatientsListMain.js'
+import ReceptionistProfilePage from './Components/Receptionist/ReceptionistProfilePage.js'
+
 const appRouter = createBrowserRouter([
   {
     path : "/",
@@ -123,7 +128,25 @@ const appRouter = createBrowserRouter([
           // },
 
         ]
-      }
+      },
+      {
+        path:"/receptionist",
+        element : <ReceptionistMain/>,
+        children :[
+          {
+            path: "/receptionist/home",
+            element: <PatientsListMain/>
+          },
+          {
+            path :"/receptionist/doctors",
+            element : <DoctorsListMain />
+          },
+          {
+            path:"/receptionist/Profile",
+            element:<ReceptionistProfilePage/>
+          },
+        ]
+      },
     ]
   }
 ]);
