@@ -88,7 +88,10 @@ const Login = () => {
         BASE_URL + LOGIN_URL,user
         ).then((res) => {
           console.log(res.data.jwtResponse.accessToken);
+          console.log(res.data.jwtResponse.roles[0]);
+          console.log(res.data.jwtResponse.username);
           localStorage.setItem("JwtToken" , res.data.jwtResponse.accessToken);
+          localStorage.setItem("username",res.data.jwtResponse.username);
             console.log(res);   
             // navigate(`/bills/${res?.data?.student_id}`);
             // window.localStorage.setItem('student', JSON.stringify(res.data));
@@ -105,19 +108,17 @@ const Login = () => {
             }
             else if(res.data.jwtResponse.roles[0]==="supervisor")
             {
-              localStorage.setItem("username",res.data.jwtResponse.username);
+              
               localStorage.setItem("district",res.data.userRole.district.name);
               navigate("/supervisor/home");
             }
             else if(res.data.jwtResponse.roles[0] === "doctor"){
               navigate("/doctor/landingScreen");
-              localStorage.setItem("username" , res.data.jwtResponse.username);
             }
             else if(res.data.jwtResponse.roles[0] === "receptionist")
             {
-              localStorage.setItem("username",res.data.jwtResponse.username);
-              localStorage.setItem("HospitalName",res.data.userRole.HospitalName);
-              localStorage.setItem("ReceptionistName",res.data.userRole.ReceptionistName);
+              localStorage.setItem("HospitalName",res.data.userRole.hospitalDTO.name);
+              localStorage.setItem("ReceptionistName",res.data.userRole.name);
               navigate("/receptionist/home");
             }
           }

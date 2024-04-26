@@ -36,12 +36,12 @@ const SetPassword = () => {
             navigate('/')
           }
           else{
-             console.log('Password is Incorrect');
+             console.log('Error in Changing Password');
            }
           
          }).catch((err) => {
-           setErrorMessage("Password is Incorrect");
-           console.log('Password incorrect in catch');
+           setErrorMessage("Error in Changing Password");
+           console.log('Error in Changing Password in catch');
          })
   
   };

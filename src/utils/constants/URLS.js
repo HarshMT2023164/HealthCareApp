@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.0.103:8080";
+export const BASE_URL = "http://192.168.191.137:8081";
 
 
 //authentication
@@ -75,14 +75,14 @@ export const FETCH_RESPONSES  = "/doctor/getResponseByABHAId";
 
 //Receptionist Urls
 
-export const GET_PATIENT_LIST_BY_HOSPITAL = "";
+export const GET_PATIENT_LIST_BY_HOSPITAL = "/receptionist/getCitizens?";
 
-export const GET_DOCTORS_LIST_BY_HOSPITAL = "";
+export const GET_DOCTORS_LIST_BY_HOSPITAL = "/receptionist/getDoctors?";
 
-export const ASSIGN_DOCTOR_TO_PATIENT = "";
+export const ASSIGN_DOCTOR_TO_PATIENT = "/receptionist/assignDoctorToCitizen";
 
-export const GET_RECEPTIONIST = "";
+export const GET_RECEPTIONIST = "/receptionist/getByUsername?";
 
-export const SET_RECEPTIONIST = "";
+export const SET_RECEPTIONIST = "/receptionist/updateReceptionist";
 
 

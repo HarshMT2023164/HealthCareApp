@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ReceptionistContext from '../../utils/Context/ReceptionistContext';
 import { ASSIGN_DOCTOR_TO_PATIENT, BASE_URL, GET_DOCTORS_LIST_BY_HOSPITAL, } from '../../utils/constants/URLS';
 
@@ -11,15 +11,19 @@ import { ASSIGN_DOCTOR_TO_PATIENT, BASE_URL, GET_DOCTORS_LIST_BY_HOSPITAL, } fro
 const  DoctorsList = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const doctor = location.state.doctor;
 
   const {searchDoctor} = useContext(ReceptionistContext);
  
   const handleAssign = (row) => {
-    localStorage.setItem("DoctorUsername" , row.usernname);
-    const patientId = localStorage.getItem("PatientId");
+    console.log(row);
+    // localStorage.setItem("DoctorUsername" , row.usernname);
+    const abhaId = localStorage.getItem("AbhaId");
     const reqObj = {
-      patientId:patientId,
-      username:row.username,
+      abhaId:abhaId,
+      doctorUsername:row.username,
     }
     assignDoctor(reqObj);
     navigate("/receptionist/home");
@@ -32,8 +36,7 @@ const  DoctorsList = () => {
     { field: 'name', headerName: 'Name', flex: 2 ,headerClassName: 'header-highlight'},
     { field: 'age', headerName: 'Age', flex: 1,headerClassName: 'header-highlight' },
     { field: 'gender', headerName: 'Gender', flex: 1 ,headerClassName: 'header-highlight'},
-    { field: 'district', headerName: 'District', flex: 2, headerClassName: 'header-highlight', },
-
+    { field: 'specialty', headerName: 'Speciality', flex: 2, headerClassName: 'header-highlight', },
     // { field: 'name', headerName: 'Name', flex: 2 },
     // // { field: 'district', headerName: 'District', flex: 1 },
     // { field: 'licenseId', headerName: 'LicenseID', flex: 2 },
@@ -46,7 +49,7 @@ const  DoctorsList = () => {
       headerClassName: 'header-highlight',
       
       renderCell: (params) => (
-        <Button  variant="contained" style={{background : "#11B3CF"}} onClick={() => handleAssign(params.row)}>Assign</Button>
+        <Button  variant="contained" style={{background : "#11B3CF",width:80}} onClick={() => handleAssign(params.row)}>Assign</Button>
       ),
     },
 ];
@@ -95,6 +98,7 @@ const username = localStorage.getItem("username");
 const assignDoctor = async (reqObj) => {
 
     try {
+
       console.log(token);   
       //to be continued
       const response = await axios.post(BASE_URL+ASSIGN_DOCTOR_TO_PATIENT,reqObj,{
@@ -156,9 +160,10 @@ const assignDoctor = async (reqObj) => {
       //   email: response.data.email,
       //   contact
       // };
-      setDataList(response.data);
-      setFilteredDataList(response.data);
       console.log(response.data);
+      const updatedDoctorList = response.data.filter(doc=>(doc.name)!==doctor);
+      setDataList(updatedDoctorList);
+      setFilteredDataList(updatedDoctorList);
     } catch (error) {
       // Handle errors
       console.log(error)

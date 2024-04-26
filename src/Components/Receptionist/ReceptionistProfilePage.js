@@ -26,7 +26,7 @@ const ReceptionistProfilePage = () => {
     age:'',
     gender:'',
     email:'',
-    phoneNum:'',
+    phoneNumber:'',
     district:{
       id:'',
       name:''
@@ -68,8 +68,7 @@ const ReceptionistProfilePage = () => {
         age:response.data.age,
         gender:response.data.gender,
         email:response.data.email,
-        phoneNum:response.data.phoneNum,
-        district:response.data.district,
+        phoneNumber:response.data.phoneNumber,
       }
       setNameHeading(response.data.name);
       setFormData(data);
@@ -90,8 +89,7 @@ const ReceptionistProfilePage = () => {
         name:formData.name,
         age:formData.age,
         email:formData.email,
-        phoneNum:formData.phoneNum,
-        district:formData.district
+        phoneNumber:formData.phoneNumber,
       }
       const response = await axios.post(BASE_URL+SET_RECEPTIONIST,reqObj,{
         headers : {
@@ -166,12 +164,12 @@ const ReceptionistProfilePage = () => {
         <div className="form-group">
           <div>
           <InputLabel htmlFor="phone">Phone</InputLabel>
-          <Input id="phone" className="form-input" name="phoneNum" placeholder="Phone" type="tel" value={formData.phoneNum} onChange={handleInputChange} />
+          <Input id="phone" className="form-input" name="phoneNumber" placeholder="Phone" type="tel" value={formData.phoneNumber} onChange={handleInputChange} />
           </div>
-          <div>
+          {/* <div>
           <InputLabel htmlFor="district">District</InputLabel>
           <Input id="district" className="form-input" name="district" placeholder="District" value={formData.district.name} onChange={handleInputChange} disabled />
-          </div>
+          </div> */}
         </div>
         <div className='button'>
         {/* Save details button */}

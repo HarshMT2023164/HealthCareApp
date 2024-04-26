@@ -14,30 +14,31 @@ const PatientsList = (props) => {
 
   const data = [];
  
-  const {searchArea} = useContext(ReceptionistContext);
+  const {searchPatient} = useContext(ReceptionistContext);
   // const {supervisor,setSupervisor} = useContext(SupervisorContext);
 
 
   const handleView = (rowData) => {
-    if(rowData.doctor==="Not Assigned")
+    localStorage.setItem("AbhaId",rowData.abhaId);
+    let doctor = "";
+    if(rowData.doctor==null)
     {
-      localStorage.setItem("PatientId",rowData.id);
-      navigate("/receptionist/doctors");
+      doctor = "";
     }
-    else{
-    //   localStorage.setItem("FHW_assign_Username",rowData.fhwUsername);
-    //   localStorage.setItem("FHWName",rowData.fhw);
-    //   localStorage.setItem("AreaName",rowData.area);
-    //   navigate("/supervisor/AreaPatientlist")
+    else
+    {
+      doctor = rowData.doctor.name;
     }
+    navigate("/receptionist/doctors",{state:{doctor:doctor}});
   }
 
   const columns = [
     { field: 'id', headerName: '#', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'abhaId', headerName: 'ABHA Id', flex: 2, headerClassName: 'header-highlight' },
     { field: 'name', headerName: 'Patient Name', flex: 1, headerClassName: 'header-highlight' },
     { field: 'gender', headerName: 'Gender', flex: 1, headerClassName: 'header-highlight' },
     { field: 'age', headerName: 'Patient Age', flex: 1, headerClassName: 'header-highlight' },
-    { field: 'doctor', headerName: 'Doctor Assigned', flex: 1, headerClassName: 'header-highlight' },
+    { field: 'doctor', headerName: 'Doctor Assigned', flex: 1, headerClassName: 'header-highlight' ,valueGetter: (params) => params.row.doctor==null?"Not Assigned":params.row.doctor.name},
     // { field: 'name', headerName: 'Name', flex: 2 },
     // { field: 'age', headerName: 'Age', flex: 1 },
     // { field: 'gender', headerName: 'Gender', flex: 1 },
@@ -51,9 +52,11 @@ const PatientsList = (props) => {
       width: 150,
       headerClassName: 'header-highlight',
       renderCell: (params) => (
-        <Button  variant="contained" style={{background : "#11B3CF"}} onClick={() => handleView(params.row)}>View</Button>
+        <Button  variant="contained" style={{background : "#11B3CF",width:80}} onClick={() => handleView(params.row)}>
+      {params.row.doctor==null ? 'Assign' : 'Edit'}
+    </Button>
       ),
-      flex:1
+      flex:1,
     },
 ];
 
@@ -78,13 +81,13 @@ const PatientsList = (props) => {
 
   const filterData = () => {
     const filteredRows = dataList.filter(row =>
-      row.area.toLowerCase().includes(searchArea.toLowerCase())
+      row.abhaId.toLowerCase().includes(searchPatient.toLowerCase())
     );
     setFilteredDataList(filteredRows);
   };
   useEffect(() => {
     filterData()
-  }, [searchArea]);
+  }, [searchPatient]);
 
 
   useEffect(() => {
@@ -119,19 +122,9 @@ const fetchListData = async () => {
       // });
 
       // Handle the API response
-      console.log(response.data)
-      let count=1;
-      let data = response.data.map((obj)=>(
-      {
-        id:count++,
-        name:obj.name,
-        gender:obj.gender,
-        age:obj.age,
-        doctor:obj.DoctorDTO==null?"Not Assigned":obj.Doctor.name,
-        doctorUsername:obj.DoctorDTO==null?"":obj.DoctorDTO.username,
-      }));
-      await setDataList(data);
-      await setFilteredDataList(data);
+      console.log(response.data);
+      await setDataList(response.data);
+      await setFilteredDataList(response.data);
 
     } catch (error) {
       // Handle errors
