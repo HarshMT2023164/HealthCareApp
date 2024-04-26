@@ -11,8 +11,6 @@ import DoctorLandingScreen from './Components/Doctor/DoctorLandingScreen';
 import DoctorMain from './Components/Doctor/DoctorMain';
 import PatientHistory from './Components/Doctor/PatientHistory';
 import PatientQuestionnaire from './Components/Doctor/PatientQuestionnaire';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
 import Profile from './Components/Doctor/Profiile';
 import AreawisePatientsMain from './Components/Supervisor/AreawisePatientsMain';
 import FHWListMain from './Components/Supervisor/FHWListMain';
@@ -20,11 +18,13 @@ import ProfilePage from './Components/Supervisor/ProfilePage';
 import Supervisor from './Components/Supervisor/Supervisor';
 import SupervisorHome from './Components/Supervisor/SupervisorHome';
 import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 import Admin from './Components/Admin/Admin';
 import ForgotPassword from './Components/Authentication/ForgotPassword';
 import ResetPassword from './Components/Authentication/ResetPassword.js';
 import SetPassword from './Components/Authentication/SetPassword.js';
+import Dashboard from './Components/dashboard.js';
 
 
 const appRouter = createBrowserRouter([
@@ -32,6 +32,10 @@ const appRouter = createBrowserRouter([
     path : "/",
     element : <App />,
     children : [
+      {
+        path : "/dashboard",
+        element : <Dashboard/>
+      },
       {
         path : "/",
         element : <Login/>
@@ -113,6 +117,7 @@ const appRouter = createBrowserRouter([
             path : "/doctor/profile",
             element : <Profile />
           },
+          
           // {
           //   path : "/doctor/add-presctiprion",
           //   element : <PrescriptionForm />
