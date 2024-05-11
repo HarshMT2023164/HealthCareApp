@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.0.103:8080";
+export const BASE_URL = "http://192.168.127.137:8080";
 
 
 //authentication
@@ -38,6 +38,18 @@ export const updateFieldHealthCareWorker = "/admin/updateFieldHealthCareWorker";
 export const getCitizenList = "/admin/viewCitizens";
 
 export const getRoleCounts = "/admin/getRoleCounts";
+
+export const activate = "/admin/activate";
+
+export const deactivate = "/admin/deactivate";
+
+export const assignOnDeactivateSupervisor = "/admin/assignSupervisorToDistrict";
+
+export const assignOnDeactivateDoctor = "/admin/assignSupervisorToDistrict";
+
+export const getFreeSupervisors = "/admin/getFreeSupervisors";
+
+export const getFreeDoctors = "/admin/getFreeDoctors";
 
 
 

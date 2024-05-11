@@ -25,6 +25,7 @@ import Admin from './Components/Admin/Admin';
 import ForgotPassword from './Components/Authentication/ForgotPassword';
 import ResetPassword from './Components/Authentication/ResetPassword.js';
 import SetPassword from './Components/Authentication/SetPassword.js';
+import { AssignListMain } from './Components/Admin/AssignListMain.js';
 
 
 const appRouter = createBrowserRouter([
@@ -64,6 +65,10 @@ const appRouter = createBrowserRouter([
           {
             path : "/admin/register/:role",
             element : <RegisterForm />
+          },
+          {
+            path : "/admin/assignList/:role",
+            element : <AssignListMain/>
           },
         ]
       },
