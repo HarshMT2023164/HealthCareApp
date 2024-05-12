@@ -50,13 +50,25 @@ body{
     margin-right: 5%;
     height: 350px;
 }
+.container-dashboard {
+    height: calc(100vh - 800px); /* Adjust the height as per your requirement */
+    overflow-y: auto; /* Enable vertical scrollbar when content exceeds container height */
+  }
 .heading3
 {
     margin-top: 20px;
     width: 480px;
     height: 350px;
-    margin-right: 3%;
+    margin-left: 8%;
+    margin-right: 8%;
     border-radius: 30px !important;
     /* margin-bottom: 2%; */
    
+}
+.table-container {
+    height: 400px; /* Set the desired height for the scrollable area */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+.main-heading {
+    background-color: lightgray;
 }
