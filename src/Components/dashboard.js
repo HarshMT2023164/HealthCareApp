@@ -2,6 +2,7 @@ import { NoteAlt } from '@mui/icons-material';
 import { Avatar, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/material';
 import { BarChart, PieChart } from '@mui/x-charts';
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from '../utils/constants/URLS';
 import './dashboard.css';
 
 import { DataGrid } from '@mui/x-data-grid';
@@ -30,7 +31,7 @@ const Dashboard = () => {
       // city:'Rajkot'
     }
 
-   // const data = [];
+   
     
     const handleView = (row) => {
         //row .city
@@ -40,17 +41,14 @@ const Dashboard = () => {
         // fetchData(selectedCity);
       }
       const handleOverview = () => {
-        setSelectedCity(''); // Set selectedCity to null
-        // Refetch data here
-        // For example, you can call fetchData(selectedCity) again
-        // fetchData(selectedCity);
+        setSelectedCity(''); 
     };
     const fetchTotalCitizens = async () => {
         try {
             const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/totalCitizens?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/totalCitizens?"+queryString);
             console.log("total no. of citizens "+response.data);
             return response.data;
             //setTotalCitizens(response.data);
@@ -65,7 +63,7 @@ const Dashboard = () => {
             const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/consentStatus?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/consentStatus?"+queryString);
             console.log("Total no of patients i.e who accepted consent " +response.data);
             return response.data.trueCount;
             //setTotalPatients(response.data);
@@ -80,7 +78,7 @@ const Dashboard = () => {
             const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/citizensByFollowupStatus?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/citizensByFollowupStatus?"+queryString);
             // const data = response.data;
             // const ongoingCount = data.find(status => status[0] === "ongoing")[1];
             //return ongoingCount;
@@ -98,7 +96,7 @@ const Dashboard = () => {
             const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/genderDistribution?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/genderDistribution?"+queryString);
             // const data = response.data;
             // const ongoingCount = data.find(status => status[0] === "ongoing")[1];
             //return ongoingCount;
@@ -116,7 +114,7 @@ const Dashboard = () => {
             const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/ageDistribution?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/ageDistribution?"+queryString);
             
             console.log(response.data);
             return response.data;
@@ -182,14 +180,14 @@ const fetchMonthData = async () => {
         const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-            const response = await axios.get('http://192.168.125.148:8081/dashboard/cityData?'+queryString);
+            const response = await axios.get(BASE_URL+"/dashboard/cityData?"+queryString);
             console.log(response.data);
            
         //let count =1;
         let data = [];
         let currObj = {};
         let innerObj = {};
-        let consentObj = {};
+        //let consentObj = {};
         let followupArray = [];
         for(let obj in response.data.monthWiseData)
             {
@@ -203,12 +201,18 @@ const fetchMonthData = async () => {
 
                 
                 followupArray = innerObj['followupStatus']?innerObj['followupStatus']:[];
-               currObj["Ongoing"]=followupArray[0]?followupArray[0]=='ongoing'?followupArray[0][1]:0:0;
-               currObj["Completed"]=followupArray[0]?followupArray[0]=='completed'?followupArray[0][1]:0:0;
-               currObj["Completed"]=followupArray[1]?followupArray[1]=='completed'?followupArray[1][1]:0:0;
+               currObj["Ongoing"]=followupArray[0]?followupArray[0]==='ongoing'?followupArray[0][1]:0:0;
+               currObj["Completed"]=followupArray[0]?followupArray[0]==='completed'?followupArray[0][1]:0:0;
+               currObj["Completed"]=followupArray[1]?followupArray[1]==='completed'?followupArray[1][1]:0:0;
                 //currObj['completedFollowUps'] = followupArray?followupArray[2]?followupArray[2][1]?followupArray[2][1]:0:0:0;
                 data.push(currObj);
             }
+            const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// Sort the data based on the month order
+data.sort((a, b) => {
+  return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+});
             console.log("monvce",data);
        //await setMonthData(data);
        console.log("Set or not:",monthData);
@@ -224,7 +228,7 @@ const cityWiseData = async () => {
       const queryString = Object.keys(reqObj)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
             .join('&');
-      const response = await axios.get('http://192.168.125.148:8081/dashboard/cityWiseData?'+queryString);
+      const response = await axios.get(BASE_URL+"/dashboard/cityWiseData?"+queryString);
         console.log(response.data);
         let count =1;
         let data = [];
@@ -250,16 +254,6 @@ const cityWiseData = async () => {
                 // currObj['completedFollowUps'] = followupArray?followupArray[2]?followupArray[2][1]?followupArray[2][1]:0:0:0;
                 data.push(currObj);
             }
-
-        // let count = 1;
-        // let data = Object.entries(response.data).map(([cityName, cityInfo]) => ({
-        //     id: count++,
-        //     districtName: cityName,
-        //     totalCitizens: cityInfo.totalCitizens,
-        //     numPatients: cityInfo.consentStatus.trueCount + cityInfo.consentStatus.falseCount,
-        //     ongoingFollowUps: cityInfo.followupStatus.find(status => status[0] === "ongoing")[1],
-        //     completedFollowUps: cityInfo.followupStatus.find(status => status[0] === "completed")[1]
-        // }));
        
         await setDataList(data);
         await setFilteredDataList(data);
@@ -272,15 +266,15 @@ const cityWiseData = async () => {
 }
 const wholeMonthWiseData = async () => {
     try {
-        const queryString = Object.keys(reqObj)
-            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
-            .join('&');
+        // const queryString = Object.keys(reqObj)
+        //     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+        //     .join('&');
            
-            const response=  await axios.get('http://192.168.125.148:8081/dashboard/monthwiseData');
+            const response=  await axios.get(BASE_URL+"/dashboard/monthwiseData");
             //console.log(re.data);
             console.log(response.data);
         
-            let count =1;
+        //let count =1;
         let data = [];
         let currObj = {};
         let innerObj = {};
@@ -304,7 +298,16 @@ const wholeMonthWiseData = async () => {
                 //currObj['completedFollowUps'] = followupArray?followupArray[2]?followupArray[2][1]?followupArray[2][1]:0:0:0;
                 data.push(currObj);
             }
+            // Define the correct order of months
+const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// Sort the data based on the month order
+data.sort((a, b) => {
+  return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+});
+
             console.log("whole state data",data);
+
             // await setWholeMonthData(data);
          return data;
        
@@ -319,38 +322,8 @@ const icdcodes = async () => {
         const queryString = Object.keys(reqObj)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
         .join('&');
-        const response = await axios.get('http://192.168.125.148:8081/dashboard/icd10-codes?'+queryString);
-        //console.log(response.data);
-        // const mainData = {
-        //     "F20.0": { description: "Used for cases of schizophrenia with predominant delusions or auditory hallucinations.", count: 0 },
-        //     "F25.0": { description: "Used for cases of schizoaffective disorder where there is a manic or hypomanic episode.", count: 0 },
-        //     "F44.81": { description: "Used for cases of dissociative identity disorder, characterized by the presence of two or more distinct personality states.", count: 0 },
-        //     "F63.9": { description: "Used for cases of habit and impulse disorders that are not specified further.", count: 0 },
-        //     "F45.1": { description: "Used for cases of somatization disorder, where there are multiple physical symptoms without a known medical cause.", count: 0 },
-        //     "F51.0": { description: "Used for cases of insomnia that are not due to a known organic cause.", count: 0 },
-        //     "F68.10": { description: "Used for cases of factitious disorder where the symptoms are primarily psychological in nature.", count: 0 },
-        //     "F32.2": { description: "Used for cases of severe major depressive disorder without psychotic features.", count: 0 },
-        //     "F64.1": { description: "Used for cases of gender dysphoria in individuals who are adolescents or adults.", count: 0 },
-        //     "F06.30": { description: "Used for cases of mood disorder that are due to a known medical condition but are not further specified.", count: 0 }
-        // };
-        
-
-        // //Simulate API call to get data
-        // const response = {
-        //     data: {
-        //         "F20.0": 41,
-        //         "F25.0": 36,
-        //         "F44.81": 41,
-        //         "F63.9": 0, // Not included in the provided main data
-        //         "F45.1": 0, // Not included in the provided main data
-        //         "F51.0": 32,
-        //         "F68.10": 39,
-        //         "F32.2": 37,
-        //         "F64.1": 0, // Not included in the provided main data
-        //         "F06.30": 33
-        //     }
-        // };
-
+        const response = await axios.get(BASE_URL+"/dashboard/icd10-codes?"+queryString);
+          
         // Extracting data from the response
         const data = Object.entries(response.data).map(arr => ({
             value: arr[1],
@@ -388,7 +361,7 @@ const icdcodes = async () => {
         // console.log(thresholdIndex);
 
         // // If thresholdIndex is -1, it means the threshold wasn't reached, so use the entire dataset
-        // if (thresholdIndex === -1) {
+        // if (thresholdIndex ==== -1) {
         //     thresholdIndex = labels.length;
         // }
         
@@ -454,16 +427,16 @@ const icdcodes = async () => {
           totalCitizens && (
              <Grid container className="container">   
            
-                <Paper variant='outlined' elevation={5} sx={{flexDirection:'column',rowGap:'100px',alignContent:'center',width:'1500px',backgroundColor:'#fafafa'}} >
+                <Paper variant='outlined' sx={{flexDirection:'column',rowGap:'100px',alignContent:'center',width:'1500px',backgroundColor:'#fafafa'}} >
                 <Card  className='title' variant='outlined' elevation={0}  style={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',backgroundColor:'white'}}>
-                     <Typography variant="h2" vartextAlign='center' component="div" >HealthCare Dashboard</Typography>
+                     <Typography variant="h2"  component="div" >HealthCare Dashboard</Typography>
                  </Card>
                  <div>
-                 <Card  variant='outlined' elevation={4}  style={{marginTop:'20px',alignContent:'center',justifyContent:'center',marginLeft:'40px',height:'40px',width:'350px',display:'flex',flexDirection:'row',backgroundColor:'white'}}>
-                 <Typography variant="h6" marginTop='3px'>
-                                        {selectedCity==''?"OVERVIEW":"District : "+selectedCity}
+                 <Card    style={{marginTop:'30px',alignContent:'center',borderRadius: '8px',marginBottom:'20px',border: '2px ',justifyContent:'center',marginLeft:'40px',height:'60px',width:'350px',display:'flex',flexDirection:'row',backgroundColor:'white'}}>
+                 <Typography variant="h6"fontWeight='bold' marginTop='15px'>
+                                        {selectedCity===''?"State Overview":"District : "+selectedCity}
                     </Typography>
-                    <Button variant="contained" style={{ marginLeft:'50px',marginTop:'5px',background: 'lightgray' }} onClick={handleOverview}>Reset</Button>
+                    <Button variant="contained" style={{ marginLeft:'15px',marginTop:'15px',background: '#19cfcc' }} onClick={handleOverview}>Reset</Button>
                  </Card>
                    
                  </div>
@@ -544,7 +517,7 @@ const icdcodes = async () => {
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <Card className='heading3'>
                             <CardContent>
-                                <Box flexGrow={1} marginLeft={-3}>
+                                <Box flexGrow={1} marginLeft={-6}>
                                     <Typography variant='h6' fontWeight='bold' textAlign='center'>Gender-Wise Patient Distribution</Typography>
                                     <PieChart 
                                         colors={palette}
@@ -552,8 +525,8 @@ const icdcodes = async () => {
                                             arcLabel: (item) => `${item.label}`,
                                             data: [
                                                 //{value: 10,label:'male'}
-                                               { value: selectedCity==""?genDist.totalMaleCount:genDist.maleCount,label:'Male'},
-                                               { value:  selectedCity==""?genDist.totalFemaleCount:genDist.femaleCount,label:'Female'},
+                                               { value: selectedCity===""?genDist.totalMaleCount:genDist.maleCount,label:'Male'},
+                                               { value:  selectedCity===""?genDist.totalFemaleCount:genDist.femaleCount,label:'Female'},
                                                
                                                 // { value: (genDist['totalMaleCount']) /(genDist['totalMaleCount']+genDist['totalFemaleCount'])*100, label: 'Male' }, 
                                                 // { value: (genDist['totalFemaleCount']) /(genDist['totalMaleCount']+genDist['totalFemaleCount'])*100, label: 'Female' },
@@ -573,7 +546,7 @@ const icdcodes = async () => {
                         </Card>
                         <Card className='heading3'>
                             <CardContent>
-                                <Box flexGrow={1} marginLeft={-3}>
+                                <Box flexGrow={1} marginLeft={-6}>
                                     <Typography variant='h6' fontWeight='bold' textAlign='center'>Age-Wise Patient Distribution</Typography>
                                     <PieChart 
                                         colors={palette}
@@ -602,7 +575,7 @@ const icdcodes = async () => {
 
                         <Card className='heading3'>
                         <CardContent>
-                            <Box flexGrow={1} marginLeft={-3}>
+                            <Box flexGrow={1} marginLeft={-6}>
                                 <Typography variant='h6' fontWeight='bold' textAlign='center'>Top 10 ICD Codes</Typography>
                                 <PieChart 
                                     colors={palette}
@@ -627,7 +600,7 @@ const icdcodes = async () => {
                    
                         <Card className='heading2bar'>
                             <CardContent>
-                            <Typography variant='h6' fontWeight='bold' textAlign='center'>Month-wise Patient Data:</Typography>
+                            <Typography variant='h6' fontWeight='bold' textAlign='center'>Month-Wise Patient Data:</Typography>
                              <BarChart
                                     // dataset={wholeMonthData.map(data => ({
                                     //     Citizens: data.Citizens,
@@ -670,7 +643,7 @@ const icdcodes = async () => {
                     <div >
                         <Card style={{marginLeft:'20px',padding:'20px',marginTop:'20px',maxWidth:'1350px'}}>
                             <CardContent>
-                                <Typography variant="h6" gutterBottom>
+                                <Typography variant="h6" fontWeight='bold'>
                                     Overview: District-Wise Details
                                 </Typography>
                                 <div className='table-container'>
@@ -693,7 +666,7 @@ const icdcodes = async () => {
                 
                     <Card variant='outlined' style={{ margin: '20px', maxWidth: '1450px' , padding: '20px' }}>
             <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" fontWeight='bold'gutterBottom>
                     Diagnostic Codes and Descriptions
                 </Typography>
                 <Typography variant="body1">

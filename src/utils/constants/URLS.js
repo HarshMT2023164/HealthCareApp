@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.0.103:8080";
+export const BASE_URL = "http://192.168.136.149:8081";
 
 
 //authentication
