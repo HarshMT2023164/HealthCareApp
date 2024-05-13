@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.191.137:8081";
+export const BASE_URL = "http://192.168.193.137:8080";
 
 
 //authentication
@@ -19,11 +19,15 @@ export const getSupervisors = "/admin/getSupervisors";
 
 export const getFHW = "/admin/getFieldHealthCareWorkers";
 
+export const getReceptionists = "/admin/getReceptionists";
+
 export const addDoctor = "/admin/addDoctor";
 
 export const addSupervisor = "/admin/addSupervisor";
 
 export const addFHW = "/admin/addFieldHealthCareWorker";
+
+export const addReceptionist = "/admin/addReceptionist"
 
 export const getUnallocatedDistricts = "/blackBox/getUnallocatedDistricts";
 
@@ -35,9 +39,13 @@ export const updateSupervisor = "/admin/updateSupervisor";
 
 export const updateFieldHealthCareWorker = "/admin/updateFieldHealthCareWorker";
 
+export const updateReceptionist = "/admin/updateReceptionist"
+
 export const getCitizenList = "/admin/viewCitizens";
 
 export const getRoleCounts = "/admin/getRoleCounts";
+
+export const getHospitalsByDistrict = "/admin/getHospitalsInDistrict?";
 
 
 

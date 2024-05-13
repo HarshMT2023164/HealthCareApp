@@ -179,7 +179,7 @@ const Login = () => {
   const paperStyle = {
     padding: 20,
     width: 480,
-    margin: "100px auto",
+    margin: "150px 50%",
   };
 
   const textFieldStyle = {

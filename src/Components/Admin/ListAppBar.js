@@ -1,5 +1,5 @@
 import { Search } from "@mui/icons-material";
-import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, TextField, Toolbar, Typography} from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchContext from "../../utils/Context/SearchContext";
@@ -20,7 +20,7 @@ export default function ListAppBar(props) {
     <AppBar position="static" className="list-app-bar-cont">
       <Toolbar className="list-toolbar">
         <div className="list-toolbar-item">
-          <Typography variant="h4" className="list-toolbar-item">
+          <Typography variant="h5" className="list-toolbar-item">
             {role}
           </Typography>
         </div>

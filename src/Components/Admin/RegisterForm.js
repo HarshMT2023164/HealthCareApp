@@ -18,11 +18,14 @@ import {
   addDoctor,
   addFHW,
   addSupervisor,
+  addReceptionist,
   getAllDistricts,
   getUnallocatedDistricts,
   updateDoctor,
   updateFieldHealthCareWorker,
   updateSupervisor,
+  updateReceptionist,
+  getHospitalsByDistrict,
 } from "../../utils/constants/URLS";
 import { ROLES } from "../../utils/constants/Roles";
 
@@ -36,10 +39,13 @@ let RegisterForm = () => {
     gender: "",
     age: "",
     specialty: "",
+    hospital:null,
+    hospitalId:"",
   };
 
   const [formData, setFormData] = useState(initialFormState);
   const [districtOptions, setDistrictOptions] = useState([]);
+  const [hospitalOptions, setHospitalOptions] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
@@ -72,6 +78,31 @@ let RegisterForm = () => {
     setDistrictOptions(mappedDistrictList);
   };
 
+  const fetchHospitals = async (dist) => {
+    const reqObj = {
+      districtId:dist.id
+    }
+
+    const queryString = Object.keys(reqObj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
+    .join('&');
+    console.log(queryString);
+    const response = await axios.get(BASE_URL + getHospitalsByDistrict+queryString, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const mappedHospitalsList = response.data.map((hospital) => ({
+      id: hospital.id,
+      name: hospital.name,
+    }));
+    // Handle the API response
+    console.log(mappedHospitalsList);
+    await setHospitalOptions(mappedHospitalsList);
+    console.log(hospitalOptions);
+  };
+
   useEffect(() => {
     if(!token){
       navigate("/");
@@ -97,6 +128,9 @@ let RegisterForm = () => {
       case ROLES.FHW:
         apiUrl = addFHW;
         break;
+      case ROLES.RECEPTIONIST:
+        apiUrl = addReceptionist;
+        break;
       default:
         apiUrl = addDoctor; // Default to getDoctors if role not specified or recognized
         break;
@@ -105,6 +139,8 @@ let RegisterForm = () => {
     formData.age = parseInt(formData.age);
 
     formData.phoneNum = parseInt(formData.phoneNum);
+
+    formData.hospitalId = parseInt(formData.hospitalId);
 
     let res = await axios
       .post(BASE_URL + apiUrl, formData, {
@@ -148,6 +184,9 @@ let RegisterForm = () => {
       case ROLES.FHW:
         apiUrl = updateFieldHealthCareWorker;
         break;
+      case ROLES.RECEPTIONIST:
+        apiUrl = updateReceptionist;
+        break;
       default:
         apiUrl = updateDoctor; // Default to getDoctors if role not specified or recognized
         break;
@@ -156,6 +195,8 @@ let RegisterForm = () => {
     formData.age = parseInt(formData.age);
 
     formData.phoneNum = parseInt(formData.phoneNum);
+
+    formData.hospitalId = parseInt(formData.hospitalId);
 
     let res = await axios
       .post(BASE_URL + apiUrl, formData, {
@@ -221,6 +262,7 @@ let RegisterForm = () => {
   });
 
   const handleInputChange = (e) => {
+    console.log(formData);
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -241,6 +283,21 @@ let RegisterForm = () => {
     setErrors((prevErrors) => ({
       ...prevErrors,
       district: "",
+    }));
+    fetchHospitals(newValue);
+  };
+
+  const handleHospitalChange = (event, newValue) => {
+    console.log(newValue);
+    setFormData((prevData) => ({
+      ...prevData,
+      hospital:newValue,
+      hospitalId:newValue.id
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      hospital: "",
+      hospitalId:"",
     }));
   };
 
@@ -296,6 +353,16 @@ let RegisterForm = () => {
         case "district":
           if (!formData[fieldName]) {
             validationErrors[fieldName] = "District is required";
+          }
+          break;
+        case "hospital":
+          if (!formData[fieldName]) {
+            validationErrors[fieldName] = "Hospital is required";
+          }
+          break;
+        case "hospitalId":
+          if (!formData[fieldName]) {
+            validationErrors[fieldName] = "Hospital is required";
           }
           break;
         case "gender":
@@ -439,6 +506,24 @@ let RegisterForm = () => {
           )}
           onChange={(event, newValue) => handleDistrictChange(event, newValue)}
         />
+
+        { role === ROLES.RECEPTIONIST && <Autocomplete
+          value={formData.hospital}
+          options={hospitalOptions?hospitalOptions:[]}
+          style={textFieldStyle}
+          getOptionLabel={(option) => option?option.name:''}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Hospital"
+              variant="standard"
+              fullWidth
+            />
+          )}
+          onChange={(event, newValue) => handleHospitalChange(event, newValue)}
+        />}
+
+
         <div className="age-gender-container">
           <FormControl
             className="register-gender-select"

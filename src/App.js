@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { UserDetailsProvider } from "./utils/Context/UserContext";
 import { SupervisorProvider } from "./utils/Context/SupervisorContext";
+import  {DrawerProvider} from "./utils/Context/DrawerContext";
 
 function App() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function App() {
   // }, [isLoginUrl, navigate]);
 
   return (
+    <DrawerProvider>
     <SupervisorProvider>
     <UserDetailsProvider>
       <div className="list-page-item">
@@ -26,6 +28,7 @@ function App() {
       </div>
     </UserDetailsProvider>
     </SupervisorProvider>
+    </DrawerProvider>
   );
 }
 

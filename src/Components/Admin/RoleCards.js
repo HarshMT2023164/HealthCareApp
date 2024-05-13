@@ -47,7 +47,7 @@ export default function RoleCards() {
         const tempRoleCounts = Object.entries(response.data.counts).map(
           ([key, value]) => ({
             role: key,
-            display_name: key
+            display_name: (key==="receptionist"?key+"s":key)
               .split(/(?=[A-Z])/)
               .join(" ")
               .replace( /\w\S*/g,

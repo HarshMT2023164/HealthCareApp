@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SearchContext from '../../utils/Context/SearchContext';
 import UserDetailsContext from '../../utils/Context/UserContext';
-import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors } from '../../utils/constants/URLS';
+import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors ,getReceptionists} from '../../utils/constants/URLS';
 import { ROLES, Roles } from '../../utils/constants/Roles';
 
 const ViewList = (props) => {
@@ -40,6 +40,7 @@ const ViewList = (props) => {
     try {
       setLoading(true); // Set loading to true before fetching data
       let apiUrl;
+      console.log("role:",role);
       switch (role) {
         case ROLES.DOCTOR:
           apiUrl = getDoctor;
@@ -53,6 +54,9 @@ const ViewList = (props) => {
         case ROLES.CITIZEN:
           apiUrl = getCitizenList;
           break;
+        case ROLES.RECEPTIONIST:
+          apiUrl = getReceptionists;
+          break;
         default:
           apiUrl = getDoctor;
           break;
@@ -64,6 +68,7 @@ const ViewList = (props) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data);
       setDataList(response.data);
       setFilteredDataList(response.data);
       console.log(filteredDataList);
@@ -85,12 +90,21 @@ const ViewList = (props) => {
     { field: 'name', headerName: 'Name', flex: 2 },
     { field: 'age', headerName: 'Age', flex: 1 },
     { field: 'gender', headerName: 'Gender', flex: 1 },
-    { field: 'district', headerName: 'District', flex: 2, valueGetter: (params) => params.row.district.name },
+    { field: 'district', headerName: 'District', flex: 2, valueGetter: (params) => params.row.district?params.row.district.name:"" },
   ];
 
   // Add LicenseID and Speciality fields if the role is Doctor
-  if (role !== ROLES.CITIZEN) {
+  if (role !== ROLES.CITIZEN && role!==ROLES.RECEPTIONIST) {
     columns.splice(4, 0,
+      { field: 'email', headerName: 'Email', flex: 2 },
+      { field: 'phoneNum', headerName: 'Phone Number', flex: 2 }
+    );
+  }
+
+  if(role === ROLES.RECEPTIONIST)
+  {
+    columns.splice(4, 1,
+      { field: 'hospitalName', headerName: 'Hospital', flex: 2 },
       { field: 'email', headerName: 'Email', flex: 2 },
       { field: 'phoneNum', headerName: 'Phone Number', flex: 2 }
     );
