@@ -29,9 +29,7 @@ const Dashboard = () => {
     const reqObj= {
    city:selectedCity
       // city:'Rajkot'
-    }
-
-   
+    } 
     
     const handleView = (row) => {
         //row .city
@@ -40,9 +38,11 @@ const Dashboard = () => {
         setSelectedCity(row.districtName);
         // fetchData(selectedCity);
       }
+
       const handleOverview = () => {
         setSelectedCity(''); 
     };
+
     const fetchTotalCitizens = async () => {
         try {
             const queryString = Object.keys(reqObj)
@@ -91,6 +91,7 @@ const Dashboard = () => {
             return 0; // Return default value or handle error accordingly
         }
     };
+
     const genderDistribution = async () => {
         try {
             const queryString = Object.keys(reqObj)
@@ -109,6 +110,7 @@ const Dashboard = () => {
             return 0; // Return default value or handle error accordingly
         }
     };
+
     const ageDistribution = async () => {
         try {
             const queryString = Object.keys(reqObj)
@@ -124,8 +126,7 @@ const Dashboard = () => {
             console.error('Error fetching follow-up status data:', error);
             return 0; // Return default value or handle error accordingly
         }
-    };
-    
+    };    
 
     useEffect(() => {
         fetchData();
@@ -221,6 +222,7 @@ data.sort((a, b) => {
         console.error('Error fetching month-wise data:', error);
     }
 };
+
 const cityWiseData = async () => {
     try {
      
@@ -264,6 +266,7 @@ const cityWiseData = async () => {
       // console.error(error);
     }
 }
+
 const wholeMonthWiseData = async () => {
     try {
         // const queryString = Object.keys(reqObj)
@@ -315,6 +318,7 @@ data.sort((a, b) => {
         console.error('Error fetching month-wise data:', error);
     }
 };
+
 const icdcodes = async () => {
    
 
@@ -428,11 +432,11 @@ const icdcodes = async () => {
              <Grid container className="container">   
            
                 <Paper variant='outlined' sx={{flexDirection:'column',rowGap:'100px',alignContent:'center',width:'1500px',backgroundColor:'#fafafa'}} >
-                <Card  className='title' variant='outlined' elevation={0}  style={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',backgroundColor:'white'}}>
+                <Card  className='title'  elevation={3}  style={{marginTop:'5px',marginLeft:'7px',width:'99%',display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',backgroundColor:'white'}}>
                      <Typography variant="h2"  component="div" >HealthCare Dashboard</Typography>
                  </Card>
                  <div>
-                 <Card    style={{marginTop:'30px',alignContent:'center',borderRadius: '8px',marginBottom:'20px',border: '2px ',justifyContent:'center',marginLeft:'40px',height:'60px',width:'350px',display:'flex',flexDirection:'row',backgroundColor:'white'}}>
+                 <Card    style={{marginTop:'30px',alignContent:'center',borderRadius: '8px',marginBottom:'20px',border: '2px ',justifyContent:'center',marginLeft:'1%',height:'60px',width:'350px',display:'flex',flexDirection:'row',backgroundColor:'white'}}>
                  <Typography variant="h6"fontWeight='bold' marginTop='15px'>
                                         {selectedCity===''?"State Overview":"District : "+selectedCity}
                     </Typography>
@@ -641,14 +645,14 @@ const icdcodes = async () => {
                     </div>
 
                     <div >
-                        <Card style={{marginLeft:'20px',padding:'20px',marginTop:'20px',maxWidth:'1350px'}}>
+                        <Card style={{marginLeft:'20px',borderRadius:'30px',padding:'5px',marginTop:'30px',maxWidth:'1450px'}}>
                             <CardContent>
                                 <Typography variant="h6" fontWeight='bold'>
                                     Overview: District-Wise Details
                                 </Typography>
                                 <div className='table-container'>
                                     
-                                    <div style={{ height: '400px', width: '100%' }}>
+                                    <div style={{ height: '380px', width: '100%' }}>
                                         
                                     <DataGrid
                                             rows={filteredDataList?.map((item, index) => ({ ...item, index: index + 1 }))}
@@ -664,7 +668,7 @@ const icdcodes = async () => {
                     </div>
 
                 
-                    <Card variant='outlined' style={{ margin: '20px', maxWidth: '1450px' , padding: '20px' }}>
+                    <Card variant='outlined' style={{ margin: '20px',borderRadius:'30px', maxWidth: '1450px' , padding: '20px' }}>
             <CardContent>
                 <Typography variant="h6" fontWeight='bold'gutterBottom>
                     Diagnostic Codes and Descriptions
