@@ -1,4 +1,4 @@
-import { NoteAlt } from '@mui/icons-material';
+import { HealthAndSafety, NoteAlt, NoteAltOutlined, PeopleAlt } from '@mui/icons-material';
 import { Avatar, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/material';
 import { BarChart, PieChart } from '@mui/x-charts';
 import React, { useEffect, useState } from 'react';
@@ -452,7 +452,7 @@ const icdcodes = async () => {
                                 
                                 <div style={{display:'flex',flexDirection:'row',alignItems:'center',columnGap:20}}>
                                 <Avatar sx={{bgcolor:'#f5f5f5',border:'1px solid lightgray'}}>
-                                        <NoteAlt sx={{color:'#11b3cf'}}/>
+                                        <PeopleAlt sx={{color:'#11b3cf'}}/>
                                     </Avatar>
                                 <Typography variant="h6" component="div" fontWeight='bold'>
                                     {/* <Icon sx={{color:'#11B3cf'}} fontSize='small' style={{marginRight:'18px'}}><NoteAlt/></Icon> */}
@@ -468,7 +468,7 @@ const icdcodes = async () => {
                             <CardContent sx={{display:'flex',flexDirection:'column',rowGap:'2px',alignItems:'flex-start'}}>
                                 <div style={{display:'flex',flexDirection:'row',alignItems:'center',columnGap:10}}>
                                 <Avatar sx={{bgcolor:'#f5f5f5',border:'1px solid lightgray'}}>
-                                        <NoteAlt sx={{color:'#11b3cf'}}/>
+                                        <HealthAndSafety sx={{color:'#11b3cf'}}/>
                                     </Avatar>
                                 <Typography variant="h6" component="div" fontWeight='bold'>
                                     {/* <Icon sx={{color:'#11B3cf'}} fontSize='small' style={{marginRight:'18px'}}><NoteAlt/></Icon> */}
@@ -484,7 +484,7 @@ const icdcodes = async () => {
                             <CardContent sx={{display:'flex',flexDirection:'column',rowGap:'2px',alignItems:'flex-start'}}>
                                 <div style={{display:'flex',flexDirection:'row',alignItems:'center',columnGap:10}}>
                                 <Avatar sx={{bgcolor:'#f5f5f5',border:'1px solid lightgray'}}>
-                                        <NoteAlt sx={{color:'#11b3cf'}}/>
+                                        <NoteAltOutlined sx={{color:'#11b3cf'}}/>
                                     </Avatar>
                                 <Typography variant="h6" component="div" fontWeight='bold'>
                                     {/* <Icon sx={{color:'#11B3cf'}} fontSize='small' style={{marginRight:'18px'}}><NoteAlt/></Icon> */}
@@ -634,6 +634,7 @@ const icdcodes = async () => {
                                     width={1400}
                                     height={300}
                                     colors={['#19cfcc', '#05a8fa', '#0054d1', '#081999']}
+                                    
                                     />                            
                                     
                             </CardContent>
