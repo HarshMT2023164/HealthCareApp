@@ -6,6 +6,7 @@
     align-self:center;
     justify-content:center;
     background-color: 'white';
+   
     height: 1000px;
     padding: 20px;
 }
@@ -29,7 +30,8 @@
     /* margin: 10px; */
     /* margin-left:140px; */
     margin-top: 30px;
-    width: 22%;
+    width: 32%;
+    margin-left: 3%;
     height:100px;
     border-radius: 20px !important;
     background-color:#f2f7f5;
@@ -44,10 +46,20 @@ body{
 .heading2
 {
     margin-top: 20px;
-    margin-left: 60px;
+    margin-left: 20px;
     border-radius: 30px !important;
     /* margin-bottom: 5%; */
     margin-right: 5%;
+    height: 350px;
+}
+.heading2bar
+{
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 30px !important;
+    /* margin-bottom: 5%; */
+    margin-right: 1%;
+    width: 1950px;
     height: 350px;
 }
 .container-dashboard {
@@ -56,11 +68,12 @@ body{
   }
 .heading3
 {
+    
     margin-top: 20px;
-    width: 480px;
+    width: 500px;
     height: 350px;
-    margin-left: 8%;
-    margin-right: 8%;
+ margin-left: 1%;
+    margin-right: 1%; 
     border-radius: 30px !important;
     /* margin-bottom: 2%; */
    
@@ -71,4 +84,15 @@ body{
 }
 .main-heading {
     background-color: lightgray;
+}
+.headingicd
+{
+    margin-top: 20px;
+    width: 500;
+    height: 350px;
+    margin-left: 8%;
+    margin-right: 8%;
+    border-radius: 30px !important;
+    /* margin-bottom: 2%; */
+   
 }
