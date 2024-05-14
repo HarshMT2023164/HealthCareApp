@@ -59,6 +59,10 @@ export const getFreeSupervisors = "/admin/getFreeSupervisors";
 
 export const getFreeDoctors = "/admin/getFreeDoctors";
 
+export const getHospitalsForDoctor = "/admin/getAllHospitals?";
+
+export const addDoctorNew = "/admin/addDoctorNew";
+
 
 
 //supervisor
