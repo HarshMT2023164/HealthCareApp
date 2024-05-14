@@ -82,7 +82,7 @@ export const sendMessageToFHW = "/supervisor/sendSmsNotification";
 //Doctor Urls
 
 export const GET_PATIENT_LIST = "/doctor/getPatientsbyDocID";
-
+    
 export const GET_ICD_CODES = "/blackBox/getICD10Codes";
 
 export const ADD_PRESCRIPTION = "/doctor/createHealthRecord";
@@ -92,6 +92,8 @@ export const UPDATE_PRESCRIPTION = "/doctor/editHealthRecord";
 export const ADD_FOLLOWUP = "/doctor/addFollowUp";
 
 export const FETCH_QUESTIONNAIRE = "/blackBox/getQuestionnaire";
+
+export const FETCH_ALL_QUESTIONNAIRE= "/blackBox/getQuestionnaires"
 
 export const FETCH_RESPONSES  = "/doctor/getResponseByABHAId";
 

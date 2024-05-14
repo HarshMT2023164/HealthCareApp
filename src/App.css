@@ -339,8 +339,8 @@ margin-top: 50px;
 }
 
 .patient-question-data{
-  max-height: 80vh;
-  overflow: auto;
+  /* max-height: 80vh;
+  overflow: auto; */
 }
 
 .patient-card-avatar{
@@ -397,4 +397,19 @@ margin-top: 50px;
 
 .divider{
   border-block-start: 1px solid rgba(5, 5, 5, 0.2);
+}
+
+.doctor-questionnaire-panel{
+  max-height: 80vh;
+  overflow: auto;
+  padding: 10px;
+  max-width: 893px !important;
+}
+
+.prescription-text-field{
+  margin-top: 10px !important;
+}
+
+.history-key-headers{
+  margin-top: 10px !important;
 }

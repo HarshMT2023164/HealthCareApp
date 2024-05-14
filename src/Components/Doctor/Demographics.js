@@ -16,6 +16,8 @@ import PrescriptionForm from "./PrescriptionForm";
 import { Card, Divider } from "antd";
 import { Surface } from "recharts";
 import NoDataFound from "../../utils/templates/NoDataFound";
+import PatientQuestionnaire from "./PatientQuestionnaire";
+import PatientHistory from "./PatientHistory";
 
 export const Demographics = () => {
   const [demographics, setDemographics] = useState({
@@ -53,7 +55,8 @@ export const Demographics = () => {
 
   const [openPrescriptionDialog, setOpenPrescriptionDialog] = useState(false);
   const [openFollowUpDialog, setOpenFollowUpDialog] = useState(false);
-
+  const [openQuestionnaireDialog, setOpenQuestionnaireDialog] = useState(false);
+  const [openHistoryDialog , setOpenHistoryDialog] = useState(false);
 
   const handleOpenPrescriptionDialog = () => {
     setOpenPrescriptionDialog(true);
@@ -67,9 +70,25 @@ export const Demographics = () => {
     setOpenFollowUpDialog(true);
   };
 
+  const handleOpenQuestionnaireDialog = () => {
+    setOpenQuestionnaireDialog(true);
+  }
+
   const handleCloseFollowUpDialog = () => {
     setOpenFollowUpDialog(false);
   };
+
+  const handleCloseQuestionnaireDialog = () => {
+    setOpenQuestionnaireDialog(false);
+  }
+
+  const handleOpenHistoryDialog = () => {
+    setOpenHistoryDialog(true);
+  }
+
+  const handleCloseHistoryDialog =  () => {
+    setOpenHistoryDialog(false);
+  }
 
   const handleSubmitPrescriptionForm = (formData) => {
     // Handle form submission here, e.g., send data to server
@@ -80,6 +99,7 @@ export const Demographics = () => {
     // Handle form submission here, e.g., send data to server
     console.log("Prescription Form Submitted:", formData);
   };
+  
 
   useEffect(() => {
     console.log(patientDemographics);
@@ -102,25 +122,34 @@ export const Demographics = () => {
       <div className="demographic-data-cont">
         <div className="demogrphic-btn-cont">
           <Paper elevation={3}>
+          
           <Button
             variant="outlined"
             size="medium"
-            onClick={() => onViewQuestionnaire()}
+            onClick={() => handleOpenQuestionnaireDialog()}
             className="demographic-btn"
           >
             View Questionerry
           </Button>
           </Paper>
+          <PatientQuestionnaire
+          open={openQuestionnaireDialog}
+          onClose={() => handleCloseQuestionnaireDialog()}
+           />
           <Paper elevation={3}>
           <Button
             variant="outlined"
             size="medium"
-            onClick={() => onClickViewHistory()}
+            onClick={() => handleOpenHistoryDialog()}
             className="demographic-btn"
           >
             View History
           </Button>
           </Paper>
+          <PatientHistory
+          open={openHistoryDialog} 
+          onClose={() => handleCloseHistoryDialog()}/>
+
           <Paper elevation={3}>
           <Button
             variant="outlined"

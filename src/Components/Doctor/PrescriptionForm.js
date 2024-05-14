@@ -1,89 +1,157 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Chip } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Chip, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import { PopperPlacementType } from '@mui/material/Popper';
 import { ICD_10_CODES } from '../../utils/constants/StaticList';
 import { ADD_PRESCRIPTION, BASE_URL, GET_ICD_CODES, UPDATE_PRESCRIPTION } from '../../utils/constants/URLS';
 import axios from 'axios';
 import DoctorMainContext from '../../utils/Context/DoctorMainContext';
 
-const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
-
+const PrescriptionForm = ({ open, onClose, onSubmit, dialogData }) => {
   const { patientDemographics } = useContext(DoctorMainContext);
 
   const [formData, setFormData] = useState({
     diagnosis: '',
-    prescription: '',
+    prescriptions: [{
+      medication: '',
+      dosage: '',
+      medicationType: '',
+      frequency: '',
+      customFrequency: '',
+      customInstructions: ''
+    }],
     conclusion: '',
     icdCodes: []
   });
 
-  const [icdCodesList , setIcdCodesList] = useState([]);
-
+  const [icdCodesList, setIcdCodesList] = useState([]);
   const [errors, setErrors] = useState({
     diagnosis: false,
-    prescription: false,
-    conclusion: false
+    conclusion: false,
+    prescriptions: []
   });
 
-  
   useEffect(() => {
-    if(dialogData){
+    if (dialogData) {
       console.log(dialogData);
       const icdList = dialogData?.icd10codes;
       setFormData({
-        diagnosis : dialogData?.diagnosis,
-        conclusion : dialogData?.conclusion,
-        prescription : dialogData?.prescriptions[dialogData.prescriptions.length-1],
-        icdCodes : icdList
-      })
-    }
-    else{
+        diagnosis: dialogData?.diagnosis,
+        conclusion: dialogData?.conclusion,
+        prescriptions: dialogData?.prescriptions || [{}],
+        icdCodes: icdList
+      });
+    } else {
       setFormData({
         diagnosis: '',
-    prescription: '',
-    conclusion: '',
-    icdCodes: []
-      })
+        prescriptions: [{
+          medication: '',
+          dosage: '',
+          medicationType: '',
+          frequency: '',
+          customFrequency: '',
+          customInstructions: ''
+        }],
+        conclusion: '',
+        icdCodes: []
+      });
     }
- 
 
     console.log(formData);
     getICDCodes();
-   
-  },[patientDemographics]);
+  }, [patientDemographics]);
 
-  const getICDCodes = async() => {
-    try{
-      const username  = localStorage.getItem("username");
-      const token  = localStorage.getItem("JwtToken");
-      const response = await axios.get(BASE_URL + GET_ICD_CODES,{
-        headers : {
-          Authorization : `Bearer ${token}` ,
-        } 
+  const getICDCodes = async () => {
+    try {
+      const token = localStorage.getItem("JwtToken");
+      const response = await axios.get(BASE_URL + GET_ICD_CODES, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
-        // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
-        //   headers : {
-        //     Authorization : `Bearer ${token}`,
-        //   }
-        // });
-  
-        // Handle the API response
-        console.log(response.data);
-        console.log(response);
-        setIcdCodesList(response.data);
-      } catch (error) {
-        // Handle errors
-        console.log(error)
-        // console.error(error);
-      }
+
+      setIcdCodesList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const handleChange = (e) => {
+  // const handleChange = (e, index) => {
+  //   const { name, value } = e.target;
+
+  //   if (name.startsWith("prescriptions")) {
+  //     const newPrescriptions = [...formData.prescriptions];
+  //     newPrescriptions[index] = {
+  //       ...newPrescriptions[index],
+  //       [name.split(".")[2]]: value
+  //     };
+  //     console.log(name.split(".")[2]);
+  //     setFormData(prevState => ({
+  //       ...prevState,
+  //       prescriptions: newPrescriptions
+  //     }));
+  //   } else {
+  //     setFormData(prevState => ({
+  //       ...prevState,
+  //       [name]: value
+  //     }));
+  //   }
+  // };
+
+  const handleChange = (e, index) => {
     const { name, value } = e.target;
+  
+    if (name.startsWith("prescriptions")) {
+      const newPrescriptions = [...formData.prescriptions];
+      newPrescriptions[index] = {
+        ...newPrescriptions[index],
+        [name.split(".")[2]]: value
+      };
+  
+      // Clear customFrequency if Frequency is not null
+      if (name.split(".")[2] === "frequency" && value !== "NONE") {
+        newPrescriptions[index].customFrequency = '';
+      }
+
+      if (name.split(".")[2] === "customFrequency" && value.length>0) {
+        newPrescriptions[index].frequency = "";
+      }
+  
+      setFormData(prevState => ({
+        ...prevState,
+        prescriptions: newPrescriptions
+      }));
+    } else {
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
+  };
+  
+
+  const addPrescription = () => {
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
+      prescriptions: [
+        ...prevState.prescriptions,
+        {
+          medication: '',
+          dosage: '',
+          medicationType: '',
+          frequency: '',
+          customFrequency: '',
+          customInstructions: ''
+        }
+      ]
+    }));
+  };
+
+  const removePrescription = (index) => {
+    const newPrescriptions = [...formData.prescriptions];
+    newPrescriptions.splice(index, 1);
+    setFormData(prevState => ({
+      ...prevState,
+      prescriptions: newPrescriptions
     }));
   };
 
@@ -98,12 +166,17 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
     const username  = localStorage.getItem("username");
     const token  = localStorage.getItem("JwtToken");
     const listOfICDIds = formData.icdCodes.map((code) => code.id);
+    const mappedPrescriptions = formData.prescriptions.map((item) =>{
+      let newItem = item;
+      newItem.customFrequency = item.customFrequency.trim() ==="" ? null : item.customFrequency;
+      return newItem;
+    }) 
     const reqBody = {
       abhaId : patientDemographics.abhaId,
       workerUsername : patientDemographics.fieldHealthCareWorker.username,
       doctorUsername : username,
       icd10CodeId : listOfICDIds,
-      prescription : formData.prescription,
+      prescription : mappedPrescriptions,
       conclusion : formData.conclusion,
       diagnosis : formData.diagnosis
     }
@@ -122,50 +195,59 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
           // window.localStorage.setItem('IsAuthenticated', true);
         }
         else{
-          console.log('Username or password incorrect');
+          console.log('cannot add prescription');
         }
 
       }).catch((err) => {
-        console.log('Username or password incorrect');
+        console.log('Error adding prescription');
       })
   }
 
   const handleSubmit = () => {
-    // e.preventDefault();
-    // Validation
+    console.log(formData);
     const newErrors = {
       diagnosis: formData.diagnosis.trim() === '',
-      prescription: formData.prescription.trim() === '',
-      conclusion: formData.conclusion.trim() === ''
+      conclusion: formData.conclusion.trim() === '',
+      prescriptions: formData.prescriptions.map(p => ({
+        medication: p.medication.trim() === '',
+        dosage: p.dosage.trim() === '',
+        medicationType: p.medicationType.trim() === '',
+        frequency: p.frequency.trim() === '',
+        // customFrequency: p.customFrequency.trim() === '',
+        customInstructions: p.customInstructions.trim() === ''
+      }))
     };
 
     setErrors(newErrors);
 
-    // If any field is empty, prevent form submission
-    if (Object.values(newErrors).some(error => error)) {
-      return;
-    }
+    // if (Object.values(newErrors).some(error => error)) {
+    //   return;
+    // }
 
-    // Submit form
-    
-    onSubmitFormData(formData);
-    // Optionally, reset form fields after submission
+    onSubmitFormData();
     setFormData({
       diagnosis: '',
-      prescription: '',
+      prescriptions: [{
+        medication: '',
+        dosage: '',
+        medicationType: '',
+        frequency: '',
+        customFrequency: '',
+        customInstructions: ''
+      }],
       conclusion: '',
       icdCodes: []
     });
     setErrors({
       diagnosis: false,
-      prescription: false,
-      conclusion: false
+      conclusion: false,
+      prescriptions: []
     });
     onClose();
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" style={{maxHeight: "90vh"}}>
       <DialogTitle>Prescription Form</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
@@ -178,21 +260,87 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
             required
             error={errors.diagnosis}
             helperText={errors.diagnosis ? 'Please enter diagnosis' : ''}
-            margin="normal"
+            className='prescription-text-field'
           />
-          <TextField
-            label="Prescription"
-            fullWidth
-            multiline
-            rows={4}
-            name="prescription"
-            value={formData.prescription}
-            onChange={handleChange}
-            required
-            error={errors.prescription}
-            helperText={errors.prescription ? 'Please enter prescription' : ''}
-            margin="normal"
-          />
+          {formData.prescriptions.map((prescription, index) => (
+            <div key={index}>
+              <TextField
+                label="Medication"
+                fullWidth
+                name={`prescriptions.${index}.medication`}
+                value={prescription.medication}
+                onChange={(e) => handleChange(e, index)}
+                required
+                error={errors.prescriptions[index]?.medication}
+                helperText={errors.prescriptions[index]?.medication ? 'Please enter medication' : ''}
+                className='prescription-text-field'
+              />
+              <TextField
+                label="Dosage"
+                fullWidth
+                name={`prescriptions.${index}.dosage`}
+                value={prescription.dosage}
+                onChange={(e) => handleChange(e, index)}
+                required
+                error={errors.prescriptions[index]?.dosage}
+                helperText={errors.prescriptions[index]?.dosage ? 'Please enter dosage' : ''}
+                className='prescription-text-field'
+              />
+              <TextField fullWidth select error={errors.prescriptions[index]?.medicationType} className='prescription-text-field'
+              label="Medication Type" value={prescription.medicationType}
+              onChange={(e) => handleChange(e, index)}
+              name={`prescriptions.${index}.medicationType`}
+              required>
+                  <MenuItem value="">Select Medication Type</MenuItem>
+                  <MenuItem value="TABLET">TABLET</MenuItem>
+                  <MenuItem value="LIQUID">LIQUID</MenuItem>
+                  <MenuItem value="INJECTION">INJECTION</MenuItem>
+                  {/* Add more medication types as needed */}
+
+              </TextField>
+              <TextField
+                label="Frequency"
+                fullWidth
+                select
+                name={`prescriptions.${index}.frequency`}
+                value={prescription.frequency}
+                onChange={(e) => handleChange(e, index)}
+                required
+                error={errors.prescriptions[index]?.frequency}
+                helperText={errors.prescriptions[index]?.frequency ? 'Please select frequency' : ''}
+                className='prescription-text-field'
+              >
+                 <MenuItem value="">Select Frequency</MenuItem>
+                  <MenuItem value="NONE">None</MenuItem>
+                  <MenuItem value="ONCE_DAILY">Once Daily</MenuItem>
+                  <MenuItem value="TWICE_DAILY">Twice Daily</MenuItem>
+                  <MenuItem value="THREE_TIMES_DAILY">Three Times Daily</MenuItem>
+                  <MenuItem value="ONCE_WEEKLY">Once Weekly</MenuItem>
+                  <MenuItem value="AS_NEEDED">As Needed</MenuItem>
+                {/* Add more frequency options as needed */}
+              </TextField>
+              <TextField
+                label="Custom Frequency"
+                fullWidth
+                name={`prescriptions.${index}.customFrequency`}
+                value={prescription.customFrequency}
+                onChange={(e) => handleChange(e, index)}
+                className='prescription-text-field'
+              />
+              <TextField
+                label="Custom Instructions"
+                fullWidth
+                name={`prescriptions.${index}.customInstructions`}
+                value={prescription.customInstructions}
+                onChange={(e) => handleChange(e, index)}
+                className='prescription-text-field'
+              />
+              {index !== 0 && (
+                <Button onClick={() => removePrescription(index)}>Remove Prescription</Button>
+              )}
+            </div>
+          ))}
+          <Button onClick={addPrescription}>Add Prescription</Button>
           <TextField
             label="Conclusion"
             fullWidth
@@ -204,12 +352,13 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
             required
             error={errors.conclusion}
             helperText={errors.conclusion ? 'Please enter conclusion' : ''}
-            margin="normal"
+            className='prescription-text-field'
           />
           <Autocomplete
             multiple
             id="icdCodes"
-            options={icdCodesList} // Your ICD codes list here
+            className='prescription-text-field'
+            options={icdCodesList}
             getOptionLabel={(option) => option.name}
             onChange={handleICDCodesChange}
             value={formData.icdCodes}
@@ -226,7 +375,6 @@ const PrescriptionForm = ({ open, onClose, onSubmit , dialogData}) => {
                 placeholder="Select ICD Codes"
               />
             )}
-            
           />
         </form>
       </DialogContent>
