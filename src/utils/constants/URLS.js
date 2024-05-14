@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.0.103:8080";
+export const BASE_URL = "http://192.168.191.137:8080";
 
 
 //authentication
@@ -60,7 +60,7 @@ export const LOGIN_URL = "/auth/signin";
 //Doctor Urls
 
 export const GET_PATIENT_LIST = "/doctor/getPatientsbyDocID";
-
+    
 export const GET_ICD_CODES = "/blackBox/getICD10Codes";
 
 export const ADD_PRESCRIPTION = "/doctor/createHealthRecord";
@@ -71,4 +71,7 @@ export const ADD_FOLLOWUP = "/doctor/addFollowUp";
 
 export const FETCH_QUESTIONNAIRE = "/blackBox/getQuestionnaire";
 
+export const FETCH_ALL_QUESTIONNAIRE= "/blackBox/getQuestionnaires"
+
 export const FETCH_RESPONSES  = "/doctor/getResponseByABHAId";
+
