@@ -34,7 +34,7 @@ const PatientsList = (props) => {
 
   const columns = [
     { field: 'id', headerName: '#', flex: 1, headerClassName: 'header-highlight' },
-    { field: 'abhaId', headerName: 'ABHA Id', flex: 2, headerClassName: 'header-highlight' },
+    { field: 'abhaId', headerName: 'ABHA Id', flex: 1, headerClassName: 'header-highlight' },
     { field: 'name', headerName: 'Patient Name', flex: 1, headerClassName: 'header-highlight' },
     { field: 'gender', headerName: 'Gender', flex: 1, headerClassName: 'header-highlight' },
     { field: 'age', headerName: 'Patient Age', flex: 1, headerClassName: 'header-highlight' },
@@ -123,8 +123,16 @@ const fetchListData = async () => {
 
       // Handle the API response
       console.log(response.data);
-      await setDataList(response.data);
-      await setFilteredDataList(response.data);
+      let count = 1;
+      const data = response.data.map((obj)=>(
+        {
+          ...obj,
+          id:count++,
+        }
+      ))
+      console.log(data);
+      await setDataList(data);
+      await setFilteredDataList(data);
 
     } catch (error) {
       // Handle errors

@@ -141,7 +141,7 @@ let RegisterForm = () => {
     formData.phoneNum = parseInt(formData.phoneNum);
 
     formData.hospitalId = parseInt(formData.hospitalId);
-
+    console.log(formData);
     let res = await axios
       .post(BASE_URL + apiUrl, formData, {
         headers: {
@@ -356,11 +356,6 @@ let RegisterForm = () => {
           }
           break;
         case "hospital":
-          if (!formData[fieldName]) {
-            validationErrors[fieldName] = "Hospital is required";
-          }
-          break;
-        case "hospitalId":
           if (!formData[fieldName]) {
             validationErrors[fieldName] = "Hospital is required";
           }

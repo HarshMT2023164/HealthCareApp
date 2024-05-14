@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { UserDetailsProvider } from "./utils/Context/UserContext";
 import { SupervisorProvider } from "./utils/Context/SupervisorContext";
 import  {DrawerProvider} from "./utils/Context/DrawerContext";
+import { AlertProvider } from "./utils/Context/AlertContext";
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
   // }, [isLoginUrl, navigate]);
 
   return (
+    <AlertProvider>
     <DrawerProvider>
     <SupervisorProvider>
     <UserDetailsProvider>
@@ -29,6 +31,7 @@ function App() {
     </UserDetailsProvider>
     </SupervisorProvider>
     </DrawerProvider>
+    </AlertProvider>
   );
 }
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Button } from '@mui/material';
+import { Button ,Switch} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SearchContext from '../../utils/Context/SearchContext';
 import UserDetailsContext from '../../utils/Context/UserContext';
-import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors ,getReceptionists} from '../../utils/constants/URLS';
-import { ROLES, Roles } from '../../utils/constants/Roles';
+import { BASE_URL, getCitizenList, getDoctor, getFHW, getSupervisors ,getReceptionists,activate,deactivate} from '../../utils/constants/URLS';
+import { ROLES } from '../../utils/constants/Roles';
 
 const ViewList = (props) => {
   const { role } = useParams();
@@ -28,6 +28,102 @@ const ViewList = (props) => {
   useEffect(() => {
     filterData()
   }, [searchText]);
+
+  const handleStatusChange = async(row) =>{
+    if(role === ROLES.SUPERVISOR)
+    {
+        if(row.active === true)
+          {
+            const reqObject = {
+              username: row.username
+            }
+            const username = row.username;
+            const id = row.district.id;
+            const token = localStorage.getItem("JwtToken");
+            try{
+              const response = await axios.put(BASE_URL + deactivate, reqObject,{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log(response.data);
+              console.log("Deactivated Supervisor!");
+              navigate("/admin/assignList/"+role,{state:{oldUsername:username,id:id}});
+            }
+            catch(error)
+            {
+              console.log(error);
+            }
+          }
+        else
+        {
+          const reqObject = {
+            username: row.username
+          }
+            const token = localStorage.getItem("JwtToken");
+            try{
+              const response = await axios.put(BASE_URL + activate, reqObject,{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log(response.data);
+              console.log("Activated Supervisor!");
+              fetchListData();
+            }
+            catch(error)
+            {
+              console.log(error);
+            }
+        }
+    }
+    if(role === ROLES.DOCTOR)
+    {
+
+        if(row.active === true)
+          {
+            const reqObject = {
+              username: row.username
+            }
+            const token = localStorage.getItem("JwtToken");
+            try{
+              const response = await axios.put(BASE_URL + deactivate, reqObject,{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log(response.data);
+              console.log("Deactivated Doctor!");
+             fetchListData();
+            }
+            catch(error)
+            {
+              console.log(error);
+            }
+          }
+        else
+        {
+          const reqObject = {
+            username: row.username
+          }
+            const token = localStorage.getItem("JwtToken");
+            try{
+              const response = await axios.put(BASE_URL + activate,reqObject,{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log(response.data);
+              console.log("Activated Doctor!");
+              fetchListData();
+            }
+            catch(error)
+            {
+              console.log(error);
+            }
+        }
+    }
+  }
 
   const filterData = () => {
     const filteredRows = dataList.filter(row =>
@@ -118,6 +214,16 @@ const ViewList = (props) => {
     ];
   }
 
+  const statusColumn = {
+    field: 'status',
+    headerName: 'Action',
+    flex:1,
+    renderCell: (params) => (
+      // <Button variant="contained" color="primary" onClick={() => handleEdit(params.row)}>Edit</Button>
+        <Switch checked={params.row.active} size='medium' onChange={() => handleStatusChange(params.row)}/>
+    ),
+  };
+
   if (role === ROLES.CITIZEN) {
     columns = [
       ...columns,
@@ -138,6 +244,7 @@ const ViewList = (props) => {
 
   if (role !== ROLES.CITIZEN) {
     columns.push(actionColumn);
+    columns.push(statusColumn);
   }
 
   return (

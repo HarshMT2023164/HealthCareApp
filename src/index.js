@@ -31,6 +31,7 @@ import ReceptionistMain from './Components/Receptionist/ReceptionistMain.js';
 import DoctorsListMain from './Components/Receptionist/DoctorsListMain.js';
 import PatientsListMain from './Components/Receptionist/PatientsListMain.js'
 import ReceptionistProfilePage from './Components/Receptionist/ReceptionistProfilePage.js'
+import AssignListMain from './Components/Admin/AssignListMain.js'
 
 const appRouter = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const appRouter = createBrowserRouter([
           {
             path : "/admin/register/:role",
             element : <RegisterForm />
+          },
+          {
+            path : "/admin/assignList/:role",
+            element : <AssignListMain/>
           },
         ]
       },

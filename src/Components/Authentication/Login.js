@@ -1,12 +1,14 @@
 import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useState ,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../utils/images/avatar.jpeg";
 import { BASE_URL, LOGIN_URL } from "../../utils/constants/URLS";
+import { AlertContext } from "../../utils/Context/AlertContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  // const { showAlert } = useContext(AlertContext);
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -61,6 +63,7 @@ const Login = () => {
   };
 
   const authenticate = async () => {
+    // showAlert('error',"Incorrect");
     // navigate(`/roles`);
 
     // console.log(user);

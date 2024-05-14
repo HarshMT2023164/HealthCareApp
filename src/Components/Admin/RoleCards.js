@@ -9,7 +9,6 @@ import { BASE_URL, getRoleCounts } from "../../utils/constants/URLS";
 import { ROLES } from "../../utils/constants/Roles";
 export default function RoleCards() {
   const [roleCounts, setRoleCounts] = useState(null);
-
   const token = localStorage.getItem("JwtToken");
 
   const navigate = useNavigate();
@@ -28,6 +27,9 @@ export default function RoleCards() {
         break;
       case ROLES.CITIZEN.toLowerCase():
         imgurl = "/patient.png";
+        break;
+      case ROLES.RECEPTIONIST.toLowerCase():
+        imgurl = "/receptionist.png";
         break;
       default:
         imgurl = "/supervisor.png"; // Default to getDoctors if role not specified or recognized
