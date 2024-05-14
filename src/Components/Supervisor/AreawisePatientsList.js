@@ -1,4 +1,5 @@
 import Chip from '@mui/material/Chip';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -6,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 // import SupervisorContext from "../../utils/Context/SupervisorContext";
 import UserDetailsContext from '../../utils/Context/UserContext';
 import './Supervisor.css';
-import { BASE_URL, getByUsername} from '../../utils/constants/URLS';
+import { BASE_URL, getByUsername,sendMessageToFHW} from '../../utils/constants/URLS';
 import SupervisorContext from '../../utils/Context/SupervisorContext';
 
 
@@ -16,6 +17,9 @@ const  ViewList = (props) => {
   const {role} = useParams();
   const navigate = useNavigate();
   const data=[];
+  const [dialogOpen,setDialogOpen] = useState(false);
+  const [dialogInputOpen,setDialogInputOpen] = useState(false);
+  const [message,setMessage] = useState("");
 
   const {searchPatient} = useContext(SupervisorContext);
   // const {setUserDetails} = useContext(UserDetailsContext);
@@ -24,7 +28,52 @@ const  ViewList = (props) => {
     username:FHW_assign_Username,
   }
   console.log(reqObj);
- 
+
+  const sendMessage = async(msg) => {
+    const id = localStorage.getItem("followUpId");
+    const reqObj = {
+      followUpId:id,
+      message:msg,
+    }
+    try {
+      console.log(token);   
+      //to be continued
+      const response = await axios.post(BASE_URL+sendMessageToFHW,reqObj,{
+      headers : {
+            Authorization : `Bearer ${token}`,
+          }}
+      );
+      // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+      //   headers : {
+      //     Authorization : `Bearer ${token}`,
+      //   }
+      // });
+      // Handle the API response
+      // data={
+      //   id: response.data.id,
+      //   name: response.data.name,
+      //   age: response.data.age,
+      //   gender: response.data.gender,
+      //   email: response.data.email,
+      //   contact
+      // };
+      // setDataList(response.data);
+      console.log("sent!!");
+    } catch (error) {
+      // Handle errors
+      console.log(error)
+      // console.error(error);
+    }
+    
+  }
+
+  const handleMessage = (row) => {
+    localStorage.setItem("followUpId",row.followUpId);
+    setDialogOpen(true);
+  }
+  const data_new =[
+    {id:1,name:'Tanvi Motwani',gender:'Female',age:23,doctor:'Dr ABC',followup:'Date 123',status:'Assigned'}
+  ]
 
   const columns = [
     { field: 'id', headerName: '#', flex: 1, headerClassName: 'header-highlight' },
@@ -47,6 +96,16 @@ const  ViewList = (props) => {
         />
       ),
     },
+    {
+      field: 'message',
+      headerName: 'Contact',
+      width: 150,
+      headerClassName: 'header-highlight',
+      
+      renderCell: (params) => ( params.row.status!=="completed"?<Button  variant="contained" style={{background : "#1976d2"}} onClick={() => handleMessage(params.row)}>Message</Button>:<></>
+      ),
+    },
+    
   ];
   
 // const data = [
@@ -71,7 +130,7 @@ const getColor = (status) => {
   switch (status) {
     case 'Assigned':
       return 'default';
-    case 'Completed':
+    case 'completed':
       return 'success'; // Green color
     default:
       return 'default';
@@ -129,20 +188,42 @@ const fetchListData = async (reqObj) => {
       
       // setDataList(response.data);
       // console.log(response);
+      console.log(response);
       const resData = response.data.healthRecord;
       const filteredData = resData.filter(obj=>obj.followUps!=null);
       console.log(filteredData);
       let count = 1;
       let data = filteredData.map((obj)=>(
         {
-          id:count++,
           name: obj.citizenDTO.name,
           gender: obj.citizenDTO.gender,
           age:obj.citizenDTO.age,
           doctor:obj.doctorDTO.name,
           followup:obj.followUps[(obj.followUps.length)-1].date,
           status:obj.followUps[(obj.followUps.length)-1].status,
+          followUpId:obj.followUps[(obj.followUps.length)-1].id,
         }));
+        data.sort((a,b)=>{
+          if(a.status==="Assigned" && b.status==="completed")
+          {
+            return -1;
+          }
+          else if(a.status==="completed" && b.status==="Assigned")
+          {
+            return 1;
+          }
+          else
+          {
+            return 0;
+          }
+        })
+        data = data.map((obj)=>(
+          {
+            ...obj,
+            id:count++,
+          }
+        ));
+        console.log(data);
         setDataList(data);
         setFilteredDataList(data);
         console.log(filteredDataList);
@@ -155,10 +236,77 @@ const fetchListData = async (reqObj) => {
    
 
 } 
+
+const handleDialogClose = () => {
+  setDialogOpen(false);
+}
+
+const handleDialogInputClose = () => {
+  setDialogInputOpen(false);
+}
+
+const handleAutoMessage = async() => {
+  setDialogOpen(false);
+  setMessage("");
+  await sendMessage("null");
+}
+
+const handleCustomMessage = () => {
+  setDialogOpen(false);
+  setMessage("");
+  setDialogInputOpen(true);
+}
+
+const handleDialogSubmit = async() => {
+  setDialogInputOpen(false);
+  // try {
+
+  //   const reqObj = {
+  //     q: message,
+	// 	source: "auto",
+	// 	target: "hi",
+	// 	format: "text",
+	// 	api_key: ""
+  //   }
+  //     const response = await axios.post("https://libretranslate.com/translate",reqObj,{
+  //       headers: { "Content-Type": "application/json" }}
+  //     );
+  //     // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
+  //     //   headers : {
+  //     //     Authorization : `Bearer ${token}`,
+  //     //   }
+  //     // });
+  //     // Handle the API response
+  //     // data={
+  //     //   id: response.data.id,
+  //     //   name: response.data.name,
+  //     //   age: response.data.age,
+  //     //   gender: response.data.gender,
+  //     //   email: response.data.email,
+  //     //   contact
+  //     // };
+  //     // setDataList(response.data);
+  //     console.log(response.json());
+  //   } catch (error) {
+  //     // Handle errors
+  //     console.log(error)
+  //     // console.error(error);
+  //   }
+  console.log(message);
+  await sendMessage(message);
+    setMessage("");
+}
+
+const handleMessageChange = (e) =>{
+  setMessage(e.target.value);
+}
+
     return (
+      <div>
         <div className='list-table-grid'>
           <DataGrid
             rows={filteredDataList.map((item, index) => ({ ...item, index: index+ 1 }))}
+            // rows = {data_new}
             columns={columns}
             // initialState={{
             //   pagination: false,
@@ -167,6 +315,39 @@ const fetchListData = async (reqObj) => {
             autoHeight
             // autoPageSize
           />
+        </div>
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Select Message Type</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            Would you like to send a custom message or auto generated message?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleAutoMessage} style={{textTransform:'none'}}>Auto Generated</Button>
+            <Button onClick={handleCustomMessage}  style={{textTransform:'none'}}>Custom</Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={dialogInputOpen} onClose={handleDialogInputClose}>
+          <DialogTitle>Type Message</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            Enter Custom message for Field HealthCare Worker
+              <TextField
+            id="outlined-multiline-static"
+            label="Multiline"
+            multiline
+            rows={4}
+            onChange={handleMessageChange}
+            value={message}
+            style={{width:'100%'}}
+          />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogSubmit}  style={{textTransform:'none'}}>Submit</Button>
+          </DialogActions>
+        </Dialog>
         </div>
       );
 }

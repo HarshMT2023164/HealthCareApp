@@ -125,6 +125,7 @@ const ProfilePage = () => {
 
 
   return (
+    <div className='profile-page'>
     <div className="profile-container">
       <div className="profile-card card-1">
         <div className="profile-picture">
@@ -179,6 +180,7 @@ const ProfilePage = () => {
         {/* <button onClick={saveDetails} style={{ backgroundColor: '#007bff' }}>Save Details</button> */}
         </div>
       </div>
+    </div>
     </div>
   );
 };

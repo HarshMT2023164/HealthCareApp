@@ -1,7 +1,14 @@
+.profile-page
+{
+    background-color: white;
+    height: 100vh;
+}
+
 .profile-container {
     display: flex;
     justify-content: center;
     gap:45px;
+    background-color: white;
 }
   
 .profile-card {

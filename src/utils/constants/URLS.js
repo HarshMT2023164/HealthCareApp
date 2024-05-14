@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.193.137:8080";
+export const BASE_URL = "http://192.168.170.137:8080";
 
 
 //authentication
@@ -64,6 +64,8 @@ export const getSupervisor = "/supervisor/getByUsername?";
 export const setSupervisor = "/supervisor/updateSupervisor";
 
 export const LOGIN_URL = "/auth/signin";
+
+export const sendMessageToFHW = "/supervisor/sendSmsNotification";
 
 //Doctor Urls
 

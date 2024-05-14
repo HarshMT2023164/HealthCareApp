@@ -4,7 +4,7 @@ import React from 'react';
 
 const DoctorDashboard = () => {
   return (
-    <div style={{ margin: '5% auto', maxWidth: '1200px' }}>
+    <div style={{ margin: '5% auto', maxWidth: '1200px'}}>
       <div style={{ marginBottom: '40px' }}>
         <Typography variant="h4" style={{ marginBottom: '20px', color: '#333' }}>
           Screening Statistics

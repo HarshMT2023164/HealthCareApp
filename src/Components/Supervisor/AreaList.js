@@ -50,7 +50,7 @@ const  AreaList = (props) => {
       width: 150,
       headerClassName: 'header-highlight',
       renderCell: (params) => (
-        <Button  variant="contained" style={{background : "#11B3CF"}} onClick={() => handleView(params.row)}>View</Button>
+        <Button  variant="contained" style={{background : "#1976d2"}} onClick={() => handleView(params.row)}>View</Button>
       ),
       flex:1
     },

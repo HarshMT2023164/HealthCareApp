@@ -49,7 +49,7 @@ const  DoctorsList = () => {
       headerClassName: 'header-highlight',
       
       renderCell: (params) => (
-        <Button  variant="contained" style={{background : "#11B3CF",width:80}} onClick={() => handleAssign(params.row)}>Assign</Button>
+        <Button  variant="contained" style={{background : "#1976d2",width:80}} onClick={() => handleAssign(params.row)}>Assign</Button>
       ),
     },
 ];
