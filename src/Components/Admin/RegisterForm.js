@@ -26,6 +26,8 @@ import {
   updateSupervisor,
   updateReceptionist,
   getHospitalsByDistrict,
+  getHospitalsForDoctor,
+  addDoctorNew
 } from "../../utils/constants/URLS";
 import { ROLES } from "../../utils/constants/Roles";
 
@@ -79,6 +81,14 @@ let RegisterForm = () => {
   };
 
   const fetchHospitals = async (dist) => {
+    let apiUrl = "";
+    if(role === ROLES.DOCTOR)
+    {
+      apiUrl = getHospitalsForDoctor;
+    }
+    else{
+      apiUrl = getHospitalsByDistrict;
+    }
     const reqObj = {
       districtId:dist.id
     }
@@ -87,7 +97,7 @@ let RegisterForm = () => {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(reqObj[key])}`)
     .join('&');
     console.log(queryString);
-    const response = await axios.get(BASE_URL + getHospitalsByDistrict+queryString, {
+    const response = await axios.get(BASE_URL + apiUrl+queryString, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -132,7 +142,7 @@ let RegisterForm = () => {
         apiUrl = addReceptionist;
         break;
       default:
-        apiUrl = addDoctor; // Default to getDoctors if role not specified or recognized
+        apiUrl = addDoctorNew; // Default to getDoctors if role not specified or recognized
         break;
     }
 
@@ -276,6 +286,7 @@ let RegisterForm = () => {
   };
 
   const handleDistrictChange = (event, newValue) => {
+    console.log(newValue);
     setFormData((prevData) => ({
       ...prevData,
       district: newValue,
@@ -502,7 +513,7 @@ let RegisterForm = () => {
           onChange={(event, newValue) => handleDistrictChange(event, newValue)}
         />
 
-        { role === ROLES.RECEPTIONIST && <Autocomplete
+        { (role === ROLES.RECEPTIONIST || role === ROLES.DOCTOR) && <Autocomplete
           value={formData.hospital}
           options={hospitalOptions?hospitalOptions:[]}
           style={textFieldStyle}
