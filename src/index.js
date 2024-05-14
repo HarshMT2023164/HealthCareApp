@@ -32,12 +32,17 @@ import DoctorsListMain from './Components/Receptionist/DoctorsListMain.js';
 import PatientsListMain from './Components/Receptionist/PatientsListMain.js'
 import ReceptionistProfilePage from './Components/Receptionist/ReceptionistProfilePage.js'
 import AssignListMain from './Components/Admin/AssignListMain.js'
+import Dashboard from './Components/Dashboard/Dashboard.js';
 
 const appRouter = createBrowserRouter([
   {
     path : "/",
     element : <App />,
     children : [
+      {
+        path : "/dashboard",
+        element : <Dashboard/>
+      },
       {
         path : "/",
         element : <Login/>

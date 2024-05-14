@@ -360,7 +360,7 @@ let RegisterForm = () => {
           }
           break;
         case "hospital":
-          if (!formData[fieldName]) {
+          if (!formData[fieldName] && (role === ROLES.DOCTOR || role === ROLES.RECEPTIONIST)) {
             validationErrors[fieldName] = "Hospital is required";
           }
           break;
