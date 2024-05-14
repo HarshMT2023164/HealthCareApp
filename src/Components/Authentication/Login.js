@@ -88,7 +88,11 @@ const Login = () => {
     // }
 
     let res = await axios.post(        
-        BASE_URL + LOGIN_URL,user
+        BASE_URL + LOGIN_URL,user,{
+          headers : {
+            "ngrok-skip-browser-warning": "true"
+          }
+        }
         ).then((res) => {
           console.log(res.data.jwtResponse.accessToken);
           console.log(res.data.jwtResponse.roles[0]);

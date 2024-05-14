@@ -12,7 +12,7 @@ const DoctorMain = () => {
         <div className="list-page-item">
           <DoctorNavBar />
         </div>
-        <div className="list-page-item" style={{marginLeft:open?65:-50}}>
+        <div className="list-page-item-doctor" style={{marginLeft:open?60:-54}}>
             <Outlet/>
           </div>
       </div>

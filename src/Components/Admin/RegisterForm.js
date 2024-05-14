@@ -66,6 +66,7 @@ let RegisterForm = () => {
     const response = await axios.get(BASE_URL + apiUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true"
       },
     });
 
@@ -90,6 +91,7 @@ let RegisterForm = () => {
     const response = await axios.get(BASE_URL + getHospitalsByDistrict+queryString, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true"
       },
     });
 
@@ -146,6 +148,7 @@ let RegisterForm = () => {
       .post(BASE_URL + apiUrl, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       })
       .then((res) => {
@@ -202,6 +205,7 @@ let RegisterForm = () => {
       .post(BASE_URL + apiUrl, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       })
       .then((res) => {

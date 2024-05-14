@@ -104,6 +104,7 @@ const assignFHW = async (reqObj) => {
       const response = await axios.post(BASE_URL+assignWorkerToLocalArea,reqObj,{
       headers : {
             Authorization : `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true"
           }}
       );
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
@@ -144,6 +145,7 @@ const assignFHW = async (reqObj) => {
       const response = await axios.get(BASE_URL+getUnassignedFHW+queryString,{
       headers : {
             Authorization : `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true"
           }}
       );
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{

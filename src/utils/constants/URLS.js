@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.191.137:8080";
+export const BASE_URL = "https://diverse-skylark-happily.ngrok-free.app";
 
 
 //authentication

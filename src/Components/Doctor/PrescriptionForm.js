@@ -66,6 +66,7 @@ const PrescriptionForm = ({ open, onClose, onSubmit, dialogData }) => {
       const response = await axios.get(BASE_URL + GET_ICD_CODES, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         }
       });
 
@@ -185,6 +186,7 @@ const PrescriptionForm = ({ open, onClose, onSubmit, dialogData }) => {
      BASE_URL + postUrl ,reqBody,{
       headers : {
         Authorization : `Bearer ${token}` ,
+        "ngrok-skip-browser-warning": "true"
       } 
      }
       ).then((res) => {

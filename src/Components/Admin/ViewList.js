@@ -44,6 +44,7 @@ const ViewList = (props) => {
               const response = await axios.put(BASE_URL + deactivate, reqObject,{
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "ngrok-skip-browser-warning": "true"
                 },
               });
               console.log(response.data);
@@ -65,6 +66,7 @@ const ViewList = (props) => {
               const response = await axios.put(BASE_URL + activate, reqObject,{
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "ngrok-skip-browser-warning": "true"
                 },
               });
               console.log(response.data);
@@ -90,6 +92,7 @@ const ViewList = (props) => {
               const response = await axios.put(BASE_URL + deactivate, reqObject,{
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "ngrok-skip-browser-warning": "true"
                 },
               });
               console.log(response.data);
@@ -111,6 +114,7 @@ const ViewList = (props) => {
               const response = await axios.put(BASE_URL + activate,reqObject,{
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "ngrok-skip-browser-warning": "true"
                 },
               });
               console.log(response.data);
@@ -162,6 +166,7 @@ const ViewList = (props) => {
       const response = await axios.get(BASE_URL + apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       });
       console.log(response.data);

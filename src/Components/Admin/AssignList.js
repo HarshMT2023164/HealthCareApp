@@ -48,6 +48,7 @@ const AssignList = (props) => {
       const response = await axios.post(BASE_URL + assignOnDeactivateSupervisor, reqObject,{
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       });
       console.log(response.data);
@@ -66,6 +67,7 @@ const AssignList = (props) => {
       const response = await axios.get(BASE_URL + getFreeSupervisors ,{
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       });
       console.log(response.data);

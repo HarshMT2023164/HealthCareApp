@@ -53,6 +53,7 @@ const ProfilePage = () => {
       const response = await axios.get(BASE_URL+getSupervisor+queryString,{
         headers : {
               Authorization : `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true"
             }
       });
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
@@ -96,6 +97,7 @@ const ProfilePage = () => {
       const response = await axios.post(BASE_URL+setSupervisor,reqObj,{
         headers : {
               Authorization : `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true"
             }
       });
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{

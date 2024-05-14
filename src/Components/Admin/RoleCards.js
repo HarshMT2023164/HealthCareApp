@@ -44,6 +44,7 @@ export default function RoleCards() {
       get(BASE_URL + getRoleCounts, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         },
       }).then((response) => {
         const tempRoleCounts = Object.entries(response.data.counts).map(

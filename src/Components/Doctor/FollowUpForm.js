@@ -47,6 +47,7 @@ const FollowUpForm = ({ open, onClose, onSubmit }) => {
       const res = await axios.post(BASE_URL + ADD_FOLLOWUP, reqBody, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true"
         }
       });
       console.log(res.data);

@@ -109,6 +109,7 @@ const fetchListData = async () => {
       const response = await axios.get(BASE_URL+getLocalAreas+queryString,{
         headers : {
               Authorization : `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true"
             }
       });
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{

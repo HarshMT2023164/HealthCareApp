@@ -179,6 +179,7 @@ const PatientQuestionnaire = ({ open, onClose }) => {
         {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromLocal()}`,
+            "ngrok-skip-browser-warning": "true"
           },
         }
       );
@@ -206,6 +207,7 @@ const PatientQuestionnaire = ({ open, onClose }) => {
         .get(BASE_URL + FETCH_ALL_QUESTIONNAIRE, {
           headers: {
             Authorization: `Bearer ${getJwtTokenFromLocal()}`,
+            "ngrok-skip-browser-warning": "true"
           },
         })
         .then((res) => {

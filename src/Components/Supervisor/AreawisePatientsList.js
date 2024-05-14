@@ -41,6 +41,7 @@ const  ViewList = (props) => {
       const response = await axios.post(BASE_URL+sendMessageToFHW,reqObj,{
       headers : {
             Authorization : `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true"
           }}
       );
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
@@ -176,6 +177,7 @@ const fetchListData = async (reqObj) => {
       const response = await axios.get(BASE_URL+getByUsername+queryString,{
         headers : {
               Authorization : `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true"
             }
       });
       // const response = await axios.get('http://192.168.0.104:8080/doctor/viewDoctors',{
