@@ -83,7 +83,41 @@ const Dashboard = () => {
             // const ongoingCount = data.find(status => status[0] === "ongoing")[1];
             //return ongoingCount;
             console.log(response.data);
-            return response.data;
+            let data = [];
+            let followupStatusData = response.data;
+
+// Initialize objects to store data for different statuses
+let completedObj = {};
+let ongoingObj = {};
+
+// Iterate through the response data
+for (let i = 0; i < followupStatusData.length; i++) {
+    let status = followupStatusData[i][0];
+    let value = followupStatusData[i][1];
+    console.log(status);
+
+    // Check the status and assign values accordingly
+    if (status === "completed") {
+        completedObj.completed = value;
+        console.log(completedObj.completed);
+    } else if (status === "ongoing") {
+        ongoingObj.ongoing = value;
+    }
+}
+
+// Push the objects into the data array
+data.push(completedObj);
+data.push(ongoingObj);
+if (typeof data[0].completed === 'undefined') {
+    data[0].completed = 0;
+}
+if (typeof data[1].ongoing === 'undefined') {
+    data[1].ongoing = 0;
+}
+ console.log(data);
+
+// Return the data
+return data;
            
             //setFollowupStatus(response.data);
         } catch (error) {
@@ -189,6 +223,7 @@ const fetchMonthData = async () => {
         let currObj = {};
         let innerObj = {};
         //let consentObj = {};
+        let followupObj = [];
         let followupArray = [];
         for(let obj in response.data.monthWiseData)
             {
@@ -199,12 +234,16 @@ const fetchMonthData = async () => {
                 innerObj = response.data.monthWiseData[obj];
                 currObj['Citizens'] = innerObj['totalCitizens'];
                 currObj['Patients']=innerObj['consentStatusTrue'];
-
+                followupObj = innerObj['followupStatus']?innerObj['followupStatus']:{};
+                console.log(followupObj['ongoing']);
+                currObj['Ongoing']=followupObj?followupObj['ongoing']?followupObj['ongoing']:0:0;
                 
-                followupArray = innerObj['followupStatus']?innerObj['followupStatus']:[];
-               currObj["Ongoing"]=followupArray[0]?followupArray[0]==='ongoing'?followupArray[0][1]:0:0;
-               currObj["Completed"]=followupArray[0]?followupArray[0]==='completed'?followupArray[0][1]:0:0;
-               currObj["Completed"]=followupArray[1]?followupArray[1]==='completed'?followupArray[1][1]:0:0;
+                currObj['Completed']=followupObj?followupObj['completed']?followupObj['completed']:0:0;
+                
+            //     followupArray = innerObj['followupStatus']?innerObj['followupStatus']:[];
+            //    currObj["Ongoing"]=followupArray[0]?followupArray[0]==='ongoing'?followupArray[0][1]:0:0;
+            //    currObj["Completed"]=followupArray[0]?followupArray[0]==='completed'?followupArray[0][1]:0:0;
+            //    currObj["Completed"]=followupArray[1]?followupArray[1]==='completed'?followupArray[1][1]:0:0;
                 //currObj['completedFollowUps'] = followupArray?followupArray[2]?followupArray[2][1]?followupArray[2][1]:0:0:0;
                 data.push(currObj);
             }
@@ -296,8 +335,11 @@ const wholeMonthWiseData = async () => {
                 currObj['Patients']=consentObj['trueCount'];
                 
                 followupObj = innerObj['followupStatus']?innerObj['followupStatus']:{};
+                console.log(followupObj['ongoing']);
                 currObj['Ongoing']=followupObj?followupObj['ongoing']?followupObj['ongoing']:0:0;
+                
                 currObj['Completed']=followupObj?followupObj['completed']?followupObj['completed']:0:0;
+
                 //currObj['completedFollowUps'] = followupArray?followupArray[2]?followupArray[2][1]?followupArray[2][1]:0:0:0;
                 data.push(currObj);
             }
@@ -409,8 +451,12 @@ const icdcodes = async () => {
             
              setTotalCitizens(totalCitizensData);
              setTotalPatients(totalConsentData);
-             setFollowupStatusOngoing(followupStatusData[2][1]);
-             setFollowupStatusCompleted(followupStatusData[1][1]);
+             console.log(followupStatusData['pending']);
+             setFollowupStatusCompleted(followupStatusData[0].completed);
+             setFollowupStatusOngoing(followupStatusData[1].ongoing);
+             console.log(followupStatusCompleted);
+            // setFollowupStatusOngoing(followupStatusData[2][1]);
+             //setFollowupStatusCompleted(followupStatusData[1][1]);
              setgenDist(genderDistributionData);
              setageDist(ageDistributionData);
              setWholeMonthData(wholeMonthWisedata);
